@@ -29,7 +29,7 @@ class Category extends Model
         );
     }
 
-    public function name($id)
+    static function name($id)
     {
         return self::where('category_id', $id)->value('category_name');
     }

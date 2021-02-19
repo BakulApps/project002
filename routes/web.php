@@ -24,15 +24,15 @@ Route::group(['prefix' => 'administrator'], function (){
     Route::get('/keluar', 'AuthController@logout')->name('portal.admin.logout');
     Route::group(['middleware' => 'auth.portal'], function (){
         Route::get('/', 'BackendController@home')->name('portal.admin.home');
-        Route::match(['get', 'post'],'/artikel', 'ArticleController@all')->name('portal.admin.article.all');
-        Route::match(['get', 'post'],'/artikel/buat', 'ArticleController@create')->name('portal.admin.article.create');
-        Route::match(['get', 'post'],'/artikel/{id}/ubah', 'ArticleController@edit')->name('portal.admin.article.edit');
-        Route::match(['get', 'post'],'/artikel/kategori', 'ArticleController@category')->name('portal.admin.article.category');
-        Route::match(['get', 'post'],'/artikel/tagar', 'ArticleController@tag')->name('portal.admin.article.tag');
-
-
-
-        Route::get('/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
+        Route::match(['get', 'post'],'/postingan', 'PostController@all')->name('portal.admin.post.all');
+        Route::match(['get', 'post'],'/postingan/buat', 'PostController@create')->name('portal.admin.post.create');
+        Route::match(['get', 'post'],'/postingan/{id}/ubah', 'PostController@edit')->name('portal.admin.post.edit');
+        Route::match(['get', 'post'],'/postingan/kategori', 'PostController@category')->name('portal.admin.post.category');
+        Route::match(['get', 'post'],'/postingan/tagar', 'PostController@tag')->name('portal.admin.post.tag');
+        Route::match(['get', 'post'],'/komentar', 'CommentController@all')->name('portal.admin.comment.all');
+        Route::match(['get', 'post'],'/komentar/{id}/lihat', 'CommentController@detail')->name('portal.admin.comment.detail');
+        Route::match(['get', 'post'],'/pengguna', 'UserController@all')->name('portal.admin.user');
+        Route::match(['get', 'post'],'/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
     });
 });
 

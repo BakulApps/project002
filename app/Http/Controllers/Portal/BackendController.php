@@ -28,6 +28,6 @@ class BackendController extends Controller
 
     public function setting()
     {
-
+        return view('portal.backend.setting', $this->data);
     }
 }

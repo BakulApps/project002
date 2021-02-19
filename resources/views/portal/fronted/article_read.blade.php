@@ -33,7 +33,7 @@
                                 <li><a href="#"><i class="fa fa-user"></i>{{$post->user->user_name}}</a></li>
                                 <li><a href="#"><i class="fa fa-tags"></i>{{$post->category->category_name}}</a></li>
                             </ul>
-                            <p style="text-align: justify">{{$post->post_content}}</p>
+                            <p style="text-align: justify">{{$post->post_content}}</>
                             <ul class="share">
                                 <li class="title">Share :</li>
                                 <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
