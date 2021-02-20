@@ -10,6 +10,25 @@ var settingjs = function () {
     }
 
     var _componentSubmit = function () {
+        $('#app').click(function () {
+            $.ajax({
+                headers: csrf_token,
+                url: baseurl + '/pengaturan',
+                type: 'put',
+                dataType: 'json',
+                data: {
+                    'set_name' : 'app',
+                    'app_name' : $('#app_name').val()
+                },
+                success: function (resp) {
+                    new PNotify({
+                        title: resp['title'],
+                        text: resp['text'],
+                        addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
+                    });
+                }
+            });
+        });
         $('#submit').click(function () {
             var fd      = new FormData();
             var files   = $('#user_image')[0].files[0];

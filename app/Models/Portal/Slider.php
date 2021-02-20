@@ -16,6 +16,13 @@ class Slider extends Model
         'slider_button_name_1',
         'slider_button_link_2',
         'slider_button_name_2',
-        'slider_image'];
+        'slider_image',
+        'slider_status'];
     protected $primaryKey   = 'slider_id';
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->timestamps = false;
+    }
 }

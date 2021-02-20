@@ -17,12 +17,12 @@ class CreateEntityPortalsTable extends Migration
             $table->id('slider_id');
             $table->string('slider_title',100);
             $table->mediumText('slider_content');
-            $table->string('slider_button_link_1');
-            $table->string('slider_button_name_1');
-            $table->string('slider_button_link_2');
-            $table->string('slider_button_name_2');
-            $table->string('slider_image');
-            $table->timestamps();
+            $table->string('slider_button_link_1', 100);
+            $table->string('slider_button_name_1', 50);
+            $table->string('slider_button_link_2', 100);
+            $table->string('slider_button_name_2', 50);
+            $table->string('slider_image', 100);
+            $table->boolean('slider_status');
         });
 
         Schema::create('portal_entity__programs', function (Blueprint $table) {

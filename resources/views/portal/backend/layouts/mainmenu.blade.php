@@ -24,6 +24,15 @@
                 <span class="badge bg-blue-400 align-self-center ml-auto">{{\App\Models\Portal\Comment::unread()}}</span>
             </a>
         </li>
+        <li class="nav-item nav-item-submenu">
+            <a href="#" class="nav-link"><i class="icon-file-empty"></i> <span> Halaman</span></a>
+            <ul class="nav nav-group-sub" data-submenu-title="Postingan">
+                <li class="nav-item"><a href="{{route('portal.admin.page.slider')}}" class="nav-link">Slider</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.post.create')}}" class="nav-link">Buat Postingan</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.post.category')}}" class="nav-link">Kategori</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.post.tag')}}" class="nav-link">Tagar</a></li>
+            </ul>
+        </li>
 {{--        <li class="nav-item">--}}
 {{--            <a href="{{route('portal.message.all')}}" class="nav-link">--}}
 {{--                <i class="icon-mailbox"></i>--}}

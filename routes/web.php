@@ -28,11 +28,12 @@ Route::group(['prefix' => 'administrator'], function (){
         Route::match(['get', 'post'],'/postingan/buat', 'PostController@create')->name('portal.admin.post.create');
         Route::match(['get', 'post'],'/postingan/{id}/ubah', 'PostController@edit')->name('portal.admin.post.edit');
         Route::match(['get', 'post'],'/postingan/kategori', 'PostController@category')->name('portal.admin.post.category');
+        Route::match(['get', 'post', 'put', 'delete'],'/halaman/slider', 'PageController@slider')->name('portal.admin.page.slider');
         Route::match(['get', 'post'],'/postingan/tagar', 'PostController@tag')->name('portal.admin.post.tag');
         Route::match(['get', 'post'],'/komentar', 'CommentController@all')->name('portal.admin.comment.all');
         Route::match(['get', 'post'],'/komentar/{id}/lihat', 'CommentController@detail')->name('portal.admin.comment.detail');
         Route::match(['get', 'post'],'/pengguna', 'UserController@all')->name('portal.admin.user');
-        Route::match(['get', 'post'],'/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
+        Route::match(['get', 'put'],'/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
     });
 });
 

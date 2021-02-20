@@ -26,8 +26,22 @@ class BackendController extends Controller
         return view('portal.backend.home', $this->data);
     }
 
-    public function setting()
+    public function setting(Request $request)
     {
+        if ($request->isMethod('put')){
+            if ($request->set_name == 'app'){
+                $setting = Setting::where('setting_name', 'app_name');
+                try {
+                    if ($setting->update(['setting_value' => $request->app_name])){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil diperbarui.'];
+                    }
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
         return view('portal.backend.setting', $this->data);
     }
 }

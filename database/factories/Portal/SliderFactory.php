@@ -28,7 +28,8 @@ class SliderFactory extends Factory
             'slider_button_name_1' => 'Selengkapnya',
             'slider_button_link_2' => '#',
             'slider_button_name_2' => 'Daftar Sekarang',
-            'slider_image' => 'storage/portal/fronted/images/slider/s-1.jpg'
+            'slider_image' => 'storage/portal/fronted/images/slider/s-1.jpg',
+            'slider_status' => $this->faker->boolean
         ];
     }
 }
