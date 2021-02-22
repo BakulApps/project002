@@ -10,7 +10,7 @@ class Event extends Model
 {
     use HasFactory;
     protected $table        = 'portal_entity__events';
-    protected $fillable     = ['event_image', 'event_title', 'event_place', 'event_time', 'event_date_start', 'event_date_end', 'event_galery'];
+    protected $fillable     = ['event_image', 'event_title', 'event_content', 'event_place', 'event_time', 'event_date_start', 'event_date_end', 'event_content'];
     protected $primaryKey   = 'event_id';
 
     public function __construct(array $attributes = [])

@@ -39,7 +39,7 @@ class FrontedController extends Controller
     {
         $this->data['page']     = 'home';
         $this->data['section']  = new Section();
-        $this->data['sliders']  = Slider::orderBy('created_at', 'DESC')->limit(2)->get();
+        $this->data['sliders']  = Slider::where('slider_status', 1)->get();
         $this->data['programs'] = Program::all();
         $this->data['facilities'] = Facility::limit(4)->get();
         $this->data['events']   = Event::where('event_date_start', '>', now())->limit(3)->get();
@@ -84,6 +84,20 @@ class FrontedController extends Controller
         $this->data['post'] = Post::where('post_id', $id)->first();
         $this->data['populars'] = Post::orderBy('post_read', 'DESC')->limit(4)->get();
         return view('portal.fronted.article_read', $this->data);
+    }
+
+    public function event()
+    {
+        $this->data['page'] = 'Acara & Kegiatan';
+        $this->data['events'] = Event::orderBy('event_date_start', 'DESC')->paginate(8);
+        return view('portal.fronted.event', $this->data);
+    }
+
+    public function event_read($id, Request $request)
+    {
+        $this->data['event'] = $event = Event::find($id);
+        $this->data['page'] = $event->event_title;
+        return view('portal.fronted.event_read', $this->data);
     }
 
     public function category($id)

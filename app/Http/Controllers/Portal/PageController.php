@@ -3,82 +3,55 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Portal\Section;
 use App\Models\Portal\Setting;
-use App\Models\Portal\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PageController extends Controller
 {
+
     protected $data;
 
     public function __construct()
     {
         $this->data['setting'] = new Setting();
+        $this->data['section'] = new Section();
     }
 
-    public function slider(Request $request)
+    public function home(Request $request)
     {
-        if ($request->isMethod('get')){
-            if ($request->_type == 'data' && $request->_data == 'all'){
-                $no = 1;
-                foreach (Slider::OrderBy('slider_status', 'DESC')->get() as $slider){
-                    $data[] = [
-                        $no++,
-                        $slider->slider_title,
-                        $slider->slider_content,
-                        '<img src="'.asset($slider->slider_image).'" style="width: 120px"/>',
-                        $slider->slider_status == 1 ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tdk Aktif</span>',
-                        '<div class="btn-group">
-                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $slider->slider_id .'"><i class="icon-pencil"></i></button>
-                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $slider->slider_id . '"><i class="icon-trash"></i></button>
-                         </div>
-                         '
-                    ];
-                };
-                $msg = ['data' => empty($data) ? [] : $data];
-            }
-            else {
-                return view('portal.backend.page_slider', $this->data);
-            }
-        }
-        elseif ($request->isMethod('post')){
-            $validator = Validator::make($request->all(), [
-                'slider_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-            ]);
-            if ($validator->fails()) {
-                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-            }
-            try {
-                if ($request->hasFile('slider_image')){
-                    $file = $request->file('slider_image')->store('public/portal/fronted/images/slider/');
+        if ($request->isMethod('post')){
+            if ($request->_data == 'home'){
+                $validator = Validator::make($request->all(), [
+                    'home_section_about_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
+                ]);
+                if ($validator->fails()) {
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
                 }
-                $slider = new Slider();
-                $slider->slider_image          = isset($file) ? asset('storage' . preg_replace("/public/portal/fronted/images/slider/", "", $file)) : null;
-                $slider->slider_title          = $request->slider_title;
-                $slider->slider_content        = $request->slider_content;
-                $slider->slider_button_link_1       = $request->slider_button_link_1;
-                $slider->slider_button_name_1        = $request->slider_button_name_1;
-                $slider->slider_button_link_2    = $request->slider_button_link_2;
-                $slider->slider_button_name_2   = $request->slider_button_name_2;
-                $slider->slider_status     = $request->slider_status;
-                if ( $slider->save()){
-                    $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil disimpan.'];
+                try {
+                    if ($request->hasFile('home_section_about_image')){
+                        $file = $request->file('home_section_about_image');
+                        $file->store('public/portal/fronted/images/');
+                        Storage::delete('public/portal/fronted/images/'. Section::where('section_name','home_section_about_image')->value('section_content'));
+                        Section::where('section_name', 'home_section_about_image')->update(['section_content' => $file->hashName()]);
+                    }
+                    Section::where('section_name', 'home_section_about_name')->update(['section_content' => $request->home_section_about_name]);
+                    Section::where('section_name', 'home_section_about_title')->update(['section_content' => $request->home_section_about_title]);
+                    Section::where('section_name', 'home_section_about_content')->update(['section_content' => $request->home_section_about_content]);
+                    Section::where('section_name', 'home_section_about_link')->update(['section_content' => $request->home_section_about_link]);
+                    Section::where('section_name', 'home_section_about_button')->update(['section_content' => $request->home_section_about_button]);
+                    $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Halaman Beranda berhasil diperbarui.'];
                 }
-            }catch (\Exception $e){
-                $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
-            }
-        }
-        elseif ($request->isMethod('delete')){
-            try {
-                $slider = Slider::find($request->slider_id);
-                if ($slider->delete()){
-                    $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil dihapus.'];
+                catch (\Exception $e){
+                    $msg = ['title' => 'Sukses !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
-            }catch (\Exception $e){
-                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
             }
+            return response()->json($msg);
         }
-        return response()->json($msg);
+        else {
+            return view('portal.backend.page_home', $this->data);
+        }
     }
 }

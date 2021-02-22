@@ -1,9 +1,9 @@
 @extends('portal.fronted.layouts.master')
 @section('content')
-    @if($sliders->count() >= 2)
+    @if($sliders->count() >= 1)
     <section id="slider-part" class="slider-active">
         @foreach($sliders as $slider)
-        <div class="single-slider bg_cover pt-150" style="background-image: url({{asset($slider->slider_image)}})" data-overlay="4">
+        <div class="single-slider bg_cover pt-150" style="background-image: url({{asset('storage/portal/fronted/images/slider/'. $slider->slider_image)}})" data-overlay="4">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-7 col-lg-9">
@@ -38,9 +38,9 @@
                             @foreach($programs as $program)
                             <div class="col-lg-4">
                                 <a href="{{$program->program_link}}">
-                                    <span class="singel-category text-center color-{{$program->program_id}}">
+                                    <span class="singel-category text-center color-2">
                                         <span class="icon">
-                                            <img src="{{asset($program->program_image)}}" alt="Icon">
+                                            <img src="{{asset('storage/portal/fronted/images/program/'. $program->program_image)}}" alt="Icon">
                                         </span>
                                         <span class="cont">
                                             <span>{{$program->program_name}}</span>
@@ -80,8 +80,7 @@
                             <li>
                                 <div class="singel-event">
                                     <span><i class="fa fa-calendar"></i> {{$event->date_start() .' - '. $event->date_end()}}</span>
-                                    <a href="{{route('potral.event', $event->event_id)}}"><h4>{{$event->event_title}}</h4></a>
-                                    <span><i class="fa fa-clock-o"></i> {{$event->date_start('H:i') .' - '. $event->date_end('H:i')}}</span>
+                                    <a href="{{route('portal.event.read', $event->event_id)}}"><h4>{{$event->event_title}}</h4></a>
                                     <span><i class="fa fa-map-marker"></i> {{$event->event_place}}</span>
                                 </div>
                             </li>
@@ -93,7 +92,7 @@
             </div>
         </div>
         <div class="about-bg">
-            <img src="{{asset($section->value('home_section_about_image'))}}" alt="About">
+            <img src="{{asset('storage/portal/fronted/images/'. $section->value('home_section_about_image'))}}" alt="About">
         </div>
     </section>
     <section id="apply-aprt" class="pb-120">

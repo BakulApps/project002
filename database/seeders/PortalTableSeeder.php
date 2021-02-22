@@ -28,8 +28,8 @@ class PortalTableSeeder extends Seeder
     {
         Event::factory(10)->create();
         $post = Post::factory(30)->create();
-        Slider::factory(10)->create();
-        Program::factory(4)->create();
+//        Slider::factory(10)->create();
+//        Program::factory(4)->create();
         Extracurricular::factory(7)->create();
         Facility::factory(10)->create();
         Testimonial::factory(5)->create();
@@ -64,7 +64,8 @@ class PortalTableSeeder extends Seeder
             ['home_section_4_title_3', 'Kegiatan Non Akademik'],
             ['home_section_4_content_3', 'Menyelenggarakan kegiatan nonakademik berbasis kompetensi dan prestasi.'],
             ['home_section_testi_bg', 'storage/portal/fronted/image/bg-2.jpg'],
-            ['article_section_title_bg', 'storage/portal/fronted/images/page-banner-4.jpg']
+            ['article_section_title_bg', 'storage/portal/fronted/images/page-banner-4.jpg'],
+            ['event_section_title_bg', 'storage/portal/fronted/images/page-banner-4.jpg'],
         ];
 
         for ($i=0;$i<count($section);$i++){

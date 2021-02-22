@@ -5,7 +5,7 @@
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
 @section('jspage')
-    <script src="{{asset('assets/portal/backend/js/page_slider.js')}}"></script>
+    <script src="{{asset('assets/portal/backend/js/widget_slider.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Halaman</span>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="submit" value="post" class="btn btn-sm bg-primary btn-labeled btn-labeled-left"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
+                    <button type="button" id="submit" value="store" class="btn btn-sm bg-primary btn-labeled btn-labeled-left"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
                     <button type="button" class="btn btn-sm bg-danger btn-labeled btn-labeled-left" data-dismiss="modal"><b><i class="icon-close2"></i> </b>KELUAR</button>
                 </div>
             </div>

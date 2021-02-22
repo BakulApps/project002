@@ -24,7 +24,7 @@
                                     <li><a href="#">Bid. Sarana & Prasarana</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item"><a href="#">KEGIATAN</a></li>
+                            <li class="nav-item"><a href="{{route('portal.event')}}">KEGIATAN</a></li>
                             <li class="nav-item"><a href="{{route('potral.article')}}">ARTIKEL</a></li>
                         </ul>
                     </div>

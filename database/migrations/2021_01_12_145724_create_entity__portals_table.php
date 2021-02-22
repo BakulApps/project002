@@ -17,11 +17,11 @@ class CreateEntityPortalsTable extends Migration
             $table->id('slider_id');
             $table->string('slider_title',100);
             $table->mediumText('slider_content');
-            $table->string('slider_button_link_1', 100);
-            $table->string('slider_button_name_1', 50);
-            $table->string('slider_button_link_2', 100);
-            $table->string('slider_button_name_2', 50);
-            $table->string('slider_image', 100);
+            $table->string('slider_button_link_1', 100)->nullable();
+            $table->string('slider_button_name_1', 50)->nullable();
+            $table->string('slider_button_link_2', 100)->nullable();
+            $table->string('slider_button_name_2', 50)->nullable();
+            $table->string('slider_image');
             $table->boolean('slider_status');
         });
 
@@ -69,8 +69,8 @@ class CreateEntityPortalsTable extends Migration
             $table->string('event_title', 100);
             $table->mediumText('event_content');
             $table->string('event_place', 100);
-            $table->dateTime('event_date_start');
-            $table->dateTime('event_date_end');
+            $table->date('event_date_start');
+            $table->date('event_date_end');
             $table->string('event_galery')->nullable();
         });
 

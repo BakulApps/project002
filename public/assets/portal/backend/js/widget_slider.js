@@ -30,8 +30,8 @@ var userjs = function () {
             ],
             ajax: ({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: baseurl + '/halaman/slider',
-                type: 'get',
+                url: baseurl + '/widget/slider',
+                type: 'post',
                 dataType: 'json',
                 data: {
                     '_type' : 'data',
@@ -40,30 +40,29 @@ var userjs = function () {
             })
         }).on('click', '.btn-edit', function (e){
             e.preventDefault();
-            var user_id = $(this).data('num');
+            var slider_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pengguna',
+                url : baseurl + '/widget/slider',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': 'data',
-                    '_data': 'user',
-                    'user_id': user_id,
+                    '_data': 'slider',
+                    'slider_id': slider_id,
                 },
                 success : function (resp) {
-                    $('#user_id').val(resp.user_id);
-                    $('#user_fullname').val(resp.user_fullname);
-                    $('#user_name').val(resp.user_name);
-                    $('#user_email').val(resp.user_email);
-                    $('#user_role').val(resp.user_role).change();
-                    $('#user_facebook').val(resp.user_facebook);
-                    $('#user_instagram').val(resp.user_instagram);
-                    $('#user_twitter').val(resp.user_twitter);
-                    $('#user_desc').html(resp.user_desc);
-                    $('.title').html('Ubah Pengguna');
+                    $('#slider_id').val(resp.slider_id);
+                    $('#slider_title').val(resp.slider_title);
+                    $('#slider_content').val(resp.slider_content);
+                    $('#slider_button_link_1').val(resp.slider_button_link_1);
+                    $('#slider_button_name_1').val(resp.slider_button_name_1);
+                    $('#slider_button_link_2').val(resp.slider_button_link_2);
+                    $('#slider_button_name_2').val(resp.slider_button_name_2);
+                    $('#slider_status').val(resp.slider_status).change();
+                    $('.title').html('Ubah Slider');
                     $('#submit').val('update');
-                    $('#modal-user').modal('show');
+                    $('#modal-slider').modal('show');
 
                 }
             });
@@ -72,10 +71,11 @@ var userjs = function () {
             var slider_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/halaman/slider',
-                type: 'delete',
+                url : baseurl + '/widget/slider',
+                type: 'post',
                 dataType: 'json',
                 data: {
+                    '_type': 'delete',
                     'slider_id': slider_id,
                 },
                 success : function (resp) {
@@ -99,6 +99,7 @@ var userjs = function () {
 
                 fd.append('slider_image', files);
             }
+            fd.append('_type', $('#submit').val());
             fd.append('slider_id', $('#slider_id').val());
             fd.append('slider_title', $('#slider_title').val());
             fd.append('slider_content', $('#slider_content').val());
@@ -106,10 +107,10 @@ var userjs = function () {
             fd.append('slider_button_name_1', $('#slider_button_name_1').val());
             fd.append('slider_button_link_2', $('#slider_button_link_2').val());
             fd.append('slider_button_name_2', $('#slider_button_name_2').val());
-            fd.append('slider_status', $('#slider_status').select2('data'));
+            fd.append('slider_status', $('#slider_status').val());
             $.ajax({
                 headers: csrf_token,
-                url: baseurl + '/halaman/slider',
+                url: baseurl + '/widget/slider',
                 type: 'post',
                 dataType: 'json',
                 data: fd,
@@ -121,7 +122,16 @@ var userjs = function () {
                         text: resp['text'],
                         addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
                     });
-                    $('.datatable-slider').dataTable().ajax.reload();
+                    $('.datatable-slider').DataTable().ajax.reload();
+                    $('#slider_id').val('');
+                    $('#slider_title').val('');
+                    $('#slider_content').val('');
+                    $('#slider_button_link_1').val('');
+                    $('#slider_button_name_1').val('');
+                    $('#slider_button_link_2').val('');
+                    $('#slider_button_name_2').val('');
+                    $('#slider_status').val('').change();
+                    $('#modal-slider').modal('hide');
                 }
             });
         });
