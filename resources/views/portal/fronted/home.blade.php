@@ -38,7 +38,7 @@
                             @foreach($programs as $program)
                             <div class="col-lg-4">
                                 <a href="{{$program->program_link}}">
-                                    <span class="singel-category text-center color-2">
+                                    <span class="singel-category text-center color-1">
                                         <span class="icon">
                                             <img src="{{asset('storage/portal/fronted/images/program/'. $program->program_image)}}" alt="Icon">
                                         </span>
@@ -105,7 +105,10 @@
                         <div class="apply-cont apply-color-{{$no++}}">
                             <h3>{{$slider->slider_title}}</h3>
                             <p>{{$slider->slider_content}}</p>
-                            <a href="{{$slider->slider_button_link_2}}" class="main-btn">{{$slider->slider_button_name_2}}</a>
+                            <a href="{{$slider->slider_button_link_1}}" class="main-btn">{{$slider->slider_button_name_1}}</a>
+                            @if($slider->slider_button_link_2 != null)
+                                <a href="{{$slider->slider_button_link_2}}" class="main-btn">{{$slider->slider_button_name_2}}</a>
+                            @endif
                         </div>
                     </div>
                     @endforeach

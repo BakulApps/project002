@@ -118,7 +118,7 @@ class WidgetController extends Controller
         }
     }
 
-    public function Program(Request $request)
+    public function program(Request $request)
     {
         if ($request->isMethod('post')){
             if ($request->_type == 'data' && $request->_data == 'all'){
@@ -205,6 +205,16 @@ class WidgetController extends Controller
         }
         else {
             return view('portal.backend.widget_program', $this->data);
+        }
+    }
+
+    public function extracurricular(Request $request)
+    {
+        if ($request->isMethod('post')){
+
+        }
+        else {
+
         }
     }
 }
