@@ -43,7 +43,7 @@
             <ul class="nav nav-group-sub" data-submenu-title="Postingan">
                 <li class="nav-item"><a href="{{route('portal.admin.widget.slider')}}" class="nav-link">Slider</a></li>
                 <li class="nav-item"><a href="{{route('portal.admin.widget.program')}}" class="nav-link">Program</a></li>
-                <li class="nav-item"><a href="{{route('portal.admin.widget.extracurricular)}}" class="nav-link">Ekstrakurikuler</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.widget.extracurricular')}}" class="nav-link">Ekstrakurikuler</a></li>
                 <li class="nav-item"><a href="{{route('portal.admin.post.tag')}}" class="nav-link">Tagar</a></li>
             </ul>
         </li>

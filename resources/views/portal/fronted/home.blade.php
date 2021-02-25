@@ -117,7 +117,7 @@
         </div>
     </section>
     <section id="course-part" class="pt-115 pb-120 gray-bg">
-        @if($extracurriculars->count() > 5)
+        @if($extracurriculars->count() >= 5)
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -133,7 +133,7 @@
                     <div class="singel-course">
                         <div class="thum">
                             <div class="image">
-                                <img src="{{asset($extracurricular->extracurricular_image)}}" alt="Course">
+                                <img src="{{asset('storage/portal/fronted/images/extracurricular/'. $extracurricular->extracurricular_image)}}" alt="Course">
                             </div>
                         </div>
                         <div class="cont">
@@ -158,7 +158,7 @@
                 <div class="col-lg-5 offset-lg-1 order-first order-lg-last">
                     <div class="feature pt-50">
                         <div class="feature-title">
-                            <h3>Mengapa Harus Kami?</h3>
+                            <h3>{{$section->value('home_section_4_title')}}</h3>
                         </div>
                         <ul>
                             <li>

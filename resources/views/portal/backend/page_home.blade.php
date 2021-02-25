@@ -50,7 +50,89 @@
                         <span class="text-muted">Ukuran Gambar 922 x 731 px</span>
                     </div>
                     <div class="text-right">
-                        <button type="submit" class="btn btn-primary btn-labeled btn-labeled-left" id="submit" value="home"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
+                        <button type="submit" class="btn btn-primary btn-labeled btn-labeled-left" id="about" value="about"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-white header-elements-inline">
+                    <h6 class="card-title font-weight-semibold" id="form-title">Youtube</h6>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Link Youtube :</label>
+                        <input type="text" id="home_section_yt_youtube" class="form-control" value="{{$section->value('home_section_yt_youtube')}}">
+                    </div>
+                    <div class="form-group">
+                        <label>Gambar Latar : </label>
+                        <input type="file" id="home_section_yt_background" class="form-control-uniform-custom">
+                        <span class="text-muted">Ukuran Gambar 922 x 731 px</span>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary btn-labeled btn-labeled-left" id="youtube" value="youtube"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-white header-elements-inline">
+                    <h6 class="card-title font-weight-semibold" id="form-title">Mengapa Harus Kami?</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Judul-1 :</label>
+                                <input type="text" id="home_section_4_title_1" class="form-control" value="{{$section->value('home_section_4_title_1')}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Konten-1 :</label>
+                                <textarea id="home_section_4_content_1" class="form-control">{{$section->value('home_section_4_content_1')}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Gambar Ikon-1 : </label>
+                                <input type="file" id="home_section_4_icon_1" class="form-control-uniform-custom">
+                                <span class="text-muted">Ukuran Gambar 922 x 731 px</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Judul-2 :</label>
+                                <input type="text" id="home_section_4_title_2" class="form-control" value="{{$section->value('home_section_4_title_2')}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Konten-2 :</label>
+                                <textarea id="home_section_4_content_2" class="form-control">{{$section->value('home_section_4_content_2')}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Gambar Ikon-2 : </label>
+                                <input type="file" id="home_section_4_icon_2" class="form-control-uniform-custom">
+                                <span class="text-muted">Ukuran Gambar 922 x 731 px</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Judul-3 :</label>
+                                <input type="text" id="home_section_4_title_3" class="form-control" value="{{$section->value('home_section_4_title_3')}}">
+                            </div>
+                            <div class="form-group">
+                                <label>Konten-3 :</label>
+                                <textarea id="home_section_4_content_3" class="form-control">{{$section->value('home_section_4_content_3')}}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Gambar Ikon-3 : </label>
+                                <input type="file" id="home_section_4_icon_3" class="form-control-uniform-custom">
+                                <span class="text-muted">Ukuran Gambar 922 x 731 px</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary btn-labeled btn-labeled-left" id="section-4" value="section-4"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
                     </div>
                 </div>
             </div>

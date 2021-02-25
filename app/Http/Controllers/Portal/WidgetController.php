@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\Portal\Extracurricular;
 use App\Models\Portal\Program;
 use App\Models\Portal\Setting;
 use App\Models\Portal\Slider;
@@ -211,10 +212,90 @@ class WidgetController extends Controller
     public function extracurricular(Request $request)
     {
         if ($request->isMethod('post')){
-
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                $no = 1;
+                foreach (Extracurricular::OrderBy('extracurricular_name', 'ASC')->get() as $extracurricular){
+                    $data[] = [
+                        $no++,
+                        $extracurricular->extracurricular_name,
+                        $extracurricular->extracurricular_desc,
+                        '<img src="'.asset('storage/portal/fronted/images/extracurricular/'. $extracurricular->extracurricular_image).'" style="width: 100px"/>',
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $extracurricular->extracurricular_id .'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $extracurricular->extracurricular_id . '"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'extracurricular'){
+                $msg = Extracurricular::find($request->extracurricular_id);
+            }
+            elseif ($request->_type == 'store'){
+                $validator = Validator::make($request->all(), [
+                    'extracurricular_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
+                ]);
+                if ($validator->fails()) {
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
+                }
+                try {
+                    if ($request->hasFile('extracurricular_image')){
+                        $file = $request->file('extracurricular_image');
+                        $file->store('public/portal/fronted/images/extracurricular/');
+                    }
+                    $extracurricular = new Extracurricular();
+                    $extracurricular->extracurricular_image = isset($file) ? $file->hashName() : null;
+                    $extracurricular->extracurricular_name  = $request->extracurricular_name;
+                    $extracurricular->extracurricular_desc  = $request->extracurricular_desc;
+                    $extracurricular->extracurricular_link  = $request->extracurricular_link;
+                    if ( $extracurricular->save()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Ekstrakurikuler berhasil disimpan.'];
+                    }
+                }catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'update'){
+                $validator = Validator::make($request->all(), [
+                    'extracurricular_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
+                ]);
+                if ($validator->fails()) {
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
+                }
+                try {
+                    $extracurricular = Extracurricular::find($request->extracurricular_id);
+                    if ($request->hasFile('extracurricular_image')){
+                        $file = $request->file('extracurricular_image');
+                        Storage::delete('public/portal/fronted/images/extracurricular/'. $extracurricular->extracurricular_image);
+                        $file->store('public/portal/fronted/images/extracurricular/');
+                    }
+                    $extracurricular->extracurricular_image = isset($file) ? $file->hashName() : null;
+                    $extracurricular->extracurricular_name  = $request->extracurricular_name;
+                    $extracurricular->extracurricular_desc  = $request->extracurricular_desc;
+                    $extracurricular->extracurricular_link  = $request->extracurricular_link;
+                    if ( $extracurricular->save()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Ekstrakurikuler berhasil diperbarui.'];
+                    }
+                }catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $extracurricular = Extracurricular::find($request->extracurricular_id);
+                    if ($extracurricular->delete()){
+                        Storage::delete('public/portal/fronted/images/extracurricular/'. $extracurricular->extracurricular_image);
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil dihapus.'];
+                    }
+                }catch (\Exception $e){
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
         }
         else {
-
+            return view('portal.backend.widget_extracurricular', $this->data);
         }
     }
 }

@@ -29,6 +29,7 @@ Route::group(['prefix' => 'administrator'], function (){
         Route::match(['get', 'post'],'/postingan/buat', 'PostController@create')->name('portal.admin.post.create');
         Route::match(['get', 'post'],'/postingan/{id}/ubah', 'PostController@edit')->name('portal.admin.post.edit');
         Route::match(['get', 'post'],'/postingan/kategori', 'PostController@category')->name('portal.admin.post.category');
+        Route::match(['get', 'post'],'/postingan/tagar', 'PostController@tag')->name('portal.admin.post.tag');
         Route::match(['get', 'post'],'/halaman/beranda', 'PageController@home')->name('portal.admin.page.home');
         Route::match(['get', 'post'],'/halaman/artikel', 'PostController@post')->name('portal.admin.page.post');
         Route::match(['get', 'post'],'/kegiatan', 'EventController@all')->name('portal.admin.event.all');

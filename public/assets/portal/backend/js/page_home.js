@@ -3,7 +3,7 @@ var pagehome = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')};
 
     var _componentSubmit = function () {
-        $('#submit').click(function () {
+        $('#about').click(function () {
             var fd      = new FormData();
             var files   = $('#home_section_about_image')[0].files[0];
 
@@ -11,12 +11,39 @@ var pagehome = function () {
 
                 fd.append('home_section_about_image', files);
             }
-            fd.append('_data', $('#submit').val());
+            fd.append('_data', 'about');
             fd.append('home_section_about_name', $('#home_section_about_name').val());
             fd.append('home_section_about_title', $('#home_section_about_title').val());
             fd.append('home_section_about_content', $('#home_section_about_content').val());
             fd.append('home_section_about_link', $('#home_section_about_link').val());
             fd.append('home_section_about_button', $('#home_section_about_button').val());
+            $.ajax({
+                headers: csrf_token,
+                url: baseurl + '/halaman/beranda',
+                type: 'post',
+                dataType: 'json',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (resp) {
+                    new PNotify({
+                        title: resp['title'],
+                        text: resp['text'],
+                        addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
+                    });
+                }
+            });
+        });
+        $('#youtube').click(function () {
+            var fd      = new FormData();
+            var files   = $('#home_section_about_image')[0].files[0];
+
+            if (files !== undefined){
+
+                fd.append('home_section_yt_background', files);
+            }
+            fd.append('_data', 'youtube');
+            fd.append('home_section_yt_youtube', $('#home_section_yt_youtube').val());
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/halaman/beranda',

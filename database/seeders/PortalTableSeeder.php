@@ -54,6 +54,7 @@ class PortalTableSeeder extends Seeder
             ['home_section_about_image', 'storage/portal/fronted/images/home-bg-1.png'],
             ['home_section_yt_background', 'storage/portal/fronted/images/bg-1.jpg'],
             ['home_section_yt_youtube', 'https://www.youtube.com/watch?v=q7z2Ww2a_PA'],
+            ['home_section_4_title', 'Mengapa Harus Kami?'],
             ['home_section_4_icon_1', 'storage/portal/fronted/images/icons/f-1.png'],
             ['home_section_4_title_1', 'Bimbingan Keimanan & Pengalaman Keislaman'],
             ['home_section_4_content_1', 'Menyelenggarakan bimbingan keimanan dan pengamalan keislaman yang rahmatan lil`alamin.'],
