@@ -46,6 +46,11 @@ return [
             'provider' => 'portals'
         ],
 
+        'admission' => [
+            'driver' => 'session',
+            'provider' => 'admissions',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -79,6 +84,11 @@ return [
         'portals' => [
             'driver' => 'eloquent',
             'model' => App\Models\Portal\User::class
+        ],
+
+        'admissions' => [
+            'driver'    => 'eloquent',
+            'model' => App\Models\Admission\User::class
         ]
 
         // 'users' => [

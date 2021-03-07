@@ -27,6 +27,8 @@ class RouteServiceProvider extends ServiceProvider
      * @var string|null
      */
     //protected $namespace = 'App\\Http\\Controllers';
+    protected $namespace_admission = 'App\\Http\\Controllers\Admission';
+    protected $namespace_api = 'App\\Http\\Controllers\Api';
     protected $namespace_portal = 'App\\Http\\Controllers\Portal';
 
     /**
@@ -41,8 +43,13 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
-                ->namespace($this->namespace)
+                ->namespace($this->namespace_api)
                 ->group(base_path('routes/api.php'));
+
+            Route::prefix('ppdb')
+                ->middleware('web')
+                ->namespace($this->namespace_admission)
+                ->group(base_path('routes/admission.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace_portal)

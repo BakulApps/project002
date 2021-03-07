@@ -1,0 +1,443 @@
+<?php
+
+namespace App\Http\Controllers\Admission;
+
+use App\Helpers\PDF;
+use App\Http\Controllers\Controller;
+use App\Models\Admission\Form;
+use App\Models\Admission\Setting;
+use App\Models\Admission\Student;
+use Carbon\Carbon;
+use Elibyy\TCPDF\Facades\TCPDF;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
+class FrontedController extends Controller
+{
+    public $data;
+
+    public function __construct()
+    {
+        $setting = new Setting();
+        $this->data = [
+            'setting' => $setting,
+            'meta' => (object) [
+                'title' => 'PPDB Online TP. 2021/2022',
+                'description' => 'Penerimaan Peserta Didik Baru Tahun Pelajaran 2021/2022',
+                'keyword'   => 'PPDB, PPDB Online, PPDB Online 2021/2022, PPDB MTs. Darul Hikmah Menganti',
+                'author' => 'MTs. Darul Hikmah Menganti'
+            ]
+        ];
+    }
+    public function home()
+    {
+        $this->data['title'] = 'Dashboard';
+        return view('admission.fronted.home', $this->data);
+    }
+
+    public function register(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'store'){
+                $msg = $this->store($request);
+            }
+            elseif ($request->_type == 'update'){
+                $msg = $this->update($request);
+            }
+            elseif ($request->_type == 'login'){
+                $msg = $this->login($request);
+            }
+            elseif ($request->_type == 'logout'){
+                $msg = $this->logout($request);
+            }
+            elseif ($request->_type == 'print')
+            {
+                return $this->print($request);
+            }
+            return response()->json($msg);
+        }
+        else {
+            if (Session::has('auth')){
+                $student = Session::get('auth');
+                $student = Student::find($student->student_id);
+                $checker = $student->toArray();
+                $key = array_keys($checker);
+                $compelete = [];
+                for ($i=0;$i<count($checker);$i++){
+                    if ($checker[$key[$i]] == null){
+                        $compelete[] = [$key[$i] => $checker[$key[$i]]];
+                    }
+                }
+
+                $this->data['student'] = $student;
+                $this->data['compelete'] = count($compelete) >= 8 ? false : true;
+                return view('admission.fronted.register_detail', $this->data);
+            }
+            else {
+                return view('admission.fronted.register', $this->data);
+            }
+        }
+    }
+
+    public function authenticate($uuid)
+    {
+        $form = Form::where('form_uuid', $uuid)->first();
+        return view('admission.fronted.authenticate', compact('form'));
+    }
+
+    public function term()
+    {
+        return view('admission.fronted.term');
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'student_name' => 'required|string|max:200',
+            'student_nisn' => 'required|string|min:10|max:10',
+            'student_nik' => 'required|string|min:16|max:16',
+            'student_birthplace' => 'required|string',
+            'student_birthday' => 'required|date_format:d/m/Y',
+            'student_gender' => 'required',
+            'student_religion' => 'required',
+            'student_siblingplace' => 'required',
+            'student_sibling' => 'required',
+            'student_civic' => 'required',
+            'student_hobby' => 'required',
+            'student_purpose' => 'required',
+            'student_residence' => 'required',
+            'student_address' => 'required|string|max:200',
+            'student_province' => 'required',
+            'student_distric' => 'required',
+            'student_subdistric' => 'required',
+            'student_village' => 'required',
+            'student_distance' => 'required',
+            'student_transport' => 'required',
+            'student_travel' => 'required',
+            'student_program' => 'required'
+        ], [
+            'required' => 'kolom :attribute tidak boleh kosong',
+            'string' => 'kolom :attribute data harus bertipe huruf/angka',
+            'max' => 'nomor :attribute tidak sesuai',
+            'min' => 'nomor :attribute data tidak sesuai',
+        ]);
+        if ($validator->fails()) {
+            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $validator->errors()->first()];
+        } else {
+            try {
+                $student = new Student();
+                $student->student_name = $request->student_name;
+                $student->student_nisn = $request->student_nisn;
+                $student->student_nik = $request->student_nik;
+                $student->student_birthplace = $request->student_birthplace;
+                $student->student_birthday = Carbon::createFromFormat('d/m/Y', $request->student_birthday)->format('Y-m-d');
+                $student->student_gender = $request->student_gender;
+                $student->student_religion = $request->student_religion;
+                $student->student_siblingplace = $request->student_siblingplace;
+                $student->student_sibling = $request->student_sibling;
+                $student->student_civic = $request->student_civic;
+                $student->student_hobby = $request->student_hobby;
+                $student->student_purpose = $request->student_purpose;
+                $student->student_residence = $request->student_residence;
+                $student->student_address = $request->student_address;
+                $student->student_province = $request->student_province;
+                $student->student_distric = $request->student_distric;
+                $student->student_subdistric = $request->student_subdistric;
+                $student->student_village = $request->student_village;
+                $student->student_postal = $request->student_postal;
+                $student->student_distance = $request->student_distance;
+                $student->student_transport = $request->student_transport;
+                $student->student_travel = $request->student_travel;
+                $student->student_program = $request->student_program;
+                $student->student_im_hepatitis = $request->student_im_hepatitis;
+                $student->student_im_polio = $request->student_im_polio;
+                $student->student_im_bcg = $request->student_im_bcg;
+                $student->student_im_campak = $request->student_im_campak;
+                $student->student_im_dpt = $request->student_im_dpt;
+                if ($student->save()) {
+                    $form = new Form();
+                    $form->form_uuid = Str::uuid();
+                    $form->form_student = $student->student_id;
+                    $form->form_date    = Carbon::now()->format('Y-m-d');
+                    $form->form_count   = 0;
+                    $form->save();
+                    $path = storage_path('app/public/admission/fronted/images/student/' . $student->student_nisn . '_qrcode.png');
+                    QrCode::size(110)
+                        ->format('png')->generate(route('admission.authenticate', $form->form_uuid), $path);
+                    $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pendaftaran berhasil, silahkan masuk menggunakan NIS & Tanggal Lahir untuk melengkapi pendfataran.'];
+                }
+            } catch (\Exception $e) {
+                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+            }
+        }
+        return $msg;
+    }
+
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'student_name'          => 'required|string|max:200',
+            'student_nisn'          => 'required|string|min:10|max:10',
+            'student_nik'           => 'required|string|min:16|max:16',
+            'student_birthplace'    => 'required|string',
+            'student_birthday'      => 'required|date_format:d/m/Y',
+            'student_gender'        => 'required',
+            'student_religion'      => 'required',
+            'student_siblingplace'  => 'required',
+            'student_sibling'       => 'required',
+            'student_civic'         => 'required',
+            'student_hobby'         => 'required',
+            'student_purpose'       => 'required',
+            'student_residence'     => 'required',
+            'student_address'       => 'required|string|max:200',
+            'student_province'      => 'required',
+            'student_distric'       => 'required',
+            'student_subdistric'    => 'required',
+            'student_village'       => 'required',
+            'student_distance'      => 'required',
+            'student_transport'     => 'required',
+            'student_travel'        => 'required',
+            'student_program'       => 'required',
+            //'student_no_kk'         => 'required|min:16|max:16',
+            //'student_head_family'   => 'required|string',
+            //'student_father_name'   => 'required',
+            //'student_mother_name'   => 'required',
+            //'student_father_birthday' => 'required',
+            //'student_mother_birthday' => 'required',
+            //'student_father_status' => 'required',
+            //'student_mother_status' => 'required',
+            //'student_father_nik' => 'required|min:16|max:16',
+            //'student_mother_nik' => 'required|min:16|max:16',
+            //'student_father_study' => 'required',
+            //'student_mother_study' => 'required',
+            //'student_father_job' => 'required',
+            //'student_mother_job' => 'required',
+            //'student_father_earning' => 'required',
+            //'student_mother_earning' => 'required',
+            //'student_father_phone' => 'required',
+            //'student_mother_phone' => 'required',
+            //'student_home_owner' => 'required',
+            //'student_home_address' => 'required',
+            //'student_home_postal' => 'required',
+            //'student_home_province' => 'required',
+            //'student_home_distric' => 'required',
+            //'student_home_subdistric' => 'required',
+            //'student_home_village' => 'required',
+            //'student_school_from' => 'required',
+            //'student_school_name' => 'required',
+            //'student_school_npsn' => 'required',
+            //'student_school_address' => 'required',
+            'student_swaphoto' => 'mimes:jpg,jpeg|max:600',
+            'student_akta_photo' => 'mimes:jpg,jpeg|max:600',
+            'student_kk_photo' => 'mimes:jpg,jpeg|max:600',
+            'student_ijazah_photo' => 'mimes:jpg,jpeg|max:600',
+            'student_skhun_photo' => 'mimes:jpg,jpeg|max:600',
+            'student_sholarship_photo' => 'mimes:jpg,jpeg|max:600',
+        ], [
+            'required' => 'kolom :attribute tidak boleh kosong',
+            'string' => 'kolom :attribute data harus bertipe huruf/angka',
+            'max' => 'nomor :attribute tidak sesuai',
+            'min' => 'nomor :attribute data tidak sesuai',
+            'mimes' => ':attribute harus berekstensi .jpg, .jpeg',
+            'size' => ':attribute ukuran maksimal 512 Kb',
+        ]);
+        if ($validator->fails()) {
+            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $validator->errors()->first()];
+        }
+        else {
+            try {
+                $student = Student::find($request->student_id);
+                $student->student_name          = $request->student_name;
+                $student->student_nisn          = $request->student_nisn;
+                $student->student_nik           = $request->student_nik;
+                $student->student_birthplace    = $request->student_birthplace;
+                $student->student_birthday      = Carbon::createFromFormat('d/m/Y', $request->student_birthday)->format('Y-m-d');
+                $student->student_gender        = $request->student_gender;
+                $student->student_religion      = $request->student_religion;
+                $student->student_siblingplace  = $request->student_siblingplace;
+                $student->student_sibling       = $request->student_sibling;
+                $student->student_civic         = $request->student_civic;
+                $student->student_hobby         = $request->student_hobby;
+                $student->student_purpose       = $request->student_purpose;
+                $student->student_residence     = $request->student_residence;
+                $student->student_address       = $request->student_address;
+                $student->student_province      = $request->student_province;
+                $student->student_distric       = $request->student_distric;
+                $student->student_subdistric    = $request->student_subdistric;
+                $student->student_village       = $request->student_village;
+                $student->student_postal        = $request->student_postal;
+                $student->student_distance      = $request->student_distance;
+                $student->student_transport     = $request->student_transport;
+                $student->student_travel        = $request->student_travel;
+                $student->student_program       = $request->student_program;
+                $student->student_im_hepatitis  = $request->student_im_hepatitis;
+                $student->student_im_polio      = $request->student_im_polio;
+                $student->student_im_bcg        = $request->student_im_bcg;
+                $student->student_im_campak     = $request->student_im_campak;
+                $student->student_im_dpt        = $request->student_im_dpt;
+                $student->student_no_kk         = $request->student_no_kk;
+                $student->student_head_family   = $request->student_head_family;
+                $student->student_father_name   = $request->student_father_name;
+                $student->student_mother_name   = $request->student_mother_name;
+                $student->student_father_birthday = Carbon::createFromFormat('d/m/Y', $request->student_father_birthday)->format('Y-m-d');
+                $student->student_mother_birthday = Carbon::createFromFormat('d/m/Y', $request->student_mother_birthday)->format('Y-m-d');
+                $student->student_father_status = $request->student_father_status;
+                $student->student_mother_status = $request->student_mother_status;
+                $student->student_father_nik = $request->student_father_nik;
+                $student->student_mother_nik = $request->student_mother_nik;
+                $student->student_father_study = $request->student_father_study;
+                $student->student_mother_study = $request->student_mother_study;
+                $student->student_father_job = $request->student_father_job;
+                $student->student_mother_job = $request->student_mother_job;
+                $student->student_father_earning = $request->student_father_earning;
+                $student->student_mother_earning = $request->student_mother_earning;
+                $student->student_father_phone = $request->student_father_phone;
+                $student->student_mother_phone = $request->student_mother_phone;
+                $student->student_home_owner = $request->student_home_owner;
+                $student->student_home_address = $request->student_home_address;
+                $student->student_home_postal = $request->student_home_postal;
+                $student->student_home_province = $request->student_home_province;
+                $student->student_home_distric = $request->student_home_distric;
+                $student->student_home_subdistric = $request->student_home_subdistric;
+                $student->student_home_village = $request->student_home_village;
+                $student->student_school_from = $request->student_school_from;
+                $student->student_school_name = $request->student_school_name;
+                $student->student_school_npsn = $request->student_school_npsn;
+                $student->student_school_address = $request->student_school_address;
+                $path = storage_path('app/public/admission/fronted/images/student/');
+                if ($request->hasFile('student_swaphoto')){
+                    $request->file('student_swaphoto')->move($path , $student->student_nisn .'_swaphoto.jpg');
+                    $student->student_swaphoto = 1;
+                }
+                if ($request->hasFile('student_akta_photo')){
+                    $request->file('student_akta_photo')->move($path , $student->student_nisn .'_akta.jpg');
+                    $student->student_akta_photo = 1;
+                }
+                if ($request->hasFile('student_kk_photo')){
+                    $request->file('student_kk_photo')->move($path , $student->student_nisn .'_kk.jpg');
+                    $student->student_kk_photo = 1;
+                }
+                if ($request->hasFile('student_ijazah_photo')){
+                    $request->file('student_ijazah_photo')->move($path , $student->student_nisn .'_ijazah.jpg');
+                    $student->student_ijazah_photo = 1;
+                }
+                if ($request->hasFile('student_skhun_photo')){
+                    $request->file('student_skhun_photo')->move($path , $student->student_nisn .'_skhun.jpg');
+                    $student->student_skhun_photo = 1;
+                }
+                if ($request->hasFile('student_sholarship_photo')){
+                    $request->file('student_sholarship_photo')->move($path , $student->student_nisn .'_scholarship.jpg');
+                    $student->student_sholarship_photo = 1;
+                }
+
+                if ($student->save()){
+                    $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pendaftaran berhasil, silahkan masuk menggunakan NIS & Tanggal Lahir untuk melengkapi pendfataran.'];
+                }
+            }
+            catch (\Exception $e){
+                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+            }
+        }
+        return $msg;
+    }
+
+    public function login(Request $request)
+    {
+        $student = Student::where('student_nisn', $request->student_nisn)->first();
+        if ($student != null){
+            if ($student->birthday() == $request->student_birthday){
+                Session::put('auth', $student);
+                $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Berhasil masuk, anda akan di alihkan ke halaman lengkapi formulir dalam 2 detik.'];
+            }
+            else {
+                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'NISN & Tanggal lahir tidak tepat, silahkan periksa kembali.'];
+            }
+        }
+        else {
+            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Gagal masuk, NISN tidak di temukan.'];
+        }
+        return $msg;
+    }
+
+    public function logout()
+    {
+        Session::forget('auth');
+        return  ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Berhasil keluar, anda akan di arahkan ke halaman beranda dalam 2 detik.'];
+    }
+
+    public function print(Request $request)
+    {
+        $cert = 'file://'. realpath(storage_path('app/cert/selfcert.pem'));
+        $key = 'file://'. realpath(storage_path('app/cert/enc_key.pem'));
+        $info = array(
+            'Name' => 'Kepala MTs. Darul Hikmah Menganti',
+            'Reason' => 'Formulir PPDB TP. 2021/2022',
+            'Location' => 'MTs. Darul Hikmah Menganti',
+            'ContactInfo' => 'mts@darul-hikmah.sch.id',
+        );
+
+        $month = ['01' => 'I', '02' => 'II', '03' => 'III', '04' => 'IV', '05' => "V", '06' => 'VI', '07' => 'VII', '08' => 'VIII', '09' => 'IX', '10' => 'X', '11' => 'XI', '12' =>'XII'];
+        $now = Carbon::now();
+        $student = Student::find($request->_data);
+        $form = Form::where('form_student', $request->_data)->first();
+        if ($form->form_letter == null){
+            $form->form_letter = rand(1000, 9999) . '/PPDB.MTs.DH/PP.006/'.$month[$now->format('m')].'/'.$now->format('Y');
+        }
+        $form->save();
+        $data = [
+            'student' => $student,
+            'form' => $form
+
+        ];
+        $view = View::make('admission.fronted.register_print', $data)->render();
+        TCPDF::setSignature($cert, $key, 'myu2nnmd', '', 2, $info);
+        TCPDF::SetFont('times', '', 12);
+        TCPDF::SetMargins(1, 1, 1);
+        TCPDF::SetAutoPageBreak(true, 0);
+        TCPDF::AddPage();
+        TCPDF::writeHTML($view, true, 0, true, 0, '');
+        TCPDF::setSignatureAppearance(1, 8.3, 5.1, 4.1);
+        TCPDF::Output('formulir-'. $student->student_nisn .'.pdf');
+        TCPDF::reset();
+    }
+
+    public function test()
+    {
+        $cert = 'file://'. realpath(storage_path('app/cert/selfcert.pem'));
+        $key = 'file://'. realpath(storage_path('app/cert/enc_key.pem'));
+        $info = array(
+            'Name' => 'Kepala MTs. Darul Hikmah Menganti',
+            'Reason' => 'Formulir PPDB TP. 2021/2022',
+            'Location' => 'MTs. Darul Hikmah Menganti',
+            'ContactInfo' => 'marifmuntaha@darul-hikmah.sch.id',
+        );
+
+        $month = [1 => 'I', 2 => 'II', 3 => 'III', 4 => 'IV', 5 => "V", 6 => 'VI', 7 => 'VII', 8 => 'VIII', 9 => 'IX', 10 => 'X', 11 => 'XI', 12 =>'XII'];
+        $now = Carbon::now();
+        $student = Student::find(1);
+        $form = Form::where('form_student', 1)->first();
+        if ($form->form_letter == null){
+            $form->form_letter = rand(1000, 9999) . '/PPDB.MTs.DH/PP.006/'.$month[$now->format('m')].'/'.$now->format('Y');
+        }
+        $form->save();
+        $data = [
+            'student' => $student,
+            'form' => $form
+
+        ];
+        $view = View::make('admission.fronted.register_print', $data)->render();
+        PDF::setSignature($cert, $key, 'myu2nnmd', '', 2, $info);
+        PDF::SetFont('times', '', 12);
+        PDF::SetMargins(1, 1, 1);
+        PDF::SetAutoPageBreak(true, 0);
+        PDF::AddPage();
+        PDF::writeHTML($view, true, 0, true, 0, '');
+        PDF::setSignatureAppearance(1, 8.3, 5.1, 4.1);
+        PDF::Output('formulir-'. $student->student_nisn .'.pdf');
+        PDF::reset();
+    }
+}

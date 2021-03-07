@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
 
         //PortalSeeder
         $this->call(PortalTableSeeder::class);
+        $this->call(AdmissionTableSeeder::class);
+        $this->call(MasterTableSeeder::class);
+        $this->call(StudentTableSeeder::class);
     }
 }

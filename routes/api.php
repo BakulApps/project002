@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::match(['get', 'post'], '/master', 'MasterController@index')->name('api.master');
+Route::match(['get', 'post'], '/student', 'StudentController@index')->name('api.student');
