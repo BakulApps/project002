@@ -10,6 +10,7 @@ use App\Models\Admission\Student;
 use Carbon\Carbon;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -33,6 +34,7 @@ class FrontedController extends Controller
             ]
         ];
     }
+
     public function home()
     {
         $this->data['title'] = 'Dashboard';
@@ -202,35 +204,35 @@ class FrontedController extends Controller
             'student_transport'     => 'required',
             'student_travel'        => 'required',
             'student_program'       => 'required',
-            //'student_no_kk'         => 'required|min:16|max:16',
-            //'student_head_family'   => 'required|string',
-            //'student_father_name'   => 'required',
-            //'student_mother_name'   => 'required',
-            //'student_father_birthday' => 'required',
-            //'student_mother_birthday' => 'required',
-            //'student_father_status' => 'required',
-            //'student_mother_status' => 'required',
-            //'student_father_nik' => 'required|min:16|max:16',
-            //'student_mother_nik' => 'required|min:16|max:16',
-            //'student_father_study' => 'required',
-            //'student_mother_study' => 'required',
-            //'student_father_job' => 'required',
-            //'student_mother_job' => 'required',
-            //'student_father_earning' => 'required',
-            //'student_mother_earning' => 'required',
-            //'student_father_phone' => 'required',
-            //'student_mother_phone' => 'required',
-            //'student_home_owner' => 'required',
-            //'student_home_address' => 'required',
-            //'student_home_postal' => 'required',
-            //'student_home_province' => 'required',
-            //'student_home_distric' => 'required',
-            //'student_home_subdistric' => 'required',
-            //'student_home_village' => 'required',
-            //'student_school_from' => 'required',
-            //'student_school_name' => 'required',
-            //'student_school_npsn' => 'required',
-            //'student_school_address' => 'required',
+            'student_no_kk'         => 'required|min:16|max:16',
+            'student_head_family'   => 'required|string',
+            'student_father_name'   => 'required',
+            'student_mother_name'   => 'required',
+            'student_father_birthday' => 'required',
+            'student_mother_birthday' => 'required',
+            'student_father_status' => 'required',
+            'student_mother_status' => 'required',
+            'student_father_nik' => 'required|min:16|max:16',
+            'student_mother_nik' => 'required|min:16|max:16',
+            'student_father_study' => 'required',
+            'student_mother_study' => 'required',
+            'student_father_job' => 'required',
+            'student_mother_job' => 'required',
+            'student_father_earning' => 'required',
+            'student_mother_earning' => 'required',
+            'student_father_phone' => 'required',
+            'student_mother_phone' => 'required',
+            'student_home_owner' => 'required',
+            'student_home_address' => 'required',
+            'student_home_postal' => 'required',
+            'student_home_province' => 'required',
+            'student_home_distric' => 'required',
+            'student_home_subdistric' => 'required',
+            'student_home_village' => 'required',
+            'student_school_from' => 'required',
+            'student_school_name' => 'required',
+            'student_school_npsn' => 'required',
+            'student_school_address' => 'required',
             'student_swaphoto' => 'mimes:jpg,jpeg|max:600',
             'student_akta_photo' => 'mimes:jpg,jpeg|max:600',
             'student_kk_photo' => 'mimes:jpg,jpeg|max:600',
@@ -405,39 +407,77 @@ class FrontedController extends Controller
         TCPDF::reset();
     }
 
+    public function result(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            if($request->_type == 'data' && $request->_data == 'all'){
+                $student = 0;
+                for ($i=1;$i<13;$i++){
+                    $all[] = $student = Student::whereMonth('created_at', $i)->count() > 0 ? Student::whereMonth('created_at', $i)->count() + $student: 0;
+                }
+                $data[] = array_merge(['Jumlah Pendaftar'], $all);
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'gender'){
+                $student = 0;
+                for ($i=1;$i<3;$i++) {
+                    for ($j = 1; $j < 13; $j++) {
+                        $count[] = $student = Student::whereMonth('created_at', $j)
+                            ->where('student_gender', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
+                                ->where('student_gender', $i)->count() + $student : 0;
+                    }
+                    $gender = $i == 1 ? array_merge(['Jumlah Laki-laki'], $count) : array_merge(['Jumlah Perempuan'], $count) ;
+                    $count = [];
+                    $student = 0;
+                    $data[] = $gender;
+                }
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'program'){
+                $student = 0;
+                for ($i=1;$i<5;$i++) {
+                    for ($j = 1; $j < 13; $j++) {
+                        $count[] = $student = Student::whereMonth('created_at', $j)
+                            ->where('student_gender', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
+                                ->where('student_gender', $i)->count() + $student : 0;
+                    }
+                    if ($i == 1){
+                        $gender = array_merge(['Tahfidz'], $count);
+                    }
+                    elseif ($i == 2){
+                        $gender = array_merge(['Sains & Bahasa'], $count);
+                    }
+                    elseif ($i == 3){
+                        $gender = array_merge(['Kitab Kuning'], $count);
+                    }
+                    elseif ($i == 4){
+                        $gender = array_merge(['Kelas Reguler'], $count);
+                    }
+                    $count = [];
+                    $student = 0;
+                    $data[] = $gender;
+                }
+            }
+            return response()->json($data);
+        }
+        else {
+            return view('admission.fronted.result', $this->data);
+        }
+    }
+
     public function test()
     {
-        $cert = 'file://'. realpath(storage_path('app/cert/selfcert.pem'));
-        $key = 'file://'. realpath(storage_path('app/cert/enc_key.pem'));
-        $info = array(
-            'Name' => 'Kepala MTs. Darul Hikmah Menganti',
-            'Reason' => 'Formulir PPDB TP. 2021/2022',
-            'Location' => 'MTs. Darul Hikmah Menganti',
-            'ContactInfo' => 'marifmuntaha@darul-hikmah.sch.id',
-        );
-
-        $month = [1 => 'I', 2 => 'II', 3 => 'III', 4 => 'IV', 5 => "V", 6 => 'VI', 7 => 'VII', 8 => 'VIII', 9 => 'IX', 10 => 'X', 11 => 'XI', 12 =>'XII'];
-        $now = Carbon::now();
-        $student = Student::find(1);
-        $form = Form::where('form_student', 1)->first();
-        if ($form->form_letter == null){
-            $form->form_letter = rand(1000, 9999) . '/PPDB.MTs.DH/PP.006/'.$month[$now->format('m')].'/'.$now->format('Y');
+        $student = 0;
+        for ($i=1;$i<3;$i++) {
+            for ($j = 1; $j < 13; $j++) {
+                $count[] = $student = Student::whereMonth('created_at', $j)
+                    ->where('student_gender', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
+                    ->where('student_gender', $i)->count() + $student : 0;
+            }
+            $gender = $i == 1 ? array_merge(['Jumlah Laki-laki'], $count) : array_merge(['Jumlah Perempuan'], $count) ;
+            $count = [];
+            $student = 0;
+            $data[] = $gender;
         }
-        $form->save();
-        $data = [
-            'student' => $student,
-            'form' => $form
 
-        ];
-        $view = View::make('admission.fronted.register_print', $data)->render();
-        PDF::setSignature($cert, $key, 'myu2nnmd', '', 2, $info);
-        PDF::SetFont('times', '', 12);
-        PDF::SetMargins(1, 1, 1);
-        PDF::SetAutoPageBreak(true, 0);
-        PDF::AddPage();
-        PDF::writeHTML($view, true, 0, true, 0, '');
-        PDF::setSignatureAppearance(1, 8.3, 5.1, 4.1);
-        PDF::Output('formulir-'. $student->student_nisn .'.pdf');
-        PDF::reset();
+        return response()->json($data);
     }
 }

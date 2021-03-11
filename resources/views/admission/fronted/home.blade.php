@@ -1,12 +1,11 @@
 @extends('admission.fronted.layouts.master')
-@php($setting = new \App\Models\Admission\Setting())
 @section('breadcrumb')
     <a href="#" class="breadcrumb-item active">Dashboard</a>
 @endsection
 @section('content')
     <div class="card">
         <div class="card-body">
-            <h3 class="font-weight-semibold">Selamat Datang di Aplikasi {{$setting->value('app_subname')}} TP. {{$setting->value('app_year')}} {{$setting->value('school_name')}}</h3>
+            <h3 class="font-weight-semibold">Selamat Datang di Aplikasi {{$setting->value('app_alias')}} TP. {{$setting->value('app_year')}} {{$setting->value('school_name')}}</h3>
             <h4>Sebelum melakukan pendaftaran siapkan terlebih dahulu semua persyaratan guna memudahkan dalam pengisian
                 formulir pendaftaran. Untuk persyaratan pendaftaran silahkan lihat dimenu Informasi.</h4>
         </div>
