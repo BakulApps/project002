@@ -4,7 +4,7 @@
             <div class="col-lg-4 col-md-4">
                 <div class="logo">
                     <a href="{{route('potral.home')}}">
-                        <img src="{{asset('storage/portal/fronted/images/logo-2.png')}}" alt="Logo">
+                        <img src="{{asset($setting->value('header_logo'))}}" alt="Logo">
                     </a>
                 </div>
             </div>

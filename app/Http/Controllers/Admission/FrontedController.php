@@ -54,7 +54,7 @@ class FrontedController extends Controller
                 $msg = $this->login($request);
             }
             elseif ($request->_type == 'logout'){
-                $msg = $this->logout($request);
+                $msg = $this->logout();
             }
             elseif ($request->_type == 'print')
             {
@@ -436,30 +436,55 @@ class FrontedController extends Controller
                 for ($i=1;$i<5;$i++) {
                     for ($j = 1; $j < 13; $j++) {
                         $count[] = $student = Student::whereMonth('created_at', $j)
-                            ->where('student_gender', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
-                                ->where('student_gender', $i)->count() + $student : 0;
+                            ->where('student_program', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
+                                ->where('student_program', $i)->count() + $student : 0;
                     }
                     if ($i == 1){
-                        $gender = array_merge(['Tahfidz'], $count);
+                        $program = array_merge(['Tahfidz'], $count);
                     }
                     elseif ($i == 2){
-                        $gender = array_merge(['Sains & Bahasa'], $count);
+                        $program = array_merge(['Sains & Bahasa'], $count);
                     }
                     elseif ($i == 3){
-                        $gender = array_merge(['Kitab Kuning'], $count);
+                        $program = array_merge(['Kitab Kuning'], $count);
                     }
                     elseif ($i == 4){
-                        $gender = array_merge(['Kelas Reguler'], $count);
+                        $program = array_merge(['Kelas Reguler'], $count);
                     }
                     $count = [];
                     $student = 0;
-                    $data[] = $gender;
+                    $data[] = $program;
                 }
             }
             return response()->json($data);
         }
         else {
             return view('admission.fronted.result', $this->data);
+        }
+    }
+
+    public function registrant(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all') {
+                $no = 1;
+                foreach (Student::orderBy('created_at', 'ASC')->get() as $student) {
+                    $data[] = [
+                        $no++,
+                        $student->student_name,
+                        $student->student_nik,
+                        $student->student_nisn,
+                        $student->student_address,
+                        $student->student_father_name,
+                        $student->student_mother_name,
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('admission.fronted.registrant', $this->data);
         }
     }
 

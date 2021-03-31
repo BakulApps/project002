@@ -14,7 +14,7 @@ var settingjs = function () {
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/pengaturan',
-                type: 'put',
+                type: 'post',
                 dataType: 'json',
                 data: {
                     'set_name' : 'app',

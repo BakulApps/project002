@@ -41,8 +41,6 @@ Route::group(['prefix' => 'administrator'], function (){
         Route::match(['get', 'post'],'/komentar', 'CommentController@all')->name('portal.admin.comment.all');
         Route::match(['get', 'post'],'/komentar/{id}/lihat', 'CommentController@detail')->name('portal.admin.comment.detail');
         Route::match(['get', 'post'],'/pengguna', 'UserController@all')->name('portal.admin.user');
-        Route::match(['get', 'put'],'/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
+        Route::match(['get', 'post'],'/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
     });
 });
-
-Route::get('/test', 'FrontedController@test');

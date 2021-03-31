@@ -10,7 +10,7 @@ Route::match(['get', 'post'],'/pendaftaran', 'FrontedController@register')->name
 Route::match(['get', 'post'], '/masuk', 'AuthController@login')->name('admission.login');
 Route::get('/keluar', 'AuthController@logout')->name('admission.logout');
 Route::match(['get', 'post'],'/rekap', 'FrontedController@result')->name('admission.result');
-Route::get('/test', 'FrontedController@test');
+Route::match(['get', 'post'], '/pendaftar', 'FrontedController@registrant')->name('admission.registrant');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.admission'], function (){
     Route::get('/', 'BackendController@home')->name('admission.admin.home');

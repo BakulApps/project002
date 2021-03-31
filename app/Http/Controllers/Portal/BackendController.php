@@ -8,6 +8,7 @@ use App\Models\Portal\Event;
 use App\Models\Portal\Post;
 use App\Models\Portal\Setting;
 use Illuminate\Http\Request;
+use PHPUnit\Exception;
 
 class BackendController extends Controller
 {
@@ -28,7 +29,7 @@ class BackendController extends Controller
 
     public function setting(Request $request)
     {
-        if ($request->isMethod('put')){
+        if ($request->isMethod('post')){
             if ($request->set_name == 'app'){
                 $setting = Setting::where('setting_name', 'app_name');
                 try {
@@ -36,7 +37,7 @@ class BackendController extends Controller
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil diperbarui.'];
                     }
                 }
-                catch (\Exception $e){
+                catch (Exception $e){
                     $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
