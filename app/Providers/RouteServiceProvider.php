@@ -29,6 +29,7 @@ class RouteServiceProvider extends ServiceProvider
     //protected $namespace = 'App\\Http\\Controllers';
     protected $namespace_admission = 'App\\Http\\Controllers\Admission';
     protected $namespace_api = 'App\\Http\\Controllers\Api';
+    protected $namespace_exam = 'App\\Http\\Controllers\Exam';
     protected $namespace_portal = 'App\\Http\\Controllers\Portal';
 
     /**
@@ -50,6 +51,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace_admission)
                 ->group(base_path('routes/admission.php'));
+
+            Route::prefix('ujian')
+                ->middleware('web')
+                ->namespace($this->namespace_exam)
+                ->group(base_path('routes/exam.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace_portal)

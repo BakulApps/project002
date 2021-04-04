@@ -46,6 +46,11 @@ return [
             'provider' => 'portals'
         ],
 
+        'exam' => [
+            'driver' => 'session',
+            'provider' => 'exam',
+        ],
+
         'admission' => [
             'driver' => 'session',
             'provider' => 'admissions',
