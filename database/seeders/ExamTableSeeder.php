@@ -5,9 +5,11 @@ namespace Database\Seeders;
 use App\Models\Exam\Classes;
 use App\Models\Exam\Level;
 use App\Models\Exam\Major;
+use App\Models\Exam\Role;
 use App\Models\Exam\Schedule;
 use App\Models\Exam\Student;
 use App\Models\Exam\Subject;
+use App\Models\Exam\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +28,8 @@ class ExamTableSeeder extends Seeder
         Major::factory(5)->create();
         Classes::factory(10)->create();
         Schedule::factory(20)->create();
+        Role::factory(1)->create();
+        User::factory(2)->create();
 
         $setting = [
             ['app_name', 'PENILAIAN AKHIR SEMESTER'],

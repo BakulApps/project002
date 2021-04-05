@@ -22,7 +22,8 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'role_name' => 'Administrator',
+            'role_desc' => 'Administrator'
         ];
     }
 }

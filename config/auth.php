@@ -48,7 +48,7 @@ return [
 
         'exam' => [
             'driver' => 'session',
-            'provider' => 'exam',
+            'provider' => 'exams',
         ],
 
         'admission' => [
@@ -89,6 +89,11 @@ return [
         'portals' => [
             'driver' => 'eloquent',
             'model' => App\Models\Portal\User::class
+        ],
+
+        'exams' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Exam\User::class
         ],
 
         'admissions' => [

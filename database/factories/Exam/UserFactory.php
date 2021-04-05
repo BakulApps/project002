@@ -4,6 +4,7 @@ namespace Database\Factories\Exam;
 
 use App\Models\Exam\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
@@ -22,7 +23,14 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'user_image' => $this->faker->imageUrl(60,60),
+            'user_fullname' => $this->faker->name,
+            'user_name' => $this->faker->userName,
+            'user_pass' => Hash::make($this->faker->password),
+            'user_email' => $this->faker->email,
+            'user_role' => $this->faker->numberBetween(1, 2),
+            'user_desc' => $this->faker->sentence(6),
+
         ];
     }
 }
