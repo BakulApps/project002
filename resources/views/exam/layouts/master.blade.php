@@ -4,7 +4,7 @@
     <body>
     <script type="text/javascript">
         var baseurl = "{{route('exam.home')}}";
-        var siteurl = "{{route('potral.home')}}";
+        var adminurl = "{{route('exam.admin.home')}}";
     </script>
         @include('exam.layouts.navbar')
         <div class="page-content">

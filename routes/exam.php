@@ -10,8 +10,16 @@ Route::get('/test', 'FrontedController@test')->name('exam.test');
 
 Route::group(['prefix' => 'admin'], function (){
     Route::match(['get', 'post'], '/masuk', 'AuthController@login')->name('exam.admin.login');
-    Route::get('/keluar', 'AuthController@logout')->name('exam.admin.login');
+    Route::get('/keluar', 'AuthController@logout')->name('exam.admin.logout');
     Route::group(['middleware' => 'auth.exam'], function (){
         Route::get('/', 'BackendController@home')->name('exam.admin.home');
+        Route::match(['get', 'post'], '/data/mapel', 'BackendController@subject')->name('exam.admin.data.subject');
+        Route::match(['get', 'post'], '/data/tingkat', 'BackendController@level')->name('exam.admin.data.level');
+        Route::match(['get', 'post'], '/data/jurusan', 'BackendController@major')->name('exam.admin.data.major');
+        Route::match(['get', 'post'], '/data/rombel', 'BackendController@classes')->name('exam.admin.data.class');
+        Route::match(['get', 'post'], '/peserta', 'BackendController@student')->name('exam.admin.student');
+        Route::match(['get', 'post'], '/jadwal', 'BackendController@schedule')->name('exam.admin.schedule');
+        Route::match(['get', 'post'], '/pengguna', 'BackendController@user')->name('exam.admin.user');
+        Route::match(['get', 'post'], '/pengaturan', 'BackendController@setting')->name('exam.admin.setting');
     });
 });

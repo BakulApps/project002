@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'user_image' => $this->faker->imageUrl(60,60),
             'user_fullname' => $this->faker->name,
             'user_name' => $this->faker->userName,
-            'user_pass' => Hash::make($this->faker->password),
+            'user_pass' => Hash::make('password'),
             'user_email' => $this->faker->email,
             'user_role' => $this->faker->numberBetween(1, 2),
             'user_desc' => $this->faker->sentence(6),

@@ -22,8 +22,8 @@ class MajorFactory extends Factory
     public function definition()
     {
         return [
-            'major_code' => $this->faker->numberBetween(100, 999),
-            'major_name' => $this->faker->text(5)
+            'major_code' => 'NOJ',
+            'major_name' => 'NON JURUSAN'
         ];
     }
 }

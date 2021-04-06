@@ -24,11 +24,11 @@ class ExamTableSeeder extends Seeder
     {
         Student::factory(10)->create();
         Subject::factory(17)->create();
-        Level::factory(10)->create();
-        Major::factory(5)->create();
+        //Level::factory(10)->create();
+        //Major::factory(1)->create();
         Classes::factory(10)->create();
         Schedule::factory(20)->create();
-        Role::factory(1)->create();
+        //Role::factory(1)->create();
         User::factory(2)->create();
 
         $setting = [
@@ -40,10 +40,30 @@ class ExamTableSeeder extends Seeder
 
         ];
 
+        $level = [7, 8, 9];
+
+        $role = [
+            ['Administrator', 'Administrator'],
+            ['Walikelas', 'Walikelas']
+        ];
+
         for ($i=0;$i<count($setting);$i++){
             DB::table('exam_entity__settings')->insert([
                 'setting_name' => $setting[$i][0],
                 'setting_value' => $setting[$i][1]
+            ]);
+        }
+
+        for ($i=0;$i<count($setting);$i++){
+            DB::table('exam_entity__classes')->insert([
+                'level_name' => $level[$i]
+            ]);
+        }
+
+        for ($i=0;$i<count($setting);$i++){
+            DB::table('exam_entity__role')->insert([
+                'role_name' => $setting[$i][0],
+                'role_desc' => $setting[$i][1]
             ]);
         }
     }

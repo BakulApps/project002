@@ -23,15 +23,15 @@ class AuthController extends Controller
             return $this->authentication($request);
         }
         else {
-            return view('exam.fronted.login', $this->data);
+            return view('exam.backend.login', $this->data);
         }
     }
 
     public function authentication(Request $request)
     {
         $credentials = ['user_name' => $request->user_name, 'password' => $request->user_pass];
-        if (Auth::guard('portal')->attempt($credentials, $request->remember)){
-            return redirect()->route('portal.admin.home');
+        if (Auth::guard('exam')->attempt($credentials, $request->remember)){
+            return redirect()->route('exam.admin.home');
         }
         else {
             return redirect()->back()->withInput()->with('msg', ['class' => 'danger', 'text' => 'Nama Pengguna dan Kata Sandi tidak tepat']);
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::guard('portal')->logout();
-        return redirect()->route('portal.admin.login')->with('msg', ['class' => 'success',  'text' => 'Anda berhasil keluar']);
+        Auth::guard('exam')->logout();
+        return redirect()->route('exam.admin.login')->with('msg', ['class' => 'success',  'text' => 'Anda berhasil keluar']);
     }
 }
