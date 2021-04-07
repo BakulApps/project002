@@ -16,7 +16,7 @@ Route::group(['prefix' => 'admin'], function (){
         Route::match(['get', 'post'], '/data/mapel', 'BackendController@subject')->name('exam.admin.data.subject');
         Route::match(['get', 'post'], '/data/tingkat', 'BackendController@level')->name('exam.admin.data.level');
         Route::match(['get', 'post'], '/data/jurusan', 'BackendController@major')->name('exam.admin.data.major');
-        Route::match(['get', 'post'], '/data/rombel', 'BackendController@classes')->name('exam.admin.data.class');
+        Route::match(['get', 'post'], '/data/kelas', 'BackendController@classes')->name('exam.admin.data.class');
         Route::match(['get', 'post'], '/peserta', 'BackendController@student')->name('exam.admin.student');
         Route::match(['get', 'post'], '/jadwal', 'BackendController@schedule')->name('exam.admin.schedule');
         Route::match(['get', 'post'], '/pengguna', 'BackendController@user')->name('exam.admin.user');

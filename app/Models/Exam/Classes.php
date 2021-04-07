@@ -19,4 +19,22 @@ class Classes extends Model
         parent::__construct($attributes);
         $this->timestamps = false;
     }
+
+    public function level()
+    {
+        return $this->hasOne(
+            Level::class,
+            'level_id',
+            'class_level'
+        );
+    }
+
+    public function major()
+    {
+        return $this->hasOne(
+            Major::class,
+            'major_id',
+            'class_major'
+        );
+    }
 }

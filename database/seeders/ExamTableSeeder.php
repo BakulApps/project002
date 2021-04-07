@@ -54,16 +54,16 @@ class ExamTableSeeder extends Seeder
             ]);
         }
 
-        for ($i=0;$i<count($setting);$i++){
-            DB::table('exam_entity__classes')->insert([
+        for ($i=0;$i<count($level);$i++){
+            DB::table('exam_entity__levels')->insert([
                 'level_name' => $level[$i]
             ]);
         }
 
-        for ($i=0;$i<count($setting);$i++){
-            DB::table('exam_entity__role')->insert([
-                'role_name' => $setting[$i][0],
-                'role_desc' => $setting[$i][1]
+        for ($i=0;$i<count($role);$i++){
+            DB::table('exam_entity__roles')->insert([
+                'role_name' => $role[$i][0],
+                'role_desc' => $role[$i][1]
             ]);
         }
     }

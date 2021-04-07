@@ -28,4 +28,13 @@ class Schedule extends Model
             'schedule_subject'
         );
     }
+
+    public function level()
+    {
+        return $this->hasOne(
+            Level::class,
+            'level_id',
+            'schedule_level'
+        );
+    }
 }

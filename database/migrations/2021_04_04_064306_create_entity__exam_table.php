@@ -44,7 +44,7 @@ class CreateEntityExamTable extends Migration
             $table->integer('class_level');
             $table->integer('class_major');
             $table->string('class_code', 3);
-            $table->string('class_name', 5);
+            $table->string('class_name', 10);
         });
 
         Schema::create('exam_entity__schedules', function (Blueprint $table){
