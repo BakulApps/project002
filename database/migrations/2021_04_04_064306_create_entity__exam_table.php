@@ -55,6 +55,7 @@ class CreateEntityExamTable extends Migration
             $table->dateTime('schedule_end');
             $table->string('schedule_token', 5);
             $table->string('schedule_link');
+            $table->string('schedule_monitoring');
         });
 
         Schema::create('exam_entity__settings', function (Blueprint $table){

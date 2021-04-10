@@ -43,7 +43,7 @@ var schedulejs = function () {
             var schedule_id = $(this).data('num');
             $.ajax({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url : adminurl + '/data/tingkat',
+                url : adminurl + '/jadwal',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -52,10 +52,16 @@ var schedulejs = function () {
                     'schedule_id': schedule_id,
                 },
                 success : function (resp) {
-                    $('#form-title').html('UBAH TINGKAT');
+                    $('#form-title').html('UBAH JADWAL');
                     $('#submit').val('update');
                     $('#schedule_id').val(resp.schedule_id);
-                    $('#schedule_name').val(resp.schedule_name);
+                    $('#schedule_subject').val(resp.schedule_subject);
+                    $('#schedule_level').val(resp.schedule_level);
+                    $('#schedule_start').val(resp.schedule_start);
+                    $('#schedule_end').val(resp.schedule_end);
+                    $('#schedule_token').val(resp.schedule_token);
+                    $('#schedule_link').val(resp.schedule_link);
+                    $('#schedule_monitoring').val(resp.schedule_monitoring);
                 }
             });
         }).on('click', '.btn-delete', function (e) {
@@ -63,7 +69,7 @@ var schedulejs = function () {
             var schedule_id = $(this).data('num');
             $.ajax({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url : adminurl + '/data/tingkat',
+                url : adminurl + '/jadwal',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -85,14 +91,20 @@ var schedulejs = function () {
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url : adminurl + '/data/tingkat',
+                headers: csrf_token,
+                url : adminurl + '/jadwal',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     _type: $('#submit').val(),
                     schedule_id: $('#schedule_id').val(),
-                    schedule_name: $('#schedule_name').val()
+                    schedule_subject: $('#schedule_subject').val(),
+                    schedule_level: $('#schedule_level').val(),
+                    schedule_start: $('#schedule_start').val(),
+                    schedule_end: $('#schedule_end').val(),
+                    schedule_token: $('#schedule_token').val(),
+                    schedule_link: $('#schedule_link').val(),
+                    schedule_monitoring: $('#schedule_monitoring').val(),
                 },
                 success : function (resp) {
                     new PNotify({
@@ -101,7 +113,14 @@ var schedulejs = function () {
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
                     $('#submit').val('store');
-                    $('#schedule_name').val('');
+                    $('#schedule_id').val('');
+                    $('#schedule_subject').val('');
+                    $('#schedule_level').val('');
+                    $('#schedule_start').val('');
+                    $('#schedule_end').val('');
+                    $('#schedule_token').val('');
+                    $('#schedule_link').val('');
+                    $('#schedule_monitoring').val('');
                     $('.datatable-schedule').DataTable().ajax.reload();
                 }
             })
@@ -147,8 +166,10 @@ var schedulejs = function () {
     var _componentCalender = function () {
         $('.daterange').daterangepicker({
             singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: true,
             locale: {
-                format: 'DD/MM/YYYY'
+                format: 'DD/MM/YYYY H:mm'
             }
         });
     }

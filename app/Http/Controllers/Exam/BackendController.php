@@ -12,6 +12,7 @@ use App\Models\Exam\Schedule;
 use App\Models\Exam\Setting;
 use App\Models\Exam\Student;
 use App\Models\Exam\Subject;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -385,11 +386,13 @@ class BackendController extends Controller
                         $no++,
                         $schedule->subject->subject_name,
                         $schedule->level->level_name,
-                        $schedule->schedule_start,
-                        $schedule->schedule_end,
+                        Carbon::parse($schedule->schedule_start)->translatedFormat('l d/m/Y'),
+                        Carbon::parse($schedule->schedule_start)->format('H:i'),
+                        Carbon::parse($schedule->schedule_end)->format('H:i'),
                         $schedule->schedule_token,
-                        $schedule->schedule_link,
                         '<div class="btn-group">
+                            <a target="_blank" href="'.$schedule->schedule_link.'" class="btn btn-outline-primary bt-sm"><i class="icon-eye"></i></a>
+                            <a target="_blank" href="'.$schedule->schedule_monitoring.'" class="btn btn-outline-primary bt-sm"><i class="icon-bar"></i></a>
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$schedule->schedule_id.'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$schedule->schedule_id.'"><i class="icon-trash"></i></button>
                          </div>
@@ -398,22 +401,23 @@ class BackendController extends Controller
                 };
                 $msg = ['data' => empty($data) ? [] : $data];
             }
-            elseif ($request->_type == 'data' && $request->_data == 'level'){
-                $msg = Level::where('level_id', $request->level_id)->first();
-            }
-            elseif ($request->_type == 'select' && $request->_data == 'level'){
-                $levels = Level::all();
-                foreach ($levels as $level){
-                    $msg[] = ['id' => $level->level_id, 'text' => 'Kelas '. $level->level_name];
-                }
+            elseif ($request->_type == 'data' && $request->_data == 'schedule'){
+                $msg = Schedule::where('schedule_id', $request->schedule_id)->first();
+                $msg->schedule_start = Carbon::parse($msg->schedule_start)->format('d/m/Y H:i');
+                $msg->schedule_end = Carbon::parse($msg->schedule_end)->format('d/m/Y H:i');
             }
             elseif ($request->_type == 'store'){
                 try {
-                    if (Level::create([
-                        'level_name' => $request->level_name,
+                    if (Schedule::create([
+                        'schedule_subject' => $request->schedule_subject,
+                        'schedule_level' => $request->schedule_level,
+                        'schedule_start' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_start)->format('Y-m-d H:i:s'),
+                        'schedule_end' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_end)->format('Y-m-d H:i:s'),
+                        'schedule_token' => $request->schedule_token,
+                        'schedule_link' => $request->schedule_link,
 
                     ])){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Tingkat berhasil di simpan.'];
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Jadwal berhasil di simpan.'];
                     }
                 } catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
@@ -421,10 +425,15 @@ class BackendController extends Controller
             }
             elseif ($request->_type == 'update'){
                 try {
-                    if (Level::where('level_id', $request->level_id)->update([
-                        'level_name' => $request->level_name,
+                    if (Schedule::where('schedule_id', $request->schedule_id)->update([
+                        'schedule_subject' => $request->schedule_subject,
+                        'schedule_level' => $request->schedule_level,
+                        'schedule_start' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_start)->format('Y-m-d H:i:s'),
+                        'schedule_end' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_end)->format('Y-m-d H:i:s'),
+                        'schedule_token' => $request->schedule_token,
+                        'schedule_link' => $request->schedule_link,
                     ])){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Tingkat berhasil diperbarui.'];
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Jadwal berhasil diperbarui.'];
                     }
                 } catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
@@ -432,9 +441,9 @@ class BackendController extends Controller
             }
             elseif ($request->_type == 'delete'){
                 try {
-                    $level = Level::find($request->level_id);
-                    if ($level->delete()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Tingkat berhasil dihapus.'];
+                    $schedule = Schedule::find($request->schedule_id);
+                    if ($schedule->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Jadwal berhasil dihapus.'];
                     }
                 } catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];

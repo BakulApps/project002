@@ -14,7 +14,7 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-white header-elements-inline">
                     <h6 class="card-title font-weight-semibold">JADWAL PENILAIAN</h6>
@@ -35,46 +35,59 @@
                 </table>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header bg-white header-elements-inline">
                     <h6 class="card-title font-weight-semibold" id="form-title">TAMBAH JADWAL</h6>
                 </div>
                 <div class="card-body">
                     <input type="hidden" id="schedule_id">
-                    <div class="form-group">
-                        <label>MATA PELAJARAN :</label>
-                        <select id="schedule_subject" data-placeholder="Pilih Pelajaran" class="form-control select2">
-                            <option></option>
-                        </select>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>MATA PELAJARAN :</label>
+                            <select id="schedule_subject" data-placeholder="Pilih Pelajaran" class="form-control select2">
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>TINGKAT :</label>
+                            <select id="schedule_level" data-placeholder="Pilih Tingkat" class="form-control select2">
+                                <option></option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>TINGKAT :</label>
-                        <select id="schedule_level" data-placeholder="Pilih Tingkat" class="form-control select2">
-                            <option></option>
-                        </select>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label>MULAI :</label>
+                            <input type="text" id="schedule_start" class="form-control daterange">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>SELESAI :</label>
+                            <input type="text" id="schedule_end" class="form-control daterange">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>TOKEN :</label>
+                            <input type="text" id="schedule_token" class="form-control" placeholder="Ex. PANDAI">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>MULAI :</label>
-                        <input type="text" id="schedule_start" class="form-control daterange">
-                    </div>
-                    <div class="form-group">
-                        <label>SELESAI :</label>
-                        <input type="text" id="schedule_end" class="form-control daterange">
-                    </div>
-                    <div class="form-group">
-                        <label>TOKEN :</label>
-                        <input type="text" id="schedule_token" class="form-control" placeholder="Ex. PANDAI">
-                    </div>
-                    <div class="form-group">
-                        <label>LINK :</label>
-                        <input type="text" id="schedule_link" class="form-control" placeholder="Ex. https://shorturl.at/abcde">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label>LINK :</label>
+                            <input type="text" id="schedule_link" class="form-control" placeholder="Ex. https://shorturl.at/abcde">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>MONITORING :</label>
+                            <input type="text" id="schedule_monitoring" class="form-control" placeholder="Ex. https://shorturl.at/abcde">
+                        </div>
                     </div>
                     <div class="text-right">
                         <button type="submit" class="btn btn-primary btn-labeled btn-labeled-left" id="submit" value="store"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-3">
+
         </div>
     </div>
 @endsection

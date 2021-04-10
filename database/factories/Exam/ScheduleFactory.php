@@ -28,6 +28,7 @@ class ScheduleFactory extends Factory
             'schedule_end' => $this->faker->dateTime,
             'schedule_token' => $this->faker->text(5),
             'schedule_link' => $this->faker->url,
+            'schedule_monitoring' => $this->faker->url,
 
         ];
     }

@@ -22,12 +22,12 @@ class ExamTableSeeder extends Seeder
      */
     public function run()
     {
-        Student::factory(10)->create();
-        Subject::factory(17)->create();
+        //Student::factory(10)->create();
+        //Subject::factory(17)->create();
         //Level::factory(10)->create();
         //Major::factory(1)->create();
-        Classes::factory(10)->create();
-        Schedule::factory(20)->create();
+        //Classes::factory(10)->create();
+        //Schedule::factory(20)->create();
         //Role::factory(1)->create();
         User::factory(2)->create();
 

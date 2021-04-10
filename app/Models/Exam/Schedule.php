@@ -10,7 +10,7 @@ class Schedule extends Model
     use HasFactory;
 
     protected $table        = 'exam_entity__schedules';
-    protected $fillable     = ['schedule_subject', 'schedule_level', 'schedule_start', 'schedule_end', 'schedule_token', 'schedule_link'];
+    protected $fillable     = ['schedule_subject', 'schedule_level', 'schedule_start', 'schedule_end', 'schedule_token', 'schedule_link', 'schedule_monitoring'];
 
     protected $primaryKey   = 'schedule_id';
 
