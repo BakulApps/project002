@@ -8,12 +8,18 @@ use App\Imports\Exam\StudentImport;
 use App\Models\Exam\Classes;
 use App\Models\Exam\Level;
 use App\Models\Exam\Major;
+use App\Models\Exam\Role;
 use App\Models\Exam\Schedule;
 use App\Models\Exam\Setting;
 use App\Models\Exam\Student;
 use App\Models\Exam\Subject;
+use App\Models\Exam\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -23,6 +29,7 @@ class BackendController extends Controller
 
     public function __construct()
     {
+
         $this->data['setting'] = new Setting();
     }
 
@@ -193,6 +200,12 @@ class BackendController extends Controller
             elseif ($request->_type == 'select' && $request->_data == 'major'){
                 $majors = Major::all();
                 foreach ($majors as $major){
+                    $msg[] = ['id' => $major->major_id, 'text' => $major->major_name];
+                }
+            }
+            elseif ($request->_type == 'select' && $request->_data == 'major'){
+                $majors = Major::all();
+                foreach ($majors as $major){
                     $msg[] = ['id' => $major->major_id, 'text' => $major->major_id .' - '. $major->major_name];
                 }
             }
@@ -250,6 +263,7 @@ class BackendController extends Controller
                         $class->major->major_code,
                         $class->class_code,
                         $class->class_name,
+                        $class->user->user_fullname,
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$class->class_id.'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$class->class_id.'"><i class="icon-trash"></i></button>
@@ -267,6 +281,7 @@ class BackendController extends Controller
                     if (Classes::create([
                         'class_level' => $request->class_level,
                         'class_major' => $request->class_major,
+                        'class_teacher' => $request->class_teacher,
                         'class_code' => $request->class_code,
                         'class_name' => $request->class_name
 
@@ -308,12 +323,32 @@ class BackendController extends Controller
         }
     }
 
+    public function role(Request $request){
+        if ($request->isMethod('post')){
+            if ($request->_type == 'select' && $request->_data == 'role') {
+                $roles = Role::all();
+                foreach ($roles as $role) {
+                    $msg[] = ['id' => $role->role_id, 'text' => $role->role_name];
+                }
+            }
+            return response()->json($msg);
+
+        }
+    }
+
     public function student(Request $request)
     {
         if ($request->isMethod('post')){
             if ($request->_type == 'data' && $request->_data == 'all') {
                 $no = 1;
-                foreach (Student::orderBy('student_class', 'DESC')->orderBy('student_name')->get() as $student) {
+                if (Auth::guard('exam')->user()->user_role == 2){
+                    $class = Classes::where('class_teacher', Auth::guard('exam')->user()->user_id)->value('class_id');
+                    $students = Student::where('student_class', $class)->orderBy('student_class', 'DESC')->orderBy('student_name')->get();
+                }
+                else {
+                    $students = Student::orderBy('student_class', 'DESC')->orderBy('student_name')->get();
+                }
+                foreach ($students as $student) {
                     $data[] = [
                         $no++,
                         $student->student_number,
@@ -381,24 +416,53 @@ class BackendController extends Controller
         if ($request->isMethod('post')){
             if ($request->_type == 'data' && $request->_data == 'all'){
                 $no = 1;
-                foreach (Schedule::orderBy('schedule_level')->orderBy('schedule_start')->get() as $schedule){
-                    $data[] = [
-                        $no++,
-                        $schedule->subject->subject_name,
-                        $schedule->level->level_name,
-                        Carbon::parse($schedule->schedule_start)->translatedFormat('l d/m/Y'),
-                        Carbon::parse($schedule->schedule_start)->format('H:i'),
-                        Carbon::parse($schedule->schedule_end)->format('H:i'),
-                        $schedule->schedule_token,
-                        '<div class="btn-group">
-                            <a target="_blank" href="'.$schedule->schedule_link.'" class="btn btn-outline-primary bt-sm"><i class="icon-eye"></i></a>
-                            <a target="_blank" href="'.$schedule->schedule_monitoring.'" class="btn btn-outline-primary bt-sm"><i class="icon-bar"></i></a>
+                if (Auth::guard('exam')->user()->user_role == 2){
+                    $class = Classes::where('class_teacher', Auth::guard('exam')->user()->user_id)->first();
+                    $schedules = Schedule::where('schedule_level', $class->class_level)
+                        ->where('schedule_major', $class->class_major)
+                        ->orWhere('schedule_major', 1)
+                        ->orderBy('schedule_level')->orderBy('schedule_start')->get();
+                    foreach ($schedules as $schedule){
+                        $data[] = [
+                            $no++,
+                            $schedule->subject->subject_name,
+                            $schedule->level->level_name,
+                            $schedule->major->major_code,
+                            Carbon::parse($schedule->schedule_start)->translatedFormat('l d/m/Y'),
+                            Carbon::parse($schedule->schedule_start)->format('H:i'),
+                            Carbon::parse($schedule->schedule_end)->format('H:i'),
+                            $schedule->schedule_token,
+                            '<div class="btn-group">
+                            <a target="_blank" href="https://'.$schedule->schedule_link.'" class="btn btn-outline-primary bt-sm"><i class="icon-eye"></i></a>
+                            <a target="_blank" href="https://'.$schedule->schedule_monitoring.'" class="btn btn-outline-primary bt-sm"><i class="icon-paperplane"></i></a>
+                            <a href="'.route('exam.admin.schedule.monitoring', [$class->class_id, $schedule->schedule_id]).'" class="btn btn-outline-primary bt-sm"><i class="icon-chart"></i></a>
+                         </div>
+                         '
+                        ];
+                    };
+                }
+                else {
+                    $schedules = Schedule::orderBy('schedule_level')->orderBy('schedule_start')->get();
+                    foreach ($schedules as $schedule){
+                        $data[] = [
+                            $no++,
+                            $schedule->subject->subject_name,
+                            $schedule->level->level_name,
+                            $schedule->major->major_code,
+                            Carbon::parse($schedule->schedule_start)->translatedFormat('l d/m/Y'),
+                            Carbon::parse($schedule->schedule_start)->format('H:i'),
+                            Carbon::parse($schedule->schedule_end)->format('H:i'),
+                            $schedule->schedule_token,
+                            '<div class="btn-group">
+                            <a target="_blank" href="https://'.$schedule->schedule_link.'" class="btn btn-outline-primary bt-sm"><i class="icon-eye"></i></a>
+                            <a target="_blank" href="https://'.$schedule->schedule_monitoring.'" class="btn btn-outline-primary bt-sm"><i class="icon-paperplane"></i></a>
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$schedule->schedule_id.'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$schedule->schedule_id.'"><i class="icon-trash"></i></button>
                          </div>
                          '
-                    ];
-                };
+                        ];
+                    };
+                }
                 $msg = ['data' => empty($data) ? [] : $data];
             }
             elseif ($request->_type == 'data' && $request->_data == 'schedule'){
@@ -411,10 +475,12 @@ class BackendController extends Controller
                     if (Schedule::create([
                         'schedule_subject' => $request->schedule_subject,
                         'schedule_level' => $request->schedule_level,
+                        'schedule_major' => $request->schedule_major,
                         'schedule_start' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_start)->format('Y-m-d H:i:s'),
                         'schedule_end' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_end)->format('Y-m-d H:i:s'),
                         'schedule_token' => $request->schedule_token,
                         'schedule_link' => $request->schedule_link,
+                        'schedule_monitoring' => $request->schedule_monitoring,
 
                     ])){
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Jadwal berhasil di simpan.'];
@@ -428,10 +494,12 @@ class BackendController extends Controller
                     if (Schedule::where('schedule_id', $request->schedule_id)->update([
                         'schedule_subject' => $request->schedule_subject,
                         'schedule_level' => $request->schedule_level,
+                        'schedule_major' => $request->schedule_major,
                         'schedule_start' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_start)->format('Y-m-d H:i:s'),
                         'schedule_end' => Carbon::createFromFormat('d/m/Y H:i', $request->schedule_end)->format('Y-m-d H:i:s'),
                         'schedule_token' => $request->schedule_token,
                         'schedule_link' => $request->schedule_link,
+                        'schedule_monitoring' => $request->schedule_monitoring,
                     ])){
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Jadwal berhasil diperbarui.'];
                     }
@@ -456,15 +524,180 @@ class BackendController extends Controller
         }
     }
 
-    public function user()
+    public function monitoring($class_id, $schedule_id, Request $request)
     {
-
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all') {
+                $no = 1;
+                $students = Student::where('student_class', $class_id)->orderBy('student_class', 'DESC')->orderBy('student_name')->get();
+                foreach ($students as $student) {
+                    $data[] = [
+                        $no++,
+                        $student->student_number,
+                        $student->student_name,
+                        $student->classes->class_name,
+                        Arr::has(json_decode($student->student_schedule, true), $schedule_id)?  '<span class="text-success">Mengerjakan</span>' : '<span class="text-danger">Belum Mengerjakan</span>',
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            return response()->json($msg);
+        }
+        else {
+            $this->data['class_id'] = $class_id;
+            $this->data['schedule_id'] = $schedule_id;
+            return view('exam.backend.monitoring', $this->data);
+        }
     }
 
-    public function setting()
+    public function user(Request $request)
     {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                $no = 1;
+                foreach (User::orderBy('user_fullname')->get() as $user){
+                    $data[] = [
+                        $no++,
+                        $user->user_fullname,
+                        $user->role->role_name,
+                        $user->user_name,
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$user->user_id.'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$user->user_id.'"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'user'){
+                $msg = User::where('user_id', $request->user_id)->first();
+            }
+            if ($request->_type == 'select' && $request->_data == 'teacher') {
+                $teachers = User::where('user_role', $request->_role)->get();
+                foreach ($teachers as $teacher) {
+                    $msg[] = ['id' => $teacher->user_id, 'text' => $teacher->user_fullname];
+                }
+            }
+            elseif ($request->_type == 'store'){
+                try {
+                    if (User::create([
+                        'user_fullname' => $request->user_fullname,
+                        'user_name' => $request->user_name,
+                        'user_pass' => Hash::make($request->user_pass),
+                        'user_role' => $request->user_role
 
+                    ])){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Pengguna berhasil di simpan.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'update'){
+                try {
+                    if (User::where('user_id', $request->user_id)->update([
+                        'user_fullname' => $request->user_fullname,
+                        'user_name' => $request->user_name,
+                        'user_pass' => $request->user_pass != '' ? Hash::make($request->user_pass) : '',
+                        'user_role' => $request->user_role
+                    ])){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Kelas berhasil diperbarui.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $user = User::find($request->user_id);
+                    if ($user->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Pengguna berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('exam.backend.user', $this->data);
+        }
     }
 
+    public function setting(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'update' && $request->_data == 'app'){
+                $setting = $this->data['setting'];
+                if ($request->hasFile('school_logo')) {
+                    $file = $request->file('school_logo');
+                    Storage::delete('/public/exam/images/'. $setting->value('school_logo'));
+                    $file->store('public/exam/images');
+                    $school_logo = $file->hashName();
+                }
+                else {
+                    $school_logo = $setting->value('school_logo');
+                }
+                try {
+                    $setting->where('setting_name', 'app_name')->update(['setting_value' => $request->app_name]);
+                    $setting->where('setting_name', 'app_alias')->update(['setting_value' => $request->app_alias]);
+                    $setting->where('setting_name', 'school_logo')->update(['setting_value' => $school_logo]);
+                    $setting->where('setting_name', 'school_name')->update(['setting_value' => $request->school_name]);
+                    $setting->where('setting_name', 'school_address')->update(['setting_value' => $request->school_address]);
+                    $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil disimpan.'];
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'update' && $request->_data == 'database'){
+                try {
+                    switch ($request->table){
+                        case 1:
+                            Subject::truncate();
+                            break;
+                        case 2:
+                            Level::truncate();
+                            break;
+                        case 3:
+                            Major::truncate();
+                            break;
+                        case 4:
+                            Classes::truncate();
+                            break;
+                        case 5:
+                            Student::truncate();
+                            break;
+                        case 6:
+                            Schedule::truncate();
+                            break;
+                        case 7:
+                            User::truncate();
+                            break;
+                        default;
+                    }
+                    $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Database berhasil di kosongkan.'];
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('exam.backend.setting', $this->data);
+        }
+    }
 
+    public function test()
+    {
+        $student = Student::find(1);
+        $schedule = Arr::add(json_decode($student->student_schedule, true), 2, [1, Carbon::now()->format('d/m/Y H:i:s')]);
+        $student->update(['student_schedule' => $schedule]);
+
+        $student = Student::where('student_id', 1)->first();
+        $array = json_decode($student->student_schedule, true);
+        return response()->json($array);
+    }
 }

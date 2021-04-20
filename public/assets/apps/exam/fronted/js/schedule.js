@@ -36,6 +36,22 @@ var postjs = function () {
                     '_data' : 'all'
                 }
             })
+        }).on('click', '.btn-submit', function (e) {
+            e.preventDefault();
+            var schedule_id = $(this).data('num');
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                url : baseurl + '/jadwal',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    '_type': 'update',
+                    'schedule_id': schedule_id,
+                },
+                success : function (resp) {
+                    window.location.href = 'https://' + resp
+                }
+            });
         })
     }
 

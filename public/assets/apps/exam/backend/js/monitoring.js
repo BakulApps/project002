@@ -1,4 +1,4 @@
-var schedulejs = function () {
+var monitoringjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')};
     var _componetnDataTable = function () {
         $('.datatable-schedule').DataTable({
@@ -23,15 +23,11 @@ var schedulejs = function () {
                 {className: 'text-center', targets: 1},
                 {className: 'text-center', targets: 2},
                 {className: 'text-center', targets: 3},
-                {className: 'text-center', targets: 4},
-                {className: 'text-center', targets: 5},
-                {className: 'text-center', targets: 6},
-                {className: 'text-center', targets: 7},
-                {className: 'text-center', targets: 8},
+                {className: 'text-center', targets: 4}
             ],
             ajax: ({
                 headers: csrf_token,
-                url: adminurl + '/jadwal',
+                url: adminurl + '/jadwal/monitoring/' + $('#class_id').val() + '/' + $("#schedule_id").val(),
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -208,5 +204,5 @@ var schedulejs = function () {
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    schedulejs.init();
+    monitoringjs.init();
 });

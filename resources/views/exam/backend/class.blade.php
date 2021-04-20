@@ -26,6 +26,7 @@
                         <th>JURUSAN</th>
                         <th>ROMBEL</th>
                         <th>NAMA</th>
+                        <th>WALIKELAS</th>
                         <th>AKSI</th>
                     </tr>
                     </thead>
@@ -58,6 +59,12 @@
                     <div class="form-group">
                         <label>NAMA :</label>
                         <input type="text" id="class_name" class="form-control" placeholder="Ex. VII.1, VII.2">
+                    </div>
+                    <div class="form-group">
+                        <label>WALIKELAS :</label>
+                        <select id="class_teacher" data-placeholder="Pilih Walikelas" class="form-control select">
+                            <option></option>
+                        </select>
                     </div>
                     <div class="text-right">
                         <button type="submit" class="btn btn-primary btn-labeled btn-labeled-left" id="submit" value="store"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>

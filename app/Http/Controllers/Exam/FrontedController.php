@@ -8,6 +8,7 @@ use App\Models\Exam\Setting;
 use App\Models\Exam\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 
 class FrontedController extends Controller
@@ -33,9 +34,12 @@ class FrontedController extends Controller
     {
         if (Session::has('exam.auth')){
             if ($request->isMethod('post')){
+                $student    = Student::find(Session::get('exam.auth'));
                 if ($request->_type == 'data' && $request->_data == 'all'){
-                    $student    = Student::find(Session::get('exam.auth'));
-                    $schedules   = Schedule::where('schedule_level', $student->classes->class_level)->orderBy('schedule_start', 'ASC')->get();
+                    $schedules   = Schedule::where('schedule_level', $student->classes->class_level)
+                        ->where('schedule_major', $student->classes->class_major)
+                        ->orWhere('schedule_major', 1)
+                        ->orderBy('schedule_start', 'ASC')->get();
                     $no         = 1;
                     foreach ($schedules as $schedule){
                         if (Carbon::now()->format('Y-m-d H:i:s') > $schedule->schedule_end){
@@ -45,7 +49,7 @@ class FrontedController extends Controller
                             $button = '<a class="btn btn-success bt-sm" href="#">Belum Mulai</a>';
                         }
                         else {
-                            $button = '<a class="btn btn-primary bt-sm" target="_blank" href="'.$schedule->schedule_link.'">Mulai Ujian</a>';
+                            $button = '<button class="btn btn-primary bt-sm btn-submit" data-num="'.$schedule->schedule_id.'">Mulai Tes</i></button>';
                         }
                         $data[] = [
                             $no++,
@@ -58,6 +62,17 @@ class FrontedController extends Controller
                         ];
                     };
                     $msg = ['data' => empty($data) ? [] : $data];
+                }
+                elseif ($request->_type == 'update'){
+                    if (is_array($student->student_schedule)){
+                        $student_schedule = Arr::add(json_decode($student->student_schedule, true), $request->schedule_id, [$request->schedule_id, Carbon::now()->format('d/m/Y H:i:s')]);
+                    }
+                    else{
+                        $student_schedule = [$request->schedule_id => [$request->schedule_id, Carbon::now()->format('d/m/Y H:i:s')]];
+                    }
+                    $student->update(['student_schedule' => $student_schedule]);
+                    $schedule = Schedule::find($request->schedule_id);
+                    $msg = $schedule->schedule_link;
                 }
                 return response()->json($msg);
             }

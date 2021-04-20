@@ -44,7 +44,7 @@ class ExamTableSeeder extends Seeder
 
         $role = [
             ['Administrator', 'Administrator'],
-            ['Walikelas', 'Walikelas']
+            ['Walikelas', 'Wali Kelas']
         ];
 
         for ($i=0;$i<count($setting);$i++){

@@ -10,7 +10,7 @@ class Student extends Model
     use HasFactory;
 
     protected $table        = 'exam_entity__students';
-    protected $fillable     = ['student_name', 'student_number', 'student_class', 'student_username', 'student_password'];
+    protected $fillable     = ['student_name', 'student_number', 'student_class', 'student_username', 'student_password', 'student_schedule'];
 
     protected $primaryKey   = 'student_id';
 

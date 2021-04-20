@@ -10,8 +10,7 @@ class Classes extends Model
     use HasFactory;
 
     protected $table        = 'exam_entity__classes';
-    protected $fillable     = ['class_level', 'class_major', 'class_code', 'class_name'];
-
+    protected $fillable     = ['class_level', 'class_major', 'class_teacher', 'class_code', 'class_name'];
     protected $primaryKey   = 'class_id';
 
     public function __construct(array $attributes = [])
@@ -35,6 +34,15 @@ class Classes extends Model
             Major::class,
             'major_id',
             'class_major'
+        );
+    }
+
+    public function user()
+    {
+        return $this->hasOne(
+            User::class,
+            'user_id',
+            'class_teacher'
         );
     }
 }

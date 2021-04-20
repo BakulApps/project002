@@ -20,6 +20,7 @@ class CreateEntityExamTable extends Migration
             $table->integer('student_class');
             $table->string('student_username', 10);
             $table->string('student_password');
+            $table->json('student_schedule')->nullable();
         });
 
         Schema::create('exam_entity__subjects', function (Blueprint $table){
@@ -43,6 +44,7 @@ class CreateEntityExamTable extends Migration
             $table->id('class_id');
             $table->integer('class_level');
             $table->integer('class_major');
+            $table->integer('class_teacher');
             $table->string('class_code', 3);
             $table->string('class_name', 10);
         });
@@ -51,6 +53,7 @@ class CreateEntityExamTable extends Migration
             $table->id('schedule_id');
             $table->integer('schedule_subject');
             $table->integer('schedule_level');
+            $table->integer('schedule_major');
             $table->dateTime('schedule_start');
             $table->dateTime('schedule_end');
             $table->string('schedule_token', 5);
@@ -68,9 +71,9 @@ class CreateEntityExamTable extends Migration
             $table->id('user_id');
             $table->string('user_image')->nullable();
             $table->string('user_fullname', 200);
+            $table->string('user_email', 100)->nullable();
             $table->string('user_name', 50);
             $table->string('user_pass');
-            $table->string('user_email', 50);
             $table->string('user_role');
             $table->mediumText('user_desc')->nullable();
             $table->rememberToken();
@@ -95,6 +98,7 @@ class CreateEntityExamTable extends Migration
         Schema::dropIfExists('exam_entity__levels');
         Schema::dropIfExists('exam_entity__majors');
         Schema::dropIfExists('exam_entity__classes');
+        Schema::dropIfExists('exam_entity__class_user');
         Schema::dropIfExists('exam_entity__schedules');
         Schema::dropIfExists('exam_entity__settings');
         Schema::dropIfExists('exam_entity__users');

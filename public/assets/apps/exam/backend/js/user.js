@@ -1,7 +1,7 @@
-var classjs = function () {
+var userjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')};
     var _componetnDataTable = function () {
-        $('.datatable-class').DataTable({
+        $('.datatable-user').DataTable({
             autoWidth: false,
             bLengthChange: true,
             bSort: false,
@@ -23,12 +23,11 @@ var classjs = function () {
                 {className: 'text-center', targets: 1},
                 {className: 'text-center', targets: 2},
                 {className: 'text-center', targets: 3},
-                {className: 'text-center', targets: 4},
-                {className: 'text-center', targets: 5}
+                {className: 'text-center', targets: 4}
             ],
             ajax: ({
                 headers: csrf_token,
-                url: adminurl + '/data/kelas',
+                url: adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -38,38 +37,37 @@ var classjs = function () {
             })
         }).on('click', '.btn-edit', function (e) {
             e.preventDefault();
-            var class_id = $(this).data('num');
+            var user_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/data/kelas',
+                url : adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': 'data',
-                    '_data': 'class',
-                    'class_id': class_id,
+                    '_data': 'user',
+                    'user_id': user_id,
                 },
                 success : function (resp) {
-                    $('#form-title').html('UBAH KELAS');
+                    $('#form-title').html('UBAH PENGGUNA');
                     $('#submit').val('update');
-                    $('#class_id').val(resp.class_id);
-                    $('#class_level').val(resp.class_level);
-                    $('#class_major').val(resp.class_major);
-                    $('#class_code').val(resp.class_code);
-                    $('#class_name').val(resp.class_name);
+                    $('#user_id').val(resp.user_id);
+                    $('#user_fullname').val(resp.user_fullname);
+                    $('#user_name').val(resp.user_name);
+                    $('#user_role').val(resp.user_role);
                 }
             });
         }).on('click', '.btn-delete', function (e) {
             e.preventDefault();
-            var class_id = $(this).data('num');
+            var user_id = $(this).data('num');
             $.ajax({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url : adminurl + '/data/kelas',
+                url : adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': 'delete',
-                    'class_id': class_id,
+                    'user_id': user_id,
                 },
                 success : function (resp) {
                     new PNotify({
@@ -77,7 +75,7 @@ var classjs = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    $('.datatable-class').DataTable().ajax.reload();
+                    $('.datatable-user').DataTable().ajax.reload();
                 }
             });
         })
@@ -87,17 +85,16 @@ var classjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url : adminurl + '/data/kelas',
+                url : adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     _type: $('#submit').val(),
-                    class_id: $('#class_id').val(),
-                    class_level: $('#class_level').val(),
-                    class_major: $('#class_major').val(),
-                    class_code: $('#class_code').val(),
-                    class_name: $('#class_name').val(),
-                    class_teacher: $('#class_teacher').val(),
+                    user_id: $('#user_id').val(),
+                    user_fullname: $('#user_fullname').val(),
+                    user_name: $('#user_name').val(),
+                    user_pass: $('#user_pass').val(),
+                    user_role: $('#user_role').val()
                 },
                 success : function (resp) {
                     new PNotify({
@@ -106,55 +103,26 @@ var classjs = function () {
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
                     $('#submit').val('store');
-                    $('#class_id').val('');
-                    $('#class_level').val('');
-                    $('#class_major').val('');
-                    $('#class_code').val('');
-                    $('#class_name').val('');
-                    $('.datatable-class').DataTable().ajax.reload();
+                    $('#user_id').val('');
+                    $('#user_fullname').val('');
+                    $('#user_name').val('');
+                    $('#user_pass').val('');
+                    $('#user_role').val('');
+                    $('.title').html('TAMBAH PENGGUNA')
+                    $('.datatable-user').DataTable().ajax.reload();
                 }
             })
         })
     }
 
     var _componentSelect2 = function() {
-        $('#class_level').select2({
+        $('#user_role').select2({
             ajax: {
                 headers: csrf_token,
-                url: adminurl + '/data/tingkat',
+                url: adminurl + '/data/akses',
                 dataType: 'json',
                 type: 'post',
-                data: {_type: 'select', _data: 'level'},
-                processResults: function (data) {
-                    return {results: data}
-                },
-                cache: true
-            },
-            minimumResultsForSearch: Infinity
-        });
-
-        $('#class_major').select2({
-            ajax: {
-                headers: csrf_token,
-                url: adminurl + '/data/jurusan',
-                dataType: 'json',
-                type: 'post',
-                data: {_type: 'select', _data: 'major'},
-                processResults: function (data) {
-                    return {results: data}
-                },
-                cache: true
-            },
-            minimumResultsForSearch: Infinity
-        });
-
-        $('#class_teacher').select2({
-            ajax: {
-                headers: csrf_token,
-                url: adminurl + '/pengguna',
-                dataType: 'json',
-                type: 'post',
-                data: {_type: 'select', _data: 'teacher', _role: '2'},
+                data: {_type: 'select', _data: 'role'},
                 processResults: function (data) {
                     return {results: data}
                 },
@@ -181,5 +149,5 @@ var classjs = function () {
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    classjs.init();
+    userjs.init();
 });

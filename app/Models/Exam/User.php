@@ -34,4 +34,13 @@ class User extends Authenticatable
             'user_role'
         );
     }
+
+    public function classes()
+    {
+        return $this->hasOne(
+            Classes::class,
+            'class_teacher',
+            'user_id'
+        );
+    }
 }
