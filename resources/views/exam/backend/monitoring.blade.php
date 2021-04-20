@@ -26,7 +26,7 @@
                         <th>NO</th>
                         <th>NO PESERTA</th>
                         <th>NAMA SISWA</th>
-                        <th>KELAS/th>
+                        <th>KELAS</th>
                         <th>STATUS</th>
                     </tr>
                     </thead>

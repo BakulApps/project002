@@ -19,7 +19,7 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="mr-2">
-                                    <a href="#"><img src="{{asset('storage/exam/fronted/images/'.$setting->value('school_logo'))}}" width="50" height="50"></a>
+                                    <a href="#"><img src="{{asset('storage/exam/images/'.$setting->value('school_logo'))}}" width="50" height="50"></a>
                                 </div>
                                 <div class="media-body">
                                     <div class="media-title font-weight-semibold">{{$setting->value('school_name')}}</div>

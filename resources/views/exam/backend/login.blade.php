@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <div class="text-center">
                             <div class="card-img-actions d-inline-block mb-2">
-                                <img src="{{asset('storage/exam/fronted/images/'.$setting->value('school_logo'))}}" width="120" height="115" alt="">
+                                <img src="{{asset('storage/exam/images/'.$setting->value('school_logo'))}}" width="120" height="115" alt="">
                             </div>
                         </div>
                         <div class="text-center mb-4">

@@ -25,7 +25,7 @@
             @if(session()->has('exam.auth'))
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{asset('storage/exam/fronted/images/'.$setting->value('school_logo'))}}" class="rounded-circle mr-2" height="34" alt="">
+                    <img src="{{asset('storage/exam/images/'.$setting->value('school_logo'))}}" class="rounded-circle mr-2" height="34" alt="">
                     <span>{{\App\Models\Exam\Student::where('student_id', session()->get('exam.auth'))->value('student_name')}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -36,7 +36,7 @@
                 @if(auth('exam')->check())
                     <li class="nav-item dropdown dropdown-user">
                         <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('storage/exam/fronted/images/'.$setting->value('school_logo'))}}" class="rounded-circle mr-2" height="34" alt="">
+                            <img src="{{asset('storage/exam/images/'.$setting->value('school_logo'))}}" class="rounded-circle mr-2" height="34" alt="">
                             <span>{{auth('exam')->user()->user_fullname}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

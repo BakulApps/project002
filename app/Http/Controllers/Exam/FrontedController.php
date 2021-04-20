@@ -64,7 +64,7 @@ class FrontedController extends Controller
                     $msg = ['data' => empty($data) ? [] : $data];
                 }
                 elseif ($request->_type == 'update'){
-                    if (is_array($student->student_schedule)){
+                    if (is_array(json_decode($student->student_schedule, true))){
                         $student_schedule = Arr::add(json_decode($student->student_schedule, true), $request->schedule_id, [$request->schedule_id, Carbon::now()->format('d/m/Y H:i:s')]);
                     }
                     else{

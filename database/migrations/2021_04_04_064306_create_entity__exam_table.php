@@ -56,7 +56,7 @@ class CreateEntityExamTable extends Migration
             $table->integer('schedule_major');
             $table->dateTime('schedule_start');
             $table->dateTime('schedule_end');
-            $table->string('schedule_token', 5);
+            $table->string('schedule_token', 10);
             $table->string('schedule_link');
             $table->string('schedule_monitoring');
         });
