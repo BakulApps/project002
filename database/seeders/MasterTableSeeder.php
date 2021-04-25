@@ -190,5 +190,34 @@ class MasterTableSeeder extends Seeder
                 ]
             );
         }
+
+        $ladders = [
+            ['MI', 'Madrasah Ibtidaiyah'],
+            ['MTs', 'Madrasah Tsanawiyah'],
+            ['MA', 'Madrasah Aliyah']
+        ];
+
+        for ($i=0; $i<count($ladders);$i++){
+            DB::table('entity__master_ladders')->insert([
+                'ladder_code' => $ladders[$i][0],
+                'ladder_name' => $ladders[$i][1]
+            ]);
+        }
+
+        DB::table('entity__master_schools')->insert([
+            'school_fundation' => 'Yayasan Darul Hikmah',
+            'school_ladder' => 2,
+            'school_name' => 'Darul Hikmah',
+            'school_slug' => 'Shahabat Menjadi Generasi Hebat',
+            'school_nsm' => '121233200005',
+            'school_npsn' => '20364236',
+            'school_phone' => '082229366506',
+            'school_email' => 'mts@darul-hikmah.sch.id',
+            'school_website' => 'https://darul-hikmah.sch.id',
+            'school_address' => 'Jl. Raya Jepara-Bugel KM 7 Menganti Kedung Jepara',
+            'school_postal' => '59463',
+            'school_headmaster_name' => 'Sholihin S.Ag.',
+            'school_headmaster_nip' => '-',
+        ]);
     }
 }

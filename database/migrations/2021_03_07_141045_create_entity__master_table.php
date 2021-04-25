@@ -77,6 +77,47 @@ class CreateEntityMasterTable extends Migration
             $table->integer('home_id');
             $table->string('home_name', 50);
         });
+
+        Schema::create('entity__master_years', function (Blueprint $table) {
+            $table->id('year_id');
+            $table->integer('year_number');
+            $table->string('year_name');
+            $table->mediumText('year_desc')->nullable();
+        });
+
+        Schema::create('entity__master_ladders', function (Blueprint $table) {
+            $table->id('ladder_id');
+            $table->string('ladder_code');
+            $table->string('ladder_name');
+            $table->mediumText('ladder_desc')->nullable();
+        });
+
+        Schema::create('entity__master_schools', function (Blueprint $table) {
+            $table->id('school_id');
+            $table->string('school_fundation')->nullable();
+            $table->string('school_ladder')->nullable();
+            $table->string('school_name')->nullable();
+            $table->string('school_slug')->nullable();
+            $table->string('school_logo')->nullable();
+            $table->string('school_nsm')->nullable();
+            $table->string('school_npsn')->nullable();
+            $table->string('school_phone')->nullable();
+            $table->string('school_email')->nullable();
+            $table->string('school_website')->nullable();
+            $table->string('school_address')->nullable();
+            $table->string('school_postal')->nullable();
+            $table->string('school_headmaster_name')->nullable();
+            $table->string('school_headmaster_nip')->nullable();
+        });
+
+        Schema::create('entity__master_subjects', function (Blueprint $table) {
+            $table->id('subject_id');
+            $table->integer('subject_number');
+            $table->string('subject_code')->unique();
+            $table->string('subject_name');
+            $table->boolean('subject_exam');
+            $table->mediumText('subject_desc')->nullable();
+        });
     }
 
     /**
@@ -97,5 +138,9 @@ class CreateEntityMasterTable extends Migration
         Schema::dropIfExists('entity__master_jobs');
         Schema::dropIfExists('entity__master_earnings');
         Schema::dropIfExists('entity__master_homes');
+        Schema::dropIfExists('entity__master_years');
+        Schema::dropIfExists('entity__master_ladders');
+        Schema::dropIfExists('entity__master_schools');
+        Schema::dropIfExists('entity__master_subjects');
     }
 }

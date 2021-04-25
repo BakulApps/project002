@@ -46,6 +46,11 @@ return [
             'provider' => 'portals'
         ],
 
+        'graduate' => [
+            'driver' => 'session',
+            'provider' => 'graduates'
+        ],
+
         'exam' => [
             'driver' => 'session',
             'provider' => 'exams',
@@ -89,6 +94,11 @@ return [
         'portals' => [
             'driver' => 'eloquent',
             'model' => App\Models\Portal\User::class
+        ],
+
+        'graduates' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Graduate\User::class
         ],
 
         'exams' => [
