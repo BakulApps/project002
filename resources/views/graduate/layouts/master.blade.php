@@ -7,6 +7,7 @@
         var adminurl = "{{route('graduate.admin.home')}}";
     </script>
         @include('graduate.layouts.navbar')
+        @if(auth('graduate')->check())
         <div class="page-content">
             <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">
                 <div class="sidebar-mobile-toggler text-center">
@@ -33,11 +34,18 @@
                     @include('graduate.layouts.mainmenu')
                 </div>
             </div>
+            @endif
             <div class="content-wrapper">
+                @if(auth('graduate')->check())
                 @include('graduate.layouts.header')
                 <div class="content">
                     @yield('content')
                 </div>
+                @else
+                    <div class="content d-flex justify-content-center align-items-center">
+                        @yield('content')
+                    </div>
+                @endif
                 @include('graduate.layouts.footer')
             </div>
         </div>

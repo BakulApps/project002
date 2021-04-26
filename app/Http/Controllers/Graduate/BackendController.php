@@ -172,9 +172,9 @@ class BackendController extends Controller
                 }
             }
             elseif ($request->_type == 'store'){
-                $path = public_path() . '/storage/app/public/graduate/images/qr';
+                $path = storage_path('app/public/graduate/images/qr/');
                 if (!file_exists($path)){
-                    Storage::makeDirectory($path);
+                    mkdir($path, 0777);
                 }
                 else {
                     $files = glob($path . '*.png');
@@ -304,5 +304,10 @@ class BackendController extends Controller
         else {
             return view('graduate.backend.setting', $this->data);
         }
+    }
+
+    public function test()
+    {
+        return storage_path('app/public/graduate/images/qr/');
     }
 }

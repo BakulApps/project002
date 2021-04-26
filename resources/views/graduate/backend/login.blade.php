@@ -35,12 +35,12 @@
                     <div class="card-body">
                         <div class="text-center">
                             <div class="card-img-actions d-inline-block mb-2">
-                                <img src="{{asset('storage/grauduate/images/'.$school->value('school_logo'))}}" width="120" height="115" alt="">
+                                <img src="{{asset('storage/graduate/images/'.$setting->value('school_logo'))}}" width="120" height="115" alt="">
                             </div>
                         </div>
                         <div class="text-center mb-4">
                             <h6 class="font-weight-semibold mb-0">Halaman Administrator</h6>
-                            <span class="d-block text-muted">{{$school->name(false)}}</span>
+                            <span class="d-block text-muted">{{$school->name()}}</span>
                         </div>
                         @if(session('msg'))
                             @php($msg = session('msg'))

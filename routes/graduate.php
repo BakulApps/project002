@@ -6,6 +6,7 @@ Route::match(['get', 'post'], '/', 'FrontedController@home')->name('graduate.hom
 Route::match(['get', 'post'], '/autentikasi/{uuid}', 'FrontedController@authentication')->name('graduate.home.authentication');
 Route::match(['get', 'post'], '/pengumuman', 'FrontedController@announcement')->name('graduate.announcement');
 Route::match(['get', 'post'], '/cetak', 'FrontedController@print')->name('graduate.print');
+Route::get('/test', 'FrontedController@test');
 Route::group(['prefix' => 'admin'], function (){
     Route::match(['get', 'post'], '/masuk', 'AuthController@login')->name('graduate.admin.login');
     Route::get('/keluar', 'AuthController@logout')->name('graduate.admin.logout');
@@ -19,5 +20,6 @@ Route::group(['prefix' => 'admin'], function (){
         Route::match(['get', 'post'], '/penilaian/ijasah', 'ValueController@certificate')->name('graduate.admin.value.certificate');
         Route::match(['get', 'post'], '/pengumuman', 'BackendController@announcement')->name('graduate.admin.announcement');
         Route::match(['get', 'post'], '/pengaturan', 'BackendController@setting')->name('graduate.admin.setting');
+        Route::get('/test', 'BackendController@test');
     });
 });

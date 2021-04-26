@@ -36,7 +36,7 @@ class School extends Model
         );
     }
 
-    static function name($full = true)
+    public function name($full = true)
     {
         $school = self::first();
         if ($full == true){

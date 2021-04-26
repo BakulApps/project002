@@ -1,4 +1,4 @@
-@extends('graduate.layouts.master')
+@extends('graduate.layouts.master', ['title' => 'Dashboard'])
 @section('content')
     <form class="login-form" action="{{route('graduate.home')}}" method="post">
         {{csrf_field()}}
@@ -6,12 +6,12 @@
             <div class="card-body">
                 <div class="text-center">
                     <div class="card-img-actions d-inline-block mb-2">
-                        <img src="{{asset('storage/images/logo_school.png')}}" width="105" height="100" alt="">
+                        <img src="{{asset('storage/graduate/images/'. $setting->value('school_logo'))}}" width="105" height="100" alt="">
                     </div>
                 </div>
                 <div class="text-center mb-4">
                     <h6 class="font-weight-bold mb-0">PENGUMUMAN KELULUSAN</h6>
-                    <span class="d-block text-muted">{{\App\Models\Master\School::name()}}</span>
+                    <span class="d-block text-muted">{{$school->name()}}</span>
                 </div>
                 @if(Session::has('msg'))
                     @php($msg = Session::get('msg'))

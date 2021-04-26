@@ -20,7 +20,7 @@ class CreateEntityExamTable extends Migration
             $table->integer('student_class');
             $table->string('student_username', 10);
             $table->string('student_password');
-            $table->json('student_schedule')->nullable();
+            $table->string('student_schedule')->nullable();
         });
 
         Schema::create('exam_entity__subjects', function (Blueprint $table){

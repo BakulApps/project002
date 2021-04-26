@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Graduate;
 
 use App\Http\Controllers\Controller;
+use App\Models\Graduate\Setting;
 use App\Models\Master\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->data['school'] = new School();
+        $this->data['setting'] = new Setting();
         $this->middleware('guest')->except('logout');
     }
 
