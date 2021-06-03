@@ -39,19 +39,12 @@
                         </tr>
                     </table>
                     <p class="font-weight-semibold">
-                        Telah mengikuti serangkain Kegiatan Ujian Tahun Pelajaran 2020/2021
+                        Telah mengikuti serangkaian Kegiatan Ujian Tahun Pelajaran 2020/2021
                         dan berdasarkan Kriteria Kelulusan {{$school->name()}} dinyatakan :
                     </p>
                     @if($announcement->announcement_status == 1)
                         <h2 class="bg-success font-weight-bold mb-3">LULUS</h2>
-                        <p>Untuk mencetak Surat Keterangan Lulus guna mendaftar ke jenjang selanjutnya, silahkan klik tombol dibawah ini.</p>
-                        <form action="{{route('graduate.print')}}" method="post">
-                            {{csrf_field()}}
-                            <input type="hidden" name="student_nisn" value="{{$student->student_nisn}}">
-                            <button type="submit" class="btn btn-sm btn-info" name="submit" value="skl">CETAK SKL</button>
-                            <button type="submit" class="btn btn-sm btn-info" name="submit" value="skl_un">CETAK SKL UN</button>
-                            <button type="submit" class="btn btn-sm btn-info" name="submit" value="photo">UNDUH FOTO</button>
-                        </form>
+                        <p>Demikian pengumuman ini dibuat dan untuk digunakan sebagaimana mmestinya</p>
                     @else
                         <h2 class="bg-danger font-weight-bold mb-3">NILAI BERMASALAH</h2>
                         <p class="text-center font-italic font-weight-bold text-danger">SILAHKAN UNTUK MENGHUBUNGI WALIKELAS</p>
