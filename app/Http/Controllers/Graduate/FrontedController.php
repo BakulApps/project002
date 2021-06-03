@@ -22,15 +22,23 @@ class FrontedController extends Controller
     }
     public function home(Request $request)
     {
-        if (Carbon::createFromFormat('d/m/Y H:i', $this->data['setting']->value('announcement_date')) <= Carbon::now()->format('d/m/Y H:i')){
+        if (Carbon::createFromFormat('d/m/Y H:i', $this->data['setting']->value('announcement_date')) >= Carbon::now()->format('d/m/Y H:i')){
             if ($request->submit == 'search'){
                 $student = Student::with('announcement')->where('student_nisn', $request->student_nisn)->first();
                 if ($student != null){
-                    $student->announcement->announcement_view = $student->announcement->announcement_view + 1;
-                    $student->announcement->save();
-                    $this->data['student'] = $student;
-                    $this->data['announcement'] = $student->announcement;
-                    return view('graduate.fronted.result', $this->data);
+                    if ($student->announcement->announcement_finance == 2){
+                        return redirect()->back()->with('msg', ['title' => 'Kesalahan!', 'class' => 'danger', 'text' => 'Anda belum menyelesaikan administrasi, silahkan menghubungi bendahara madrasah']);
+                    }
+                    elseif ($student->announcement->announcement_status == 2){
+                        return redirect()->back()->with('msg', ['title' => 'Kesalahan!', 'class' => 'danger', 'text' => 'Nilai anda masih bermasalah, silahkan hubungi walikelas']);
+                    }
+                    else {
+                        $student->announcement->announcement_view = $student->announcement->announcement_view + 1;
+                        $student->announcement->save();
+                        $this->data['student'] = $student;
+                        $this->data['announcement'] = $student->announcement;
+                        return view('graduate.fronted.result', $this->data);
+                    }
                 }
                 else {
 

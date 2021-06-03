@@ -54,36 +54,12 @@
 </table>
 <br><br>
 <span style="text-align: justify; font-size: 12px;">
-    Yang bersangkutan dinyatakan <span style="font-weight: bold"> LULUS </span>berdasarkan hasil keputusan Rapat Pleno Kelulusan Dewan Guru
-    {{$school->name(true)}}
-    pada hari Kamis, tanggal 4 Juli 2020, dengan nilai sebagai berikut :
+    Berdasarkan hasil keputusan Rapat Pleno Kelulusan Dewan Guru
+    {{$school->name(true)}} Yang bersangkutan dinyatakan
+    <span style="font-weight: bold"> LULUS </span>
+    pada hari Kamis, tanggal 3 Juli 2020
 </span>
-<br><br>
-<table>
-    <tr>
-        <td rowspan="2" style="border: 1px solid black; border-collapse: collapse; text-align: center; width: 5%">NO</td>
-        <td rowspan="2" style="border: 1px solid black; border-collapse: collapse; text-align: center; width: 65%">MATA PELAJARAN</td>
-        <td colspan="2" style="border: 1px solid black; border-collapse: collapse; text-align: center; width: 30%">NILAI</td>
-    </tr>
-    <tr>
-        <td style="border: 1px solid black; border-collapse: collapse; text-align: center">Pengetahuan</td>
-        <td style="border: 1px solid black; border-collapse: collapse; text-align: center">Keterampilan</td>
-    </tr>
-    @php($no = 1)
-    @foreach($subjects  as $subject)
-        <tr>
-            <td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{$no++}}</td>
-            <td style="border: 1px solid black; border-collapse: collapse;"> {{$subject->subject_name}}</td>
-            <td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{number_format($value_know[$subject->subject_id - 1])}}</td>
-            <td style="border: 1px solid black; border-collapse: collapse; text-align: center;">{{number_format($value_know[$subject->subject_id - 1])}}</td>
-        </tr>
-    @endforeach
-    <tr>
-        <td style="border: 1px solid black; border-collapse: collapse; text-align: center; font-weight: bold" colspan="2">TOTAL NILAI</td>
-        <td style="border: 1px solid black; border-collapse: collapse; text-align: center; font-weight: bold">{{array_sum($value_know)}}</td>
-        <td style="border: 1px solid black; border-collapse: collapse; text-align: center; font-weight: bold">{{array_sum($value_skill)}}</td>
-    </tr>
-</table>
+
 <br><br>
 <span style="text-align: justify; font-size: 12px; text-indent: 1.5cm">
     Surat Keterangan Lulus ini berlaku sementara sampai
