@@ -134,38 +134,11 @@ class FrontedController extends Controller
 
     public function test()
     {
-        $student = Student::with('announcement')->where('student_nisn', '0064710579')->first();
-        if ($student->announcement->announcement_finance == 1){
-            $this->data['subjects'] = Subject::OrderBy('subject_number', 'ASC')->get();
-            $this->data['student'] = $student;
-            $this->data['announcement'] = $student->announcement;
-            $this->data['value_know'] = json_decode($student->announcement->announcement_value_know);
-            $this->data['value_skill'] = json_decode($student->announcement->announcement_value_skill);
-            $student->announcement->update([
-                'announcement_print' => $student->announcement->announcement_print + 1
-            ]);
-            $student->announcement->save();
-
-            $cert = 'file://'. realpath(storage_path('app/cert/selfcert.pem'));
-            $key = 'file://'. realpath(storage_path('app/cert/enc_key.pem'));
-            $info = array(
-                'Name' => 'Kepala MTs. Darul Hikmah Menganti',
-                'Reason' => 'Surat Keterangan Lulus TP. 2021/2022',
-                'Location' => 'MTs. Darul Hikmah Menganti',
-                'ContactInfo' => 'mts@darul-hikmah.sch.id',
-            );
-            return view('graduate.fronted.skl_template', $this->data);
-
-//            $view = view('graduate.fronted.skl_template', $this->data)->render();
-//            TCPDF::setSignature($cert, $key, 'myu2nnmd', '', 2, $info);
-//            TCPDF::SetFont('times', '', 12);
-//            TCPDF::SetMargins(1, 1, 1);
-//            TCPDF::SetAutoPageBreak(true, 0);
-//            TCPDF::AddPage();
-//            TCPDF::writeHTML($view, true, 0, true, 0, '');
-//            TCPDF::setSignatureAppearance(1, 8.3, 5.1, 4.1);
-//            TCPDF::Output('skl-'. $student->student_nisn .'.pdf');
-//            TCPDF::reset();
+        if (Carbon::createFromFormat('d/m/Y H:i', $this->data['setting']->value('announcement_date')) > Carbon::now()->format('Y-m-d H:i:s')){
+            return "benar";
+        }
+        else {
+            return "salah";
         }
     }
 }

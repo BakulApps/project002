@@ -44,7 +44,7 @@
                     </p>
                     @if($announcement->announcement_status == 1)
                         <h2 class="bg-success font-weight-bold mb-3">LULUS</h2>
-                        <p>Demikian pengumuman ini dibuat dan untuk digunakan sebagaimana mmestinya</p>
+                        <p>Demikian pengumuman ini dibuat dan untuk digunakan sebagaimana mestinya</p>
                     @else
                         <h2 class="bg-danger font-weight-bold mb-3">NILAI BERMASALAH</h2>
                         <p class="text-center font-italic font-weight-bold text-danger">SILAHKAN UNTUK MENGHUBUNGI WALIKELAS</p>
