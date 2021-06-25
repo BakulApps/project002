@@ -1,4 +1,4 @@
-var eventcreate = function () {
+var eventedit = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')};
 
     var _componentSubmit = function () {
@@ -20,7 +20,7 @@ var eventcreate = function () {
 
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/kegiatan/buat',
+                url : baseurl + '/kegiatan/' + $('#event_id').val() + '/ubah',
                 type: 'post',
                 dataType: 'json',
                 data: fd,
@@ -51,7 +51,6 @@ var eventcreate = function () {
 
     var _componentEditor = function () {
         $('#event_content').summernote({
-
             tabsize: 1,
             height: 400
         });
@@ -97,5 +96,5 @@ var eventcreate = function () {
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    eventcreate.init();
+    eventedit.init();
 });

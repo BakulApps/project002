@@ -26,23 +26,17 @@ class PortalTableSeeder extends Seeder
      */
     public function run()
     {
-        Event::factory(10)->create();
-        $post = Post::factory(30)->create();
 //        Slider::factory(10)->create();
 //        Program::factory(4)->create();
-        Extracurricular::factory(7)->create();
-        Facility::factory(10)->create();
-        Testimonial::factory(5)->create();
-        Tag::factory(10)->create();
-        Role::factory(2)->create();
+//        Event::factory(10)->create();
+//        $post = Post::factory(30)->create();
+//        Extracurricular::factory(7)->create();
+//        Facility::factory(10)->create();
+//        Testimonial::factory(5)->create();
+//        Tag::factory(10)->create();
+//        Role::factory(2)->create();
         User::factory(2)->create();
-        Comment::factory(20)->create();
-
-        $post->each(function ($post){
-            $post->tag()->attach(['post_id' => $post->post_id], ['tag_id' => 10]);
-            $post->comment()->attach(['post_id' => $post->post_id], ['comment_id' => 8]);
-        });
-
+//        Comment::factory(20)->create();
 
         $section = [
             ['home_section_program', '1'],
@@ -91,7 +85,9 @@ class PortalTableSeeder extends Seeder
 
         $setting = [
             ['app_name', 'PORTAL RESMI'],
-            ['school_logo', 'storage/portal/fronted/images/logo.png'],
+            ['app_logo', ''],
+            ['app_desc', 'Website MTs Darul Hikmah Menganti Merupakan Media Informasi dan Komunikasi Guna Pelayanan yang Lebih Optimal.'],
+            ['school_logo', ''],
             ['school_name', 'MTs. DARUL HIKMAH MENGANTI'],
             ['school_address', 'Jl. Bugel - Jepara KM 7'],
             ['school_village', 'Menganti'],
@@ -101,9 +97,7 @@ class PortalTableSeeder extends Seeder
             ['school_operational ', 'Senin s/d Sabtu 07:00 - 14:00'],
             ['school_phone', '+62 8222 9366 506'],
             ['school_email', 'mts@darul-hikmah.sch.id'],
-            ['header_logo', 'storage/portal/fronted/images/logo-2.png'],
-            ['footer_logo', 'storage/portal/fronted/images/logo-2.png'],
-            ['footer_desc', 'Website MTs Darul Hikmah Menganti Merupakan Media Informasi dan Komunikasi Guna Pelayanan yang Lebih Optimal.'],
+
 
         ];
 

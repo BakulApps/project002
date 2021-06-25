@@ -11,46 +11,18 @@ var settingjs = function () {
 
     var _componentSubmit = function () {
         $('#app').click(function () {
+            var fd      = new FormData();
+            var files   = $('#app_logo')[0].files[0];
+            if (files !== undefined){
+                fd.append('app_logo', files);
+            }
+            fd.append('_type', 'app');
+            fd.append('_data', 'setting');
+            fd.append('app_name', $('#app_name').val());
+            fd.append('app_desc', $('#app_desc').val());
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/pengaturan',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    'set_name' : 'app',
-                    'app_name' : $('#app_name').val()
-                },
-                success: function (resp) {
-                    new PNotify({
-                        title: resp['title'],
-                        text: resp['text'],
-                        addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
-                    });
-                }
-            });
-        });
-        $('#submit').click(function () {
-            var fd      = new FormData();
-            var files   = $('#user_image')[0].files[0];
-
-            if (files !== undefined){
-
-                fd.append('user_image', files);
-            }
-            fd.append('_type', 'update');
-            fd.append('user_id', $('#user_id').val());
-            fd.append('user_fullname', $('#user_fullname').val());
-            fd.append('user_name', $('#user_name').val());
-            fd.append('user_pass', $('#user_pass').val());
-            fd.append('user_email', $('#user_email').val());
-            fd.append('user_role', $('#user_role').val());
-            fd.append('user_facebook', $('#user_facebook').val());
-            fd.append('user_instagram', $('#user_instagram').val());
-            fd.append('user_twitter', $('#user_twitter').val());
-            fd.append('user_desc', $('#user_desc').val());
-            $.ajax({
-                headers: csrf_token,
-                url: baseurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: fd,
@@ -68,7 +40,7 @@ var settingjs = function () {
     }
 
     var _componentFileUpload = function () {
-        $('.form-control-uniform-custom').uniform({
+        $('#user_image').uniform({
             fileButtonHtml: 'Pilih Berkas',
             fileDefaultHtml: 'Tidak ada berkas',
             fileButtonClass: 'action btn bg-blue',
@@ -78,6 +50,19 @@ var settingjs = function () {
             var reader = new FileReader()
             reader.onload = function (){
                 $('.image-view').attr('src', reader.result);
+            }
+            reader.readAsDataURL(file);
+        });
+        $('#app_logo').uniform({
+            fileButtonHtml: 'Pilih Berkas',
+            fileDefaultHtml: 'Tidak ada berkas',
+            fileButtonClass: 'action btn bg-blue',
+            selectClass: 'uniform-select bg-pink-400 border-pink-400'
+        }).change(function (){
+            var file = $('#app_logo')[0].files[0];
+            var reader = new FileReader()
+            reader.onload = function (){
+                $('.image-app-view').attr('src', reader.result);
             }
             reader.readAsDataURL(file);
         });

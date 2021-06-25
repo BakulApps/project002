@@ -3,7 +3,7 @@
     @if($sliders->count() >= 1)
     <section id="slider-part" class="slider-active">
         @foreach($sliders as $slider)
-        <div class="single-slider bg_cover pt-150" style="background-image: url({{asset('storage/portal/fronted/images/slider/'. $slider->slider_image)}})" data-overlay="4">
+        <div class="single-slider bg_cover pt-150" style="background-image: url({{asset('storage/portal/images/slider/'. $slider->slider_image)}})" data-overlay="4">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-7 col-lg-9">
@@ -40,7 +40,7 @@
                                 <a href="{{$program->program_link}}">
                                     <span class="singel-category text-center color-1">
                                         <span class="icon">
-                                            <img src="{{asset('storage/portal/fronted/images/program/'. $program->program_image)}}" alt="Icon">
+                                            <img src="{{asset('storage/portal/images/program/'. $program->program_image)}}" alt="Icon">
                                         </span>
                                         <span class="cont">
                                             <span>{{$program->program_name}}</span>
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="about-bg">
-            <img src="{{asset('storage/portal/fronted/images/'. $section->value('home_section_about_image'))}}" alt="About">
+            <img src="{{asset('storage/portal/images/home/'. $section->value('home_section_about_image'))}}" alt="About">
         </div>
     </section>
     <section id="apply-aprt" class="pb-120">
@@ -343,6 +343,7 @@
                 </div>
             </div>
             <div class="row">
+                @if(isset($post_single))
                 <div class="col-lg-6">
                     <div class="singel-news mt-30">
                         <div class="news-thum pb-25">
@@ -358,6 +359,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="col-lg-6">
                     @foreach($posts as $post)
                     <div class="singel-news news-list">

@@ -15,19 +15,19 @@ class CreateEntityPortalsTable extends Migration
     {
         Schema::create('portal_entity__sliders', function (Blueprint $table) {
             $table->id('slider_id');
-            $table->string('slider_title',100);
-            $table->mediumText('slider_content');
+            $table->string('slider_title',100)->nullable();
+            $table->mediumText('slider_content')->nullable();
             $table->string('slider_button_link_1', 100)->nullable();
             $table->string('slider_button_name_1', 50)->nullable();
             $table->string('slider_button_link_2', 100)->nullable();
             $table->string('slider_button_name_2', 50)->nullable();
-            $table->string('slider_image');
-            $table->boolean('slider_status');
+            $table->string('slider_image')->nullable();
+            $table->boolean('slider_status')->default(0)->nullable();
         });
 
         Schema::create('portal_entity__programs', function (Blueprint $table) {
             $table->id('program_id');
-            $table->string('program_name',100);
+            $table->string('program_name',100)->nullable();
             $table->mediumText('program_desc')->nullable();
             $table->string('program_link')->nullable();
             $table->string('program_image');
@@ -59,18 +59,18 @@ class CreateEntityPortalsTable extends Migration
 
         Schema::create('portal_entity__sections', function (Blueprint $table) {
             $table->id('section_id');
-            $table->string('section_name', 100);
-            $table->mediumText('section_content');
+            $table->string('section_name', 100)->nullable();
+            $table->mediumText('section_content')->nullable();
         });
 
         Schema::create('portal_entity__events', function (Blueprint $table) {
             $table->id('event_id');
             $table->string('event_image', 100)->nullable();
-            $table->string('event_title', 100);
-            $table->mediumText('event_content');
-            $table->string('event_place', 100);
-            $table->date('event_date_start');
-            $table->date('event_date_end');
+            $table->string('event_title', 100)->nullable();
+            $table->mediumText('event_content')->nullable();
+            $table->string('event_place', 100)->nullable();
+            $table->date('event_date_start')->nullable();
+            $table->date('event_date_end')->nullable();
             $table->string('event_galery')->nullable();
         });
 

@@ -29,7 +29,7 @@ class FrontedController extends Controller
         $this->data['meta'] = (object) [
             'title'         => $this->setting->value('app_name'),
             'description'   => 'Portal Resmi MTs. Darul Hikmah Menganti',
-            'keyword'       => 'Porta, portal resmi, madrasah, madrasah tsanawiyah, mts darul hikmah, mts darul hikmah menganti',
+            'keyword'       => 'Portal, portal resmi, madrasah, madrasah tsanawiyah, mts darul hikmah, mts darul hikmah menganti',
             'author'        => 'MTs. Darul Hikmah Menganti'
         ];
         $this->data['title'] = $this->setting->value('app_name') .' - '. $this->setting->value('school_name');

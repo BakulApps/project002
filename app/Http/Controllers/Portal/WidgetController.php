@@ -8,6 +8,7 @@ use App\Models\Portal\Program;
 use App\Models\Portal\Setting;
 use App\Models\Portal\Slider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -30,7 +31,7 @@ class WidgetController extends Controller
                         $no++,
                         $slider->slider_title,
                         $slider->slider_content,
-                        '<img src="'.asset('storage/portal/fronted/images/slider/'.$slider->slider_image).'" style="width: 120px"/>',
+                        '<img src="'.asset('storage/portal/images/slider/'.$slider->slider_image).'" style="width: 120px"/>',
                         $slider->slider_status == 1 ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tdk Aktif</span>',
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $slider->slider_id .'"><i class="icon-pencil"></i></button>
@@ -45,57 +46,73 @@ class WidgetController extends Controller
                 $msg = Slider::where('slider_id', $request->slider_id)->first();
             }
             elseif ($request->_type == 'store'){
-                $validator = Validator::make($request->all(), [
-                    'slider_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
                 try {
-                    if ($request->hasFile('slider_image')){
-                        $file = $request->file('slider_image');
-                        $file->store('public/portal/fronted/images/slider');
+                    $validator = Validator::make($request->all(), [
+                        'slider_title' => 'required',
+                        'slider_image' => 'required|mimes:jpg,jpeg,png|max:512'
+                    ], [
+                        'slider_title.required' => 'Kolom judul tidak boleh kosong.',
+                        'slider_image.max' => 'Ukuran gambar maksimal 512Kb',
+                        'mslider_image.imes' => 'format gambar harus jpg/jpeg/png',
+                        'slider_image.required' => 'Gambar slider kosong, silahkan pilih gambar.'
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
-                    $slider = new Slider();
-                    $slider->slider_image          = isset($file) ? $file->hashName() : null;
-                    $slider->slider_title          = $request->slider_title;
-                    $slider->slider_content        = $request->slider_content;
-                    $slider->slider_button_link_1  = $request->slider_button_link_1;
-                    $slider->slider_button_name_1  = $request->slider_button_name_1;
-                    $slider->slider_button_link_2  = $request->slider_button_link_2;
-                    $slider->slider_button_name_2  = $request->slider_button_name_2;
-                    $slider->slider_status     = $request->slider_status;
-                    if ( $slider->save()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil disimpan.'];
+                    else {
+                        if ($request->hasFile('slider_image')){
+                            $file = $request->file('slider_image');
+                            $file->store('public/portal/images/slider');
+                        }
+                        $slider = new Slider();
+                        $slider->slider_image          = $file->hashName();
+                        $slider->slider_title          = $request->slider_title;
+                        $slider->slider_content        = $request->slider_content;
+                        $slider->slider_button_link_1  = $request->slider_button_link_1;
+                        $slider->slider_button_name_1  = $request->slider_button_name_1;
+                        $slider->slider_button_link_2  = $request->slider_button_link_2;
+                        $slider->slider_button_name_2  = $request->slider_button_name_2;
+                        $slider->slider_status     = $request->slider_status;
+                        if ( $slider->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil disimpan.'];
+                        }
                     }
                 }catch (\Exception $e){
-                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             elseif ($request->_type == 'update'){
-                $validator = Validator::make($request->all(), [
-                    'slider_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
                 try {
-                    $slider = Slider::find($request->slider_id);
-                    if ($request->hasFile('slider_image')){
-                        $file = $request->file('slider_image');
-                        $file->store('public/portal/fronted/images/slider');
-                        Storage::delete('public/portal/fronted/images/slider/'. $slider->slider_image);
-                        $slider->slider_image          = $file->hashName();
+                    $validator = Validator::make($request->all(), [
+                        'slider_title' => 'required',
+                        'slider_image' => 'mimes:jpg,jpeg,png|max:512'
+                    ], [
+                        'slider_title.required' => 'Kolom judul tidak boleh kosong.',
+                        'slider_image.max' => 'Ukuran gambar maksimal 512Kb',
+                        'mslider_image.imes' => 'format gambar harus jpg/jpeg/png',
+                        'slider_image.required' => 'Gambar slider kosong, silahkan pilih gambar.'
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
-                    $slider->slider_title          = $request->slider_title;
-                    $slider->slider_content        = $request->slider_content;
-                    $slider->slider_button_link_1  = $request->slider_button_link_1;
-                    $slider->slider_button_name_1  = $request->slider_button_name_1;
-                    $slider->slider_button_link_2  = $request->slider_button_link_2;
-                    $slider->slider_button_name_2  = $request->slider_button_name_2;
-                    $slider->slider_status     = $request->slider_status;
-                    if ( $slider->save()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil diperbarui.'];
+                    else {
+                        $slider = Slider::find($request->slider_id);
+                        if ($request->hasFile('slider_image')){
+                            $file = $request->file('slider_image');
+                            Storage::delete('public/portal/images/slider/'. $slider->slider_image);
+                            $file->store('public/portal/images/slider');
+                            $slider->slider_image          = $file->hashName();
+                        }
+                        $slider->slider_title          = $request->slider_title;
+                        $slider->slider_content        = $request->slider_content;
+                        $slider->slider_button_link_1  = $request->slider_button_link_1;
+                        $slider->slider_button_name_1  = $request->slider_button_name_1;
+                        $slider->slider_button_link_2  = $request->slider_button_link_2;
+                        $slider->slider_button_name_2  = $request->slider_button_name_2;
+                        $slider->slider_status     = $request->slider_status;
+                        if ( $slider->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil diperbarui.'];
+                        }
                     }
                 }catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
@@ -105,7 +122,7 @@ class WidgetController extends Controller
                 try {
                     $slider = Slider::find($request->slider_id);
                     if ($slider->delete()){
-                        Storage::delete('public/portal/fronted/images/slider/'. $slider->slider_image);
+                        Storage::delete('public/portal/images/slider/'. $slider->slider_image);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Slider berhasil dihapus.'];
                     }
                 }catch (\Exception $e){
@@ -129,7 +146,7 @@ class WidgetController extends Controller
                         $no++,
                         $program->program_name,
                         $program->program_desc,
-                        '<img src="'.asset('storage/portal/fronted/images/program/'. $program->program_image).'" style="width: 64"/>',
+                        '<img src="'.asset('storage/portal/images/program/'. $program->program_image).'" style="width: 64"/>',
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $program->program_id .'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $program->program_id . '"><i class="icon-trash"></i></button>
@@ -143,49 +160,64 @@ class WidgetController extends Controller
                 $msg = Program::where('program_id', $request->program_id)->first();
             }
             elseif ($request->_type == 'store'){
-                $validator = Validator::make($request->all(), [
-                    'program_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
                 try {
-                    if ($request->hasFile('program_image')){
-                        $file = $request->file('program_image');
-                        $file->store('public/portal/fronted/images/program/');
+                    $validator = Validator::make($request->all(), [
+                        'program_name' => 'required',
+                        'program_image' => 'required|mimes:jpg,jpeg,png|max:512'
+                    ], [
+                        'program_name.required' => 'Kolom nama program tidak boleh kosong.',
+                        'program_image.required' => 'Gambar program tidak boleh kosong.',
+                        'program_image.mimes' => 'Gambar harus berformat jpg/jpeg/png.',
+                        'program_image.max' => 'Ukuran maksimal gambar 512Kb.',
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
-                    $program = new Program();
-                    $program->program_image = isset($file) ? $file->hashName() : null;
-                    $program->program_name  = $request->program_name;
-                    $program->program_desc  = $request->program_desc;
-                    $program->program_link  = $request->program_link;
-                    if ( $program->save()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil disimpan.'];
+                    else {
+                        if ($request->hasFile('program_image')){
+                            $file = $request->file('program_image');
+                            $file->store('public/portal/images/program/');
+                        }
+                        $program = new Program();
+                        $program->program_image = $file->hashName();
+                        $program->program_name  = $request->program_name;
+                        $program->program_desc  = $request->program_desc;
+                        $program->program_link  = $request->program_link;
+                        if ( $program->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil disimpan.'];
+                        }
                     }
                 }catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             elseif ($request->_type == 'update'){
-                $validator = Validator::make($request->all(), [
-                    'program_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
                 try {
-                    $program = Program::find($request->program_id);
-                    if ($request->hasFile('program_image')){
-                        $file = $request->file('program_image');
-                        $file->store('public/portal/fronted/images/program/');
-                        Storage::delete('public/portal/fronted/images/program/'. $program->program_image);
-                        $program->program_image = $file->hashName();
+                    $validator = Validator::make($request->all(), [
+                        'program_name' => 'required',
+                        'program_image' => 'mimes:jpg,jpeg,png|max:512'
+                    ], [
+                        'program_name.required' => 'Kolom nama program tidak boleh kosong.',
+                        'program_image.mimes' => 'Gambar harus berformat jpg/jpeg/png.',
+                        'program_image.max' => 'Ukuran maksimal gambar 512Kb.',
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
-                    $program->program_name  = $request->program_name;
-                    $program->program_desc  = $request->program_desc;
-                    $program->program_link  = $request->program_link;
-                    if ( $program->save()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil diperbarui.'];
+                    else {
+                        $program = Program::find($request->program_id);
+                        if ($request->hasFile('program_image')){
+                            $file = $request->file('program_image');
+                            Storage::delete('public/portal/images/program/'. $program->program_image);
+                            $file->store('public/portal/images/program/');
+                            $program->program_image = $file->hashName();
+                        }
+                        $program->program_name  = $request->program_name;
+                        $program->program_desc  = $request->program_desc;
+                        $program->program_link  = $request->program_link;
+                        if ( $program->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil diperbarui.'];
+                        }
                     }
                 }catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
@@ -195,7 +227,7 @@ class WidgetController extends Controller
                 try {
                     $program = Program::find($request->program_id);
                     if ($program->delete()){
-                        Storage::delete('public/portal/fronted/images/program/'. $program->program_image);
+                        Storage::delete('public/portal/images/program/'. $program->program_image);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil dihapus.'];
                     }
                 }catch (\Exception $e){

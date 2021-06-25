@@ -5,7 +5,7 @@
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
 @section('jspage')
-    <script src="{{asset('assets/portal/backend/js/widget_program.js')}}"></script>
+    <script src="{{asset('assets/apps/portal/backend/js/widget_program.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Halaman</span>

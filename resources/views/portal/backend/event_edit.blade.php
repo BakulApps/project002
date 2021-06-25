@@ -1,6 +1,6 @@
-@extends('portal.backend.layouts.master')
+@extends('portal.backend.layouts.master', ['title' => 'Acara & Kegiatan'])
 
-@section('js')
+@section('jsplugin')
     <link href="{{asset('assets/js/plugins/summernote/summernote-bs4.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
@@ -9,8 +9,8 @@
     <script src="{{asset('assets/js/plugins/media/fancybox.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
 @endsection
-@section('jspage')
-    <script src="{{asset('assets/portal/backend/js/event_edit.js')}}"></script>
+@section('jsscript')
+    <script src="{{asset('assets/apps/portal/backend/js/event_edit.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Acara & Kegiatan</span>
