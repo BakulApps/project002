@@ -1,4 +1,4 @@
-@extends('portal.fronted.layouts.master')
+@extends('portal.fronted.layouts.master', ['title' => 'Artikel'])
 @section('content')
     <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{$section->value('article_section_title_bg')}})">
         <div class="container">
@@ -30,7 +30,7 @@
                                 <li><a href="#"><i class="fa fa-user"></i>{{$post->user->user_name}}</a></li>
                                 <li><a href="#"><i class="fa fa-tags"></i>{{$post->category->category_name}}</a></li>
                             </ul>
-                            <p style="text-align: justify">{{Str::limit($post->post_content, 250)}}</p>
+                            <p style="text-align: justify">{{strip_tags(Str::limit($post->post_content, 250))}}</p>
                         </div>
                     </div>
                     @endforeach
@@ -80,7 +80,7 @@
                                             <a href="{{route('potral.article.read', $popular->post_id)}}">
                                                 <div class="singel-post">
                                                     <div class="thum">
-                                                        <img src="{{asset($popular->post_image)}}" alt="Blog" style="height: 92px">
+                                                        <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Blog" style="height: 92px">
                                                     </div>
                                                     <div class="cont">
                                                         <h6>{{$popular->post_title}}</h6>

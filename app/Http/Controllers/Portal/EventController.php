@@ -75,34 +75,48 @@ class EventController extends Controller
     public function edit($id, Request $request)
     {
         if ($request->isMethod('post')){
+
             if ($request->_type == 'update'){
-                $validator = Validator::make($request->all(), [
-                    'event_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
-                else {
-                    try {
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'event_title' => 'required',
+                        'event_content' => 'required',
+                        'event_date_start' => 'required',
+                        'event_date_end' => 'required',
+                        'event_place' => 'required',
+                        'event_image' => 'mimes:jpg,jpeg,png|max:512'
+                    ],  [
+                        'event_title.required' => 'Kolom Judul Acara/KegiatanTidak boleh kosong.',
+                        'event_content.required' => 'Kolom Konten Acara/KegiatanTidak boleh kosong.',
+                        'event_date_start.required' => 'Kolom Tanggal Mulai Acara/KegiatanTidak boleh kosong.',
+                        'event_date_end.required' => 'Kolom Tanggal Selesai Acara/KegiatanTidak boleh kosong.',
+                        'event_place.required' => 'Kolom Tempat Acara/KegiatanTidak boleh kosong.',
+                        'event_image.mimes' => 'Gambar harus berformat jpg/jpeg/png',
+                        'event_image.max' => 'Ukuran maksimal gambar 512Kb.'
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
                         $event = Event::find($id);
                         if ($request->hasFile('event_image')){
                             $file = $request->file('event_image');
-                            Storage::delete('public/portal/fronted/images/event/'. $event->event_image);
-                            $file->store('public/portal/fronted/images/event');
+                            Storage::delete('public/portal/images/event/'. $event->event_image);
+                            $file->store('public/portal/images/event');
+                            $event->event_image       = $file->hashName();
                         }
-                        $event->event_image       = isset($file) ? $file->hashName() : null;
                         $event->event_title       = $request->event_title;
                         $event->event_content     = $request->event_content;
                         $event->event_date_start     = Carbon::createFromFormat('d/m/Y', $request->event_date_start)->format('Y-m-d');
                         $event->event_date_end      = Carbon::createFromFormat('d/m/Y', $request->event_date_end)->format('Y-m-d');
                         $event->event_place      = $request->event_place;
                         if ($event->save()){
-                            $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Postingan Berhasil diperbarui, anda akan dialihkan kehalaman Postingan'];
+                            $msg = ['status' => 'success', 'title' => 'Berhasil !', 'class' => 'success', 'text' => 'Acara/Kegiatan Berhasil diperbarui, anda akan dialihkan kehalaman Acara & Kegiatan'];
                         }
                     }
-                    catch (\Exception $e){
-                        $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
-                    }
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             return response()->json($msg);

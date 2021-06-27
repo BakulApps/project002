@@ -37,19 +37,52 @@ var settingjs = function () {
                 }
             });
         });
+        $('#school').click(function (){
+            var fd      = new FormData();
+            var files   = $('#school_logo')[0].files[0];
+            if (files !== undefined){
+                fd.append('school_logo', files);
+            }
+            fd.append('_type', 'school');
+            fd.append('_data', 'setting');
+            fd.append('school_name', $('#school_name').val());
+            fd.append('school_phone', $('#school_phone').val());
+            fd.append('school_email', $('#school_email').val());
+            fd.append('school_address', $('#school_address').val());
+            fd.append('school_village', $('#school_village').val());
+            fd.append('school_subdistric', $('#school_subdistric').val());
+            fd.append('school_distric', $('#school_distric').val());
+            fd.append('school_province', $('#school_province').val());
+            $.ajax({
+                headers: csrf_token,
+                url: baseurl + '/pengaturan',
+                type: 'post',
+                dataType: 'json',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (resp) {
+                    new PNotify({
+                        title: resp['title'],
+                        text: resp['text'],
+                        addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
+                    });
+                }
+            });
+        })
     }
 
     var _componentFileUpload = function () {
-        $('#user_image').uniform({
+        $('#school_logo').uniform({
             fileButtonHtml: 'Pilih Berkas',
             fileDefaultHtml: 'Tidak ada berkas',
             fileButtonClass: 'action btn bg-blue',
             selectClass: 'uniform-select bg-pink-400 border-pink-400'
         }).change(function (){
-            var file = $('#user_image')[0].files[0];
+            var file = $('#school_logo')[0].files[0];
             var reader = new FileReader()
             reader.onload = function (){
-                $('.image-view').attr('src', reader.result);
+                $('.image-school-view').attr('src', reader.result);
             }
             reader.readAsDataURL(file);
         });

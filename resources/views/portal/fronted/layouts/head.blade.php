@@ -7,7 +7,7 @@
     {!! isset($meta->keyword) ? '<meta name="keyword" content="'. $meta->keyword .'">': null !!}
     {!! isset($meta->author) ? '<meta name="author" content="'. $meta->author .'">': null !!}
 
-    <title>{{$title}}</title>
+    <title>{{!isset($title) ? $setting->value('app_name') .' - '. $setting->value_school_name : $title .' - '. $setting->value('app_name')}}</title>
 
     <link rel="shortcut icon"
           href="{{asset($setting->value('school_logo') == null ? 'assets/apps/portal/fronted/images/placeholder.jpg' : 'storage/portal/images/' . $setting->value('school_logo'))}}" type="image/png">

@@ -1,4 +1,4 @@
-@extends('portal.fronted.layouts.master')
+@extends('portal.fronted.layouts.master', ['title' => $post->post_title])
 @section('content')
     <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($section->value('article_section_title_bg'))}})">
         <div class="container">
@@ -24,7 +24,7 @@
                 <div class="col-lg-8">
                     <div class="blog-details mt-30">
                         <div class="thum">
-                            <img src="{{asset($post->post_image)}}" alt="Blog Details" style="width: 772px">
+                            <img src="{{asset($post->image == null ?'assets/apps/portal/fronted/images/bg/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="Blog Details" style="width: 772px">
                         </div>
                         <div class="cont">
                             <h3>{{$post->post_title}}</h3>
@@ -33,7 +33,7 @@
                                 <li><a href="#"><i class="fa fa-user"></i>{{$post->user->user_name}}</a></li>
                                 <li><a href="#"><i class="fa fa-tags"></i>{{$post->category->category_name}}</a></li>
                             </ul>
-                            <p style="text-align: justify">{{$post->post_content}}</>
+                            <p style="text-align: justify">{!! $post->post_content !!}</p>
                             <ul class="share">
                                 <li class="title">Share :</li>
                                 <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
@@ -152,10 +152,10 @@
                                                 <a href="{{route('potral.article.read', $popular->post_id)}}">
                                                     <div class="singel-post">
                                                         <div class="thum">
-                                                            <img src="{{asset($popular->post_image)}}" alt="Blog" style="height: 92px">
+                                                            <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Blog" style="height: 92px">
                                                         </div>
                                                         <div class="cont">
-                                                            <h6>{{$popular->post_title}}</h6>
+                                                            <p>{{$popular->post_title}}</p>
                                                             <span>{{$popular->created_at()}}</span>
                                                         </div>
                                                     </div>

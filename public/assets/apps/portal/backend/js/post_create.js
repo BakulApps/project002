@@ -7,7 +7,7 @@ var postcreate = function () {
             var files   = $('#post_image')[0].files[0];
             var comment = $('#post_comment:checked').val();
 
-            fd.append('_type', 'create');
+            fd.append('_type', 'store');
             fd.append('post_status', 0)
             if (files !== undefined){
 
@@ -38,9 +38,11 @@ var postcreate = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    setTimeout(function (){
-                        window.location.href = baseurl + '/postingan'
-                    }, 2000);
+                    if (resp.status === 'success'){
+                        setTimeout(function (){
+                            window.location.href = baseurl + '/postingan'
+                        }, 2000);
+                    }
                 }
             })
         });
@@ -49,7 +51,7 @@ var postcreate = function () {
             var files   = $('#post_image')[0].files[0];
             var comment = $('#post_comment:checked').val();
 
-            fd.append('_type', 'create');
+            fd.append('_type', 'store');
             fd.append('post_status', 1)
             if (files !== undefined){
 
@@ -80,9 +82,11 @@ var postcreate = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    setTimeout(function (){
-                        window.location.href = baseurl + '/postingan'
-                    }, 2000);
+                    if (resp.status){
+                        setTimeout(function (){
+                            window.location.href = baseurl + '/postingan'
+                        }, 2000);
+                    }
                 }
             })
         });

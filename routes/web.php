@@ -38,6 +38,9 @@ Route::group(['prefix' => 'administrator'], function (){
         Route::match(['get', 'post'],'/widget/slider', 'WidgetController@slider')->name('portal.admin.widget.slider');
         Route::match(['get', 'post'],'/widget/program', 'WidgetController@program')->name('portal.admin.widget.program');
         Route::match(['get', 'post'],'/widget/ekstrakurikuler', 'WidgetController@extracurricular')->name('portal.admin.widget.extracurricular');
+        Route::match(['get', 'post'],'/widget/guru', 'WidgetController@teacher')->name('portal.admin.widget.teacher');
+        Route::match(['get', 'post'],'/widget/fasilitas', 'WidgetController@facility')->name('portal.admin.widget.facility');
+        Route::match(['get', 'post'],'/widget/testimoni', 'WidgetController@testimonial')->name('portal.admin.widget.testimonial');
         Route::match(['get', 'post'],'/komentar', 'CommentController@all')->name('portal.admin.comment.all');
         Route::match(['get', 'post'],'/komentar/{id}/lihat', 'CommentController@detail')->name('portal.admin.comment.detail');
         Route::match(['get', 'post'],'/pengguna', 'UserController@all')->name('portal.admin.user');

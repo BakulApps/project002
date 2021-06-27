@@ -33,12 +33,20 @@ class CreateEntityPortalsTable extends Migration
             $table->string('program_image');
         });
 
+        Schema::create('portal_entity__teachers', function (Blueprint $table){
+            $table->id('teacher_id');
+            $table->string('teacher_name', 100)->nullable();
+            $table->string('teacher_job', 100)->nullable();
+            $table->string('teacher_link', 200)->nullable();
+            $table->string('teacher_image')->nullable();
+        });
+
         Schema::create('portal_entity__extracurriculars', function (Blueprint $table) {
             $table->id('extracurricular_id');
             $table->string('extracurricular_name',100);
             $table->mediumText('extracurricular_desc')->nullable();
             $table->string('extracurricular_link')->nullable();
-            $table->string('extracurricular_image');
+            $table->string('extracurricular_image')->nullable();
         });
 
         Schema::create('portal_entity__facilities', function (Blueprint $table) {
@@ -54,7 +62,7 @@ class CreateEntityPortalsTable extends Migration
             $table->string('testimonial_name',100);
             $table->string('testimonial_job');
             $table->mediumText('testimonial_desc')->nullable();
-            $table->string('testimonial_image');
+            $table->string('testimonial_image')->nullable();
         });
 
         Schema::create('portal_entity__sections', function (Blueprint $table) {
@@ -77,12 +85,12 @@ class CreateEntityPortalsTable extends Migration
         Schema::create('portal_entity__posts', function (Blueprint $table) {
             $table->id('post_id');
             $table->string('post_image')->nullable();
-            $table->integer('post_author');
-            $table->integer('post_category');
-            $table->string('post_title');
-            $table->text('post_content');
-            $table->boolean('post_comment');
-            $table->boolean('post_status');
+            $table->integer('post_author')->nullable();
+            $table->integer('post_category')->nullable();
+            $table->string('post_title')->nullable();
+            $table->text('post_content')->nullable();
+            $table->boolean('post_comment')->default(0)->nullable();
+            $table->boolean('post_status')->default(0)->nullable();
             $table->integer('post_read')->nullable();
             $table->timestamps();
         });

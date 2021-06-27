@@ -9,6 +9,8 @@ use App\Models\Portal\Setting;
 use App\Models\Portal\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -22,20 +24,30 @@ class PostController extends Controller
     public function create(Request $request)
     {
         if ($request->isMethod('post')){
-            if ($request->_type == 'create'){
-                $validator = Validator::make($request->all(), [
-                    'post_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
-                else {
-                    try {
+            if ($request->_type == 'store'){
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'post_title' => 'required',
+                        'post_category' => 'required',
+                        'post_tag' => 'required',
+                        'post_image' => 'mimes:jpg,jpeg,png|max:512'
+                    ], [
+                        'post_title.required' => 'Kolom Judul tidak boleh kosong.',
+                        'post_category.required' => 'Kolom Kategori tidak boleh kosong.',
+                        'post_tag.required' => 'Kolom Tagar tidak boleh kosong.',
+                        'post_image.mimes' => 'Gambar harus berformat jpg/jpeg/png',
+                        'post_image' => 'Ukuran maksimal gambar 512Kb',
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
                         $post = new Post();
                         if ($request->hasFile('post_image')){
-                            $file = $request->file('post_image')->store('public/blog');
+                            $file = $request->file('post_image');
+                            $file->store('public/portal/images/post/');
+                            $post->post_image       = $file->hashName();
                         }
-                        $post->post_image       = isset($file) ? asset('storage' . preg_replace("/public/", "", $file)) : null;
                         $post->post_author      = auth('portal')->user()->user_id;
                         $post->post_category    = $request->post_category;
                         $post->post_title       = $request->post_title;
@@ -45,12 +57,11 @@ class PostController extends Controller
                         if ($post->save()){
                             $tags = explode(',', $request->post_tag);
                             $post->tag()->attach($tags);
-                            $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Postingan Berhasil ditambahkan, anda akan dialihkan kehalaman Postingan'];
+                            $msg = ['status' => 'success', 'title' => 'Berhasil !', 'class' => 'success', 'text' => 'Postingan Berhasil ditambahkan, anda akan dialihkan kehalaman Postingan'];
                         }
                     }
-                    catch (\Exception $e){
-                        $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
-                    }
+                }catch (\Exception $e){
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             return response()->json($msg);
@@ -63,20 +74,30 @@ class PostController extends Controller
     public function edit(Request $request, $id){
         if ($request->isMethod('post')){
             if ($request->_type == 'update'){
-                $validator = Validator::make($request->all(), [
-                    'post_image' => 'mimes:jpg,jpeg,png|max:512|nullable'
-                ]);
-                if ($validator->fails()) {
-                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi jpg, jpeg, png dan Ukuran maksimal 512 Kb'];
-                }
-                else {
-                    try {
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'post_title' => 'required',
+                        'post_category' => 'required',
+                        'post_tag' => 'required',
+                        'post_image' => 'mimes:jpg,jpeg,png|max:512'
+                    ], [
+                        'post_title.required' => 'Kolom Judul tidak boleh kosong.',
+                        'post_category.required' => 'Kolom Kategori tidak boleh kosong.',
+                        'post_tag.required' => 'Kolom Tagar tidak boleh kosong.',
+                        'post_image.mimes' => 'Gambar harus berformat jpg/jpeg/png',
+                        'post_image' => 'Ukuran maksimal gambar 512Kb',
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
                         $post = Post::find($id);
                         $post->tag()->detach();
                         if ($request->hasFile('post_image')){
-                            $file = $request->file('post_image')->store('public/blog');
+                            $file = $request->file('post_image');
+                            $file->store('public/portal/images/post/');
+                            $post->post_image       = $file->hashName();
                         }
-                        $post->post_image       = isset($file) ? asset('storage' . preg_replace("/public/", "", $file)) : $post->post_image;
                         $post->post_author      = auth('portal')->user()->user_id;
                         $post->post_category    = $request->post_category;
                         $post->post_title       = $request->post_title;
@@ -86,12 +107,12 @@ class PostController extends Controller
                         if ($post->save()){
                             $tags = explode(',', $request->post_tag);
                             $post->tag()->attach($tags);
-                            $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Postingan Berhasil diperbarui, anda akan dialihkan kehalaman Postingan'];
+                            $msg = ['status' => 'success', 'title' => 'Berhasil !', 'class' => 'success', 'text' => 'Postingan Berhasil diperbarui, anda akan dialihkan kehalaman Postingan'];
                         }
                     }
-                    catch (\Exception $e){
-                        $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
-                    }
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             return response()->json($msg);
@@ -132,6 +153,7 @@ class PostController extends Controller
                     $post = Post::find($request->post_id);
                     $post->tag()->detach();
                     if ($post->delete()){
+                        Storage::delete('public/portal/fronted/images/event/'. $post->post_id);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Postingan berhasil dihapus.'];
                     }
                 }catch (\Exception $e){

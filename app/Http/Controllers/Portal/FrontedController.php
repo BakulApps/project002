@@ -14,6 +14,7 @@ use App\Models\Portal\Section;
 use App\Models\Portal\Setting;
 use App\Models\Portal\Slider;
 use App\Models\Portal\Tag;
+use App\Models\Portal\Teacher;
 use App\Models\Portal\Testimonial;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,6 @@ class FrontedController extends Controller
         $this->setting = new Setting();
         $this->data['setting'] = $this->setting;
         $this->data['meta'] = (object) [
-            'title'         => $this->setting->value('app_name'),
             'description'   => 'Portal Resmi MTs. Darul Hikmah Menganti',
             'keyword'       => 'Portal, portal resmi, madrasah, madrasah tsanawiyah, mts darul hikmah, mts darul hikmah menganti',
             'author'        => 'MTs. Darul Hikmah Menganti'
@@ -47,6 +47,7 @@ class FrontedController extends Controller
         $this->data['testimonials'] = Testimonial::all();
         $this->data['post_single'] = Post::first();
         $this->data['posts'] = Post::orderBy('created_at', 'DESC')->limit(3)->get();
+        $this->data['teachers'] = Teacher::orderBy('teacher_name', 'ASC')->limit(4)->get();
         return view('portal.fronted.home', $this->data);
     }
 

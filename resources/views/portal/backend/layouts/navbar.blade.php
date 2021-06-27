@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
         <a href="{{route('portal.admin.home')}}" class="d-inline-block">
-            <img src="{{asset('assets/images/logo_light.png')}}" alt="">
+            <img src="{{asset($setting->value('app_logo') == null ?'assets/images/logo_light.png' : 'storage/portal/images/' . $setting->value('app_logo'))}}" alt="">
         </a>
     </div>
     <div class="d-md-none">
@@ -24,7 +24,7 @@
         <ul class="navbar-nav navbar-right">
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{asset(auth('portal')->user()->user_image == null ? $setting->value('school_logo') : auth('portal')->user()->user_image)}}" class="rounded-circle mr-2" height="34" alt="">
+                    <img src="{{asset(auth('portal')->user()->user_image == null ? 'assets/apps/portal/fronted/images/placeholder.jpg' : auth('portal')->user()->user_image)}}" class="rounded-circle mr-2" height="34" alt="">
                     <span>{{strtoupper(auth('portal')->user()->user_fullname)}}</span>
                 </a>
 

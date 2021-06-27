@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="media">
                         <div class="mr-2">
-                            <a href="#"><img src="{{asset($setting->value('school_logo'))}}" width="40" height="40" alt=""></a>
+                            <a href="#"><img src="{{(asset($setting->value('school_logo') == null ? 'assets/apps/portal/fronted/images/placeholder.jpg' : 'storage/portal/images/' . $setting->value('school_logo')))}}" width="40" height="40" alt=""></a>
                         </div>
                         <div class="media-body">
                             <div class="media-title font-weight-semibold">{{$setting->value('school_name')}}</div>

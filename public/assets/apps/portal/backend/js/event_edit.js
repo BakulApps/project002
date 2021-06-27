@@ -32,9 +32,11 @@ var eventedit = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    setTimeout(function (){
-                        window.location.href = baseurl + '/kegiatan'
-                    }, 2000);
+                    if (resp.status === 'success'){
+                        setTimeout(function (){
+                            window.location.href = baseurl + '/kegiatan'
+                        }, 2000);
+                    }
                 }
             })
         });
@@ -50,10 +52,7 @@ var eventedit = function () {
     };
 
     var _componentEditor = function () {
-        $('#event_content').summernote({
-            tabsize: 1,
-            height: 400
-        });
+        $('#event_content').summernote('PasteHTML', $('#event_content').text());
         $('.note-image-input').uniform({
             fileButtonClass: 'action btn bg-warning-400'
         });

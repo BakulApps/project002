@@ -38,9 +38,11 @@ var postedit = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    setTimeout(function (){
-                        window.location.href = baseurl + '/postingan'
-                    }, 2000);
+                    if (resp.status === 'success'){
+                        setTimeout(function (){
+                            window.location.href = baseurl + '/postingan'
+                        }, 2000);
+                    }
                 }
             })
         });
@@ -80,9 +82,11 @@ var postedit = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    setTimeout(function (){
-                        window.location.href = baseurl + '/postingan'
-                    }, 2000);
+                    if (resp.status === 'success'){
+                        setTimeout(function (){
+                            window.location.href = baseurl + '/postingan'
+                        }, 2000);
+                    }
                 }
             })
         });

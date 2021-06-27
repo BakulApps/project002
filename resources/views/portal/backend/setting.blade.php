@@ -74,11 +74,24 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="card-bottom-school">
-                        <input type="hidden" name="_method" value="put">
+                        <div class="form-group row">
+                            <div class="col-sm-3 col-form-label">Logo Madrasah :</div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <a href="#">
+                                        <img class="card-img-top img-fluid image-school-view col-md-6"
+                                             src="{{asset($setting->value('school_logo') == null ? 'assets/apps/portal/backend/images/placeholder.jpg' : 'storage/portal/images/'.$setting->value('school_logo'))}}"
+                                             alt="">
+                                    </a>
+                                </div>
+                                <hr>
+                                <input type="file" id="school_logo" class="form-control-uniform-custom" required>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <div class="col-sm-3 col-form-label">Nama Madrasah :</div>
                             <div class="col-md-9">
-                                <input type="text" id="sschool_name" value="{{$setting->value('school_name')}}" class="form-control">
+                                <input type="text" id="school_name" value="{{$setting->value('school_name')}}" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -109,7 +122,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label>Kecamatan :</label>
-                                        <input type="text" id="school_village" value="{{$setting->value('school_subdistric')}}" class="form-control">
+                                        <input type="text" id="school_subdistric" value="{{$setting->value('school_subdistric')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>
@@ -120,11 +133,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Kabupaten :</label>
-                                        <input type="text" id="school_village" value="{{$setting->value('school_distric')}}" class="form-control">
+                                        <input type="text" id="school_distric" value="{{$setting->value('school_distric')}}" class="form-control">
                                     </div>
                                     <div class="col-md-6">
                                         <label>Propinsi :</label>
-                                        <input type="text" id="school_village" value="{{$setting->value('school_province')}}" class="form-control">
+                                        <input type="text" id="school_province" value="{{$setting->value('school_province')}}" class="form-control">
                                     </div>
                                 </div>
                             </div>

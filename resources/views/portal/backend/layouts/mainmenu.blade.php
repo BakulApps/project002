@@ -37,7 +37,9 @@
                 <li class="nav-item"><a href="{{route('portal.admin.widget.slider')}}" class="nav-link">Slider</a></li>
                 <li class="nav-item"><a href="{{route('portal.admin.widget.program')}}" class="nav-link">Program</a></li>
                 <li class="nav-item"><a href="{{route('portal.admin.widget.extracurricular')}}" class="nav-link">Ekstrakurikuler</a></li>
-                <li class="nav-item"><a href="{{route('portal.admin.post.tag')}}" class="nav-link">Tagar</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.widget.teacher')}}" class="nav-link">Guru</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.widget.facility')}}" class="nav-link">Fasilitas</a></li>
+                <li class="nav-item"><a href="{{route('portal.admin.widget.testimonial')}}" class="nav-link">Testimoni</a></li>
             </ul>
         </li>
 {{--        <li class="nav-item">--}}

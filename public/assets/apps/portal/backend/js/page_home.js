@@ -36,7 +36,7 @@ var pagehome = function () {
         });
         $('#youtube').click(function () {
             var fd      = new FormData();
-            var files   = $('#home_section_about_image')[0].files[0];
+            var files   = $('#home_section_yt_background')[0].files[0];
 
             if (files !== undefined){
 
@@ -44,6 +44,49 @@ var pagehome = function () {
             }
             fd.append('_data', 'youtube');
             fd.append('home_section_yt_youtube', $('#home_section_yt_youtube').val());
+            $.ajax({
+                headers: csrf_token,
+                url: baseurl + '/halaman/beranda',
+                type: 'post',
+                dataType: 'json',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (resp) {
+                    new PNotify({
+                        title: resp['title'],
+                        text: resp['text'],
+                        addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
+                    });
+                }
+            });
+        });
+        $('#section-4').click(function () {
+            var fd      = new FormData();
+            var home_section_4_icon_1   = $('#home_section_4_icon_1')[0].files[0];
+            var home_section_4_icon_2   = $('#home_section_4_icon_2')[0].files[0];
+            var home_section_4_icon_3   = $('#home_section_4_icon_3')[0].files[0];
+
+            if (home_section_4_icon_1 !== undefined){
+
+                fd.append('home_section_4_icon_1', home_section_4_icon_1);
+            }
+            if (home_section_4_icon_2 !== undefined){
+
+                fd.append('home_section_4_icon_2', home_section_4_icon_2);
+            }
+            if (home_section_4_icon_3 !== undefined){
+
+                fd.append('home_section_4_icon_3', home_section_4_icon_3);
+            }
+
+            fd.append('_data', 'section-4');
+            fd.append('home_section_4_title_1', $('#home_section_4_title_1').val());
+            fd.append('home_section_4_content_1', $('#home_section_4_content_1').val());
+            fd.append('home_section_4_title_2', $('#home_section_4_title_2').val());
+            fd.append('home_section_4_content_2', $('#home_section_4_content_2').val());
+            fd.append('home_section_4_title_3', $('#home_section_4_title_3').val());
+            fd.append('home_section_4_content_3', $('#home_section_4_content_3').val());
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/halaman/beranda',
