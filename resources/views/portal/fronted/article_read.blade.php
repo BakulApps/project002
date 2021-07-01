@@ -1,6 +1,6 @@
 @extends('portal.fronted.layouts.master', ['title' => $post->post_title])
 @section('content')
-    <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($post->image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}})">
+    <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($post->post_image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}})">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -24,7 +24,7 @@
                 <div class="col-lg-8">
                     <div class="blog-details mt-30">
                         <div class="thum">
-                            <img src="{{asset($post->image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="Blog Details" style="width: 772px">
+                            <img src="{{asset($post->post_image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="Blog Details" style="width: 772px">
                         </div>
                         <div class="cont">
                             <h3>{{$post->post_title}}</h3>
