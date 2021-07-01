@@ -20,7 +20,7 @@
                 </a>
             </li>
         </ul>
-        <a target="_blank" href="{{route('potral.home')}}" class="badge bg-success ml-md-3 mr-md-auto">Kunjungi Situs</a>
+        <a target="_blank" href="{{route('portal.home')}}" class="badge bg-success ml-md-3 mr-md-auto">Kunjungi Situs</a>
         <ul class="navbar-nav navbar-right">
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">

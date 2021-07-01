@@ -139,7 +139,7 @@ class PostController extends Controller
                         Carbon::parse($post->created_at)->format('d/m/Y'),
                         $post->post_status == 1 ? '<span class="badge badge-success">Terbit</span>' : '<span class="badge badge-danger">Arsip</span>',
                         '<div class="btn-group">
-                            <a class="btn btn-outline-primary bt-sm btn-show" target="_blank" href="'.route('potral.article.read', $post->post_id).'"><i class="icon-eye"></i></a>
+                            <a class="btn btn-outline-primary bt-sm btn-show" target="_blank" href="'.route('portal.article.read', $post->post_id).'"><i class="icon-eye"></i></a>
                             <a class="btn btn-outline-primary bt-sm btn-edit" href="'.route('portal.admin.post.edit', $post->post_id).'"><i class="icon-pencil"></i></a>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$post->post_id.'"><i class="icon-trash"></i></button>
                          </div>
