@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-4 col-md-4">
                 <div class="logo">
-                    <a href="{{route('potral.home')}}">
+                    <a href="{{route('portal.home')}}">
                         <img src="{{asset('storage/portal/images/'. $setting->value('app_logo'))}}" alt="Logo">
                     </a>
                 </div>

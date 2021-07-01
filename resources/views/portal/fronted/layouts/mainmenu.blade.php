@@ -11,7 +11,7 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a @if($page == 'home') class="active" @endif href="{{route('potral.home')}}">BERANDA</a>
+                                <a @if($page == 'home') class="active" @endif href="{{route('portal.home')}}">BERANDA</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#">PROFIL MADRASAH</a>
@@ -25,7 +25,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item"><a href="{{route('portal.event')}}">KEGIATAN</a></li>
-                            <li class="nav-item"><a href="{{route('potral.article')}}">ARTIKEL</a></li>
+                            <li class="nav-item"><a href="{{route('portal.article')}}">ARTIKEL</a></li>
                         </ul>
                     </div>
                 </nav>

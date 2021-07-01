@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'FrontedController@home')->name('potral.home');
-Route::get('/artikel', 'FrontedController@article')->name('potral.article');
-Route::match(['get', 'post'],'/artikel/{id}/lihat', 'FrontedController@article_read')->name('potral.article.read');
+Route::get('/', 'FrontedController@home')->name('portal.home');
+Route::get('/artikel', 'FrontedController@article')->name('portal.article');
+Route::match(['get', 'post'],'/artikel/{id}/lihat', 'FrontedController@article_read')->name('portal.article.read');
 Route::get('/artikel/kategori/{id}', 'FrontedController@category')->name('portal.category');
 Route::get('/acara', 'FrontedController@event')->name('portal.event');
 Route::get('/acara/{id}/baca', 'FrontedController@event_read')->name('portal.event.read');

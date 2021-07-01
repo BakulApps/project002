@@ -323,7 +323,7 @@
                                 <li><a href="#"><i class="fa fa-calendar"></i>{{$post_single->created_at()}} </a></li>
                                 <li><a href="#"> <span>Oleh</span> {{$post_single->user->user_name}}</a></li>
                             </ul>
-                            <a href="{{route('potral.article.read', $post_single->post_id)}}"><h3>{{$post_single->post_title}}</h3></a>
+                            <a href="{{route('portal.article.read', $post_single->post_id)}}"><h3>{{$post_single->post_title}}</h3></a>
                             <p style="text-align: justify">{{strip_tags(Str::limit($post_single->post_content, 200))}}</p>
                         </div>
                     </div>
@@ -344,7 +344,7 @@
                                         <li><a href="#"><i class="fa fa-calendar"></i>{{$post->created_at()}} </a></li>
                                         <li><a href="#"> <span>Oleh</span> {{$post->user->user_name}}</a></li>
                                     </ul>
-                                    <a href="{{route('potral.article.read', $post->post_id)}}"><h3>{{$post->post_title}}</h3></a>
+                                    <a href="{{route('portal.article.read', $post->post_id)}}"><h3>{{$post->post_title}}</h3></a>
                                     <p style="text-align: justify">{{strip_tags(Str::limit($post->post_content, 100))}}</p>
                                 </div>
                             </div>

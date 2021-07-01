@@ -8,8 +8,8 @@
                         <h2>{{$post->post_title}}</h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('potral.home')}}">Beranda</a></li>
-                                <li class="breadcrumb-item"><a href="{{route('potral.article')}}">Artikel</a></li>
+                                <li class="breadcrumb-item"><a href="{{route('portal.home')}}">Beranda</a></li>
+                                <li class="breadcrumb-item"><a href="{{route('portal.article')}}">Artikel</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">{{$post->post_title}}</li>
                             </ol>
                         </nav>
@@ -93,7 +93,7 @@
                                     <h3>Tinggalkan Komentar</h3>
                                 </div>
                                 <div class="comment-form">
-                                    <form action="{{route('potral.article.read', $post->post_id)}}" method="post">
+                                    <form action="{{route('portal.article.read', $post->post_id)}}" method="post">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6">
@@ -149,7 +149,7 @@
                                     <ul>
                                         @foreach($populars as $popular)
                                             <li>
-                                                <a href="{{route('potral.article.read', $popular->post_id)}}">
+                                                <a href="{{route('portal.article.read', $popular->post_id)}}">
                                                     <div class="singel-post">
                                                         <div class="thum">
                                                             <img src="{{asset('assets/apps/portal/images/blog-1.jpg')}}" alt="Blog" style="height: 92px">
