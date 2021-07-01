@@ -36,10 +36,9 @@
                             <p style="text-align: justify">{!! $post->post_content !!}</p>
                             <ul class="share">
                                 <li class="title">Share :</li>
-                                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-whatsapp"></i></a></li>
+                                <li><a href="http://www.facebook.com/sharer.php?u={{route('portal.article.read', $post->post_id)}}"><i class="fa fa-facebook-f"></i></a></li>
+                                <li><a href="https://twitter.com/share?text={{urlencode($post->post_title)}}&amp;url={{urlencode(route('portal.article.read', $post->post_id))}}"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="whatsapp://send?text={{route('portal.article.read', $post->post_id)}}"><i class="fa fa-whatsapp"></i></a></li>
                             </ul>
                             @if($post->post_comment == 1)
                             <div class="blog-comment pt-45">
