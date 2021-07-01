@@ -32,6 +32,7 @@ class FrontedController extends Controller
             'keyword'       => 'Portal, portal resmi, madrasah, madrasah tsanawiyah, mts darul hikmah, mts darul hikmah menganti',
             'author'        => 'MTs. Darul Hikmah Menganti'
         ];
+        $this->data['section'] = new Section();
         $this->data['title'] = $this->setting->value('app_name') .' - '. $this->setting->value('school_name');
     }
 
@@ -42,7 +43,7 @@ class FrontedController extends Controller
         $this->data['sliders']  = Slider::where('slider_status', 1)->get();
         $this->data['programs'] = Program::all();
         $this->data['facilities'] = Facility::limit(4)->get();
-        $this->data['events']   = Event::where('event_date_start', '>', now())->limit(3)->get();
+        $this->data['events']   = Event::where('event_date_start', '>', now())->orderBy('event_date_start', 'ASC')->limit(3)->get();
         $this->data['extracurriculars'] = Extracurricular::limit(10)->get();
         $this->data['testimonials'] = Testimonial::all();
         $this->data['post_single'] = Post::first();

@@ -24,7 +24,7 @@
         <ul class="navbar-nav navbar-right">
             <li class="nav-item dropdown dropdown-user">
                 <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                    <img src="{{asset(auth('portal')->user()->user_image == null ? 'assets/apps/portal/fronted/images/placeholder.jpg' : auth('portal')->user()->user_image)}}" class="rounded-circle mr-2" height="34" alt="">
+                    <img src="{{asset(auth('portal')->user()->user_image == null ? 'assets/apps/portal/images/placeholder.jpg' : auth('portal')->user()->user_image)}}" class="rounded-circle mr-2" height="34" alt="">
                     <span>{{strtoupper(auth('portal')->user()->user_fullname)}}</span>
                 </a>
 

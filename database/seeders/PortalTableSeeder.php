@@ -59,8 +59,9 @@ class PortalTableSeeder extends Seeder
             ['home_section_4_title_3', 'Kegiatan Non Akademik'],
             ['home_section_4_content_3', 'Menyelenggarakan kegiatan nonakademik berbasis kompetensi dan prestasi.'],
             ['home_section_testi_bg', 'storage/portal/fronted/image/bg-2.jpg'],
-            ['article_section_title_bg', 'storage/portal/fronted/images/page-banner-4.jpg'],
+            ['article_section_title_bg', 'storage/portal/ images/page-banner-4.jpg'],
             ['event_section_title_bg', 'storage/portal/fronted/images/page-banner-4.jpg'],
+            ['event_section_book_bg', ''],
         ];
 
         for ($i=0;$i<count($section);$i++){

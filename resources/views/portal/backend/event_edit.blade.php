@@ -85,7 +85,7 @@
                             <h6 class="card-title font-weight-semibold">GAMBAR</h6>
                         </div>
                         <div class="card-img-actions">
-                            <img class="img-fluid image-view" src="{{asset($event->event_image == null ? 'assets/apps/portal/fronted/images/bg/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}" width="" style="width: 100%">
+                            <img class="img-fluid image-view" src="{{asset($event->event_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}" width="" style="width: 100%">
                         </div>
                         <div class="card-body">
                             <input type="file" id="event_image" class="form-control-uniform" data-fouc>

@@ -12,7 +12,7 @@
                 <div class="support-button float-right d-none d-md-block">
                     <div class="support float-left">
                         <div class="icon">
-                            <img src="{{asset('assets/apps/portal/fronted/images/icon/support.png')}}" alt="icon">
+                            <img src="{{asset('assets/apps/portal/images/support.png')}}" alt="icon">
                         </div>
                         <div class="cont">
                             <p>Butuh bantuan? hubungi kami</p>

@@ -1,6 +1,6 @@
 @extends('portal.fronted.layouts.master', ['title' => $post->post_title])
 @section('content')
-    <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($section->value('article_section_title_bg'))}})">
+    <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($post->image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}})">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -24,7 +24,7 @@
                 <div class="col-lg-8">
                     <div class="blog-details mt-30">
                         <div class="thum">
-                            <img src="{{asset($post->image == null ?'assets/apps/portal/fronted/images/bg/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="Blog Details" style="width: 772px">
+                            <img src="{{asset($post->image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="Blog Details" style="width: 772px">
                         </div>
                         <div class="cont">
                             <h3>{{$post->post_title}}</h3>
@@ -52,7 +52,7 @@
                                         <div class="comment">
                                             <div class="comment-author">
                                                 <div class="author-thum">
-                                                    <img src="images/review/r-2.jpg" alt="Reviews">
+                                                    <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Reviews">
                                                 </div>
                                                 <div class="comment-name">
                                                     <h6>{{$comment->comment_name}}</h6>
@@ -72,7 +72,7 @@
                                                 <div class="comment">
                                                     <div class="comment-author">
                                                         <div class="author-thum">
-                                                            <img src="images/review/r-2.jpg" alt="Reviews">
+                                                            <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Reviews">
                                                         </div>
                                                         <div class="comment-name">
                                                             <h6>{{$parent->comment_name}}</h6>
@@ -152,7 +152,7 @@
                                                 <a href="{{route('potral.article.read', $popular->post_id)}}">
                                                     <div class="singel-post">
                                                         <div class="thum">
-                                                            <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Blog" style="height: 92px">
+                                                            <img src="{{asset('assets/apps/portal/images/blog-1.jpg')}}" alt="Blog" style="height: 92px">
                                                         </div>
                                                         <div class="cont">
                                                             <p>{{$popular->post_title}}</p>

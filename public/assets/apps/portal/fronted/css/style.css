@@ -1588,6 +1588,7 @@ p {
 }
 .singel-testimonial .testimonial-thum img{
     border-radius: 5px;
+    width: 100px;
 }
 .singel-testimonial .testimonial-thum .quote{
     position: absolute;

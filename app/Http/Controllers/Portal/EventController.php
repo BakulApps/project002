@@ -31,14 +31,13 @@ class EventController extends Controller
                         'event_date_start' => 'required',
                         'event_date_end' => 'required',
                         'event_place' => 'required',
-                        'event_image' => 'required|mimes:jpg,jpeg,png|max:512'
+                        'event_image' => 'mimes:jpg,jpeg,png|max:512'
                     ],  [
                         'event_title.required' => 'Kolom Judul Acara/KegiatanTidak boleh kosong.',
                         'event_content.required' => 'Kolom Konten Acara/KegiatanTidak boleh kosong.',
                         'event_date_start.required' => 'Kolom Tanggal Mulai Acara/KegiatanTidak boleh kosong.',
                         'event_date_end.required' => 'Kolom Tanggal Selesai Acara/KegiatanTidak boleh kosong.',
                         'event_place.required' => 'Kolom Tempat Acara/KegiatanTidak boleh kosong.',
-                        'event_image.required' => 'Kolom gambar tidak boleh kosong.',
                         'event_image.mimes' => 'Gambar harus berformat jpg/jpeg/png',
                         'event_image.max' => 'Ukuran maksimal gambar 512Kb.'
                     ]);
@@ -50,8 +49,8 @@ class EventController extends Controller
                         if ($request->hasFile('event_image')){
                             $file = $request->file('event_image');
                             $file->store('public/portal/images/event');
+                            $event->event_image       = $file->hashName();
                         }
-                        $event->event_image       = $file->hashName();
                         $event->event_title       = $request->event_title;
                         $event->event_content     = $request->event_content;
                         $event->event_date_start     = Carbon::createFromFormat('d/m/Y', $request->event_date_start)->format('Y-m-d');

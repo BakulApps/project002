@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <div class="text-center">
                             <div class="card-img-actions d-inline-block mb-2">
-                                <img src="{{asset($setting->value('school_logo') == null ? 'assets/apps/portal/backend/images/placeholder.jpg' : 'storage/portal/images/'. $setting->value('school_logo'))}}" width="120" height="115" alt="">
+                                <img src="{{asset($setting->value('school_logo') == null ? 'assets/apps/portal/images/kemenag.png' : 'storage/portal/images/'. $setting->value('school_logo'))}}" width="120" height="115" alt="">
                             </div>
                         </div>
                         <div class="text-center mb-4">

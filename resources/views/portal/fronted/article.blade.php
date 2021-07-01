@@ -80,7 +80,7 @@
                                             <a href="{{route('potral.article.read', $popular->post_id)}}">
                                                 <div class="singel-post">
                                                     <div class="thum">
-                                                        <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Blog" style="height: 92px">
+                                                        <img src="{{asset('assets/apps/portal/images/blog-1.jpg')}}" alt="Blog" style="height: 92px">
                                                     </div>
                                                     <div class="cont">
                                                         <h6>{{$popular->post_title}}</h6>

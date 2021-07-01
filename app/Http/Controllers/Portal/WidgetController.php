@@ -356,7 +356,7 @@ class WidgetController extends Controller
                         $no++,
                         $teacher->teacher_name,
                         $teacher->teacher_job,
-                        '<img src="'.asset('storage/portal/images/teacher/'. $teacher->teacher_image).'" style="width: 100px"/>',
+                        '<img src="'.asset($teacher->teacher_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/teacher/'. $teacher->teacher_image).'" style="width: 100px"/>',
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $teacher->teacher_id .'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $teacher->teacher_id . '"><i class="icon-trash"></i></button>
@@ -374,11 +374,10 @@ class WidgetController extends Controller
                     $validator = Validator::make($request->all(), [
                         'teacher_name' => 'required',
                         'teacher_job' => 'required',
-                        'teacher_image' => 'required|mimes:jpg,jpeg,png|max:512'
+                        'teacher_image' => 'mimes:jpg,jpeg,png|max:512'
                     ], [
                         'teacher_name.required' => 'Kolom nama guru tidak boleh kosong.',
                         'teacher_job.required' => 'Kolom jabatan guru tidak boleh kosong.',
-                        'teacher_image.required' => 'Gambar guru tidak boleh kosong.',
                         'teacher_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'teacher_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -386,14 +385,15 @@ class WidgetController extends Controller
                         throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
                     else {
-                        $request->hasFile('teacher_image');
-                        $file = $request->file('teacher_image');
-                        $file->store('public/portal/images/teacher/');
                         $teacher = new Teacher();
+                        if ($request->hasFile('teacher_image')){
+                            $file = $request->file('teacher_image');
+                            $file->store('public/portal/images/teacher/');
+                            $teacher->teacher_image = $file->hashName();
+                        }
                         $teacher->teacher_name  = $request->teacher_name;
                         $teacher->teacher_job  = $request->teacher_job;
                         $teacher->teacher_link  = $request->teacher_link;
-                        $teacher->teacher_image = $file->hashName();
                         if ( $teacher->save()){
                             $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Guru berhasil disimpan.'];
                         }
@@ -464,7 +464,7 @@ class WidgetController extends Controller
                         $no++,
                         $facility->facility_name,
                         $facility->facility_desc,
-                        '<img src="'.asset('storage/portal/images/facility/'. $facility->facility_image).'" style="width: 100px"/>',
+                        '<img src="'.asset($facility->facility_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/facility/'. $facility->facility_image).'" style="width: 100px"/>',
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $facility->facility_id .'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $facility->facility_id . '"><i class="icon-trash"></i></button>
@@ -481,10 +481,9 @@ class WidgetController extends Controller
                 try {
                     $validator = Validator::make($request->all(), [
                         'facility_name' => 'required',
-                        'facility_image' => 'required|mimes:jpg,jpeg,png|max:512'
+                        'facility_image' => 'mimes:jpg,jpeg,png|max:512'
                     ], [
                         'facility_name.required' => 'Kolom nama fasilitas tidak boleh kosong.',
-                        'facility_image.required' => 'Gambar fasilitas tidak boleh kosong.',
                         'facility_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'facility_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -492,14 +491,15 @@ class WidgetController extends Controller
                         throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
                     else {
-                        $request->hasFile('facility_image');
-                        $file = $request->file('facility_image');
-                        $file->store('public/portal/images/facility/');
                         $facility = new Facility();
+                        if ($request->hasFile('facility_image')){
+                            $file = $request->file('facility_image');
+                            $file->store('public/portal/images/facility/');
+                            $facility->facility_image = $file->hashName();
+                        }
                         $facility->facility_name  = $request->facility_name;
                         $facility->facility_desc  = $request->facility_desc;
                         $facility->facility_link  = $request->facility_link;
-                        $facility->facility_image = $file->hashName();
                         if ( $facility->save()){
                             $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Fasilitas berhasil disimpan.'];
                         }
@@ -588,12 +588,11 @@ class WidgetController extends Controller
                         'testimonial_name' => 'required',
                         'testimonial_job' => 'required',
                         'testimonial_desc' => 'required',
-                        'testimonial_image' => 'required|mimes:jpg,jpeg,png|max:512'
+                        'testimonial_image' => 'mimes:jpg,jpeg,png|max:512'
                     ], [
                         'testimonial_name.required' => 'Kolom nama tidak boleh kosong.',
                         'testimonial_job.required' => 'Kolom jabatan tidak boleh kosong.',
                         'testimonial_desc.required' => 'Kolom diskripsi tidak boleh kosong.',
-                        'testimonial_image.required' => 'Kolom Gambar tidak boleh kosong.',
                         'testimonial_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'testimonial_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -601,14 +600,14 @@ class WidgetController extends Controller
                         throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
                     else {
-                        $request->hasFile('testimonial_image');
-                        $file = $request->file('testimonial_image');
-                        $file->store('public/portal/images/testimonial/');
                         $testimonial = new Testimonial();
+                        if ($file = $request->file('testimonial_image')){
+                            $file->store('public/portal/images/testimonial/');
+                            $testimonial->testimonial_image = $file->hashName();
+                        }
                         $testimonial->testimonial_name  = $request->testimonial_name;
                         $testimonial->testimonial_job  = $request->testimonial_job;
                         $testimonial->testimonial_desc  = $request->testimonial_desc;
-                        $testimonial->testimonial_image = $file->hashName();
                         if ( $testimonial->save()){
                             $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Testimoni berhasil disimpan.'];
                         }

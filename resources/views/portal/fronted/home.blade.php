@@ -221,7 +221,7 @@
                             <div class="col-sm-6">
                                 <div class="singel-teachers mt-30 text-center">
                                     <div class="image">
-                                        <img src="{{asset('storage/portal/images/teacher/'. $teacher->teacher_image)}}" alt="Teachers">
+                                        <img src="{{asset($teacher->teacher_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/teacher/'. $teacher->teacher_image)}}" alt="Teachers">
                                     </div>
                                     <div class="cont">
                                         <a href="{{$teacher->teacher_link}}"><h6>{{$teacher->teacher_name}}</h6></a>
@@ -256,7 +256,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-8">
                     <div class="singel-publication mt-30">
                         <div class="image">
-                            <img src="{{asset('storage/portal/images/facility/'. $facility->facility_image)}}" alt="Publication">
+                            <img src="{{asset($facility->facility_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/facility/'. $facility->facility_image)}}" alt="Publication">
                         </div>
                         <div class="cont">
                             <div class="name">
@@ -285,7 +285,7 @@
                 <div class="col-lg-6">
                     <div class="singel-testimonial">
                         <div class="testimonial-thum">
-                            <img src="{{asset('storage/portal/images/testimonial/'. $testimonial->testimonial_image)}}" alt="Testimonial">
+                            <img src="{{asset($testimonial->testimonial_image == null ? 'assets/apps/portal/images/blog-1.jpg' :'storage/portal/images/testimonial/'. $testimonial->testimonial_image)}}" alt="Testimonial">
                             <div class="quote">
                                 <i class="fa fa-quote-right"></i>
                             </div>
@@ -316,7 +316,7 @@
                 <div class="col-lg-6">
                     <div class="singel-news mt-30">
                         <div class="news-thum pb-25">
-                            <img src="{{asset('storage/portal/images/post/'. $post_single->post_image)}}" alt="News">
+                            <img src="{{asset($post_single->post_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post_single->post_image)}}" alt="News">
                         </div>
                         <div class="news-cont">
                             <ul>
@@ -335,7 +335,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="news-thum mt-30">
-                                    <img src="{{asset($post->post_image == null ? 'assets/apps/portal/fronted/images/bg/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="News">
+                                    <img src="{{asset($post->post_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="News">
                                 </div>
                             </div>
                             <div class="col-sm-8">
@@ -360,32 +360,32 @@
             <div class="row patnar-slied">
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/apps/portal/fronted/images/patnar/kemenag.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/kemenag.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/apps/portal/fronted/images/patnar/kemendikbud.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/kemendikbud.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/apps/portal/fronted/images/patnar/ayomondok.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/ayomondok.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/apps/portal/fronted/images/patnar/kemadrasah.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/kemadrasah.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/apps/portal/fronted/images/patnar/madrasahhebat.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/madrasahhebat.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/apps/portal/fronted/images/patnar/ayomadrasah.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/ayomadrasah.png')}}" alt="Logo">
                     </div>
                 </div>
             </div>

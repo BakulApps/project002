@@ -107,7 +107,7 @@
                             <h6 class="card-title font-weight-semibold">GAMBAR</h6>
                         </div>
                         <div class="card-img-actions">
-                            <img class="img-fluid image-view" src="{{asset($post->post_image == null ? 'assets/apps/portal/fronted/images/bg/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="">
+                            <img class="img-fluid image-view" src="{{asset($post->post_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="">
                         </div>
                         <div class="card-body">
                             <input type="file" id="post_image" class="form-control-uniform" value="{{$post->post_image}}" data-fouc>

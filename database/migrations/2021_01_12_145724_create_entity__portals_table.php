@@ -51,10 +51,10 @@ class CreateEntityPortalsTable extends Migration
 
         Schema::create('portal_entity__facilities', function (Blueprint $table) {
             $table->id('facility_id');
-            $table->string('facility_name',100);
+            $table->string('facility_name',100)->nullable();
             $table->mediumText('facility_desc')->nullable();
             $table->string('facility_link')->nullable();
-            $table->string('facility_image');
+            $table->string('facility_image')->nullable();
         });
 
         Schema::create('portal_entity__testimonials', function (Blueprint $table) {
@@ -180,5 +180,6 @@ class CreateEntityPortalsTable extends Migration
         Schema::dropIfExists('portal_entity__settings');
         Schema::dropIfExists('portal_entity__users');
         Schema::dropIfExists('portal_entity__roles');
+        Schema::dropIfExists('portal_entity__teachers');
     }
 }

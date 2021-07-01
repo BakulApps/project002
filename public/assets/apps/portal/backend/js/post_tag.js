@@ -1,4 +1,5 @@
 var postjs = function () {
+    var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
         $('.datatable-tag').DataTable({
             autoWidth: false,
@@ -24,7 +25,7 @@ var postjs = function () {
                 {className: 'text-center', targets: 3}
             ],
             ajax: ({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: baseurl + '/postingan/tagar',
                 type: 'post',
                 dataType: 'json',
@@ -37,7 +38,7 @@ var postjs = function () {
             e.preventDefault();
             var tag_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : baseurl + '/postingan/tagar',
                 type: 'post',
                 dataType: 'json',
@@ -58,7 +59,7 @@ var postjs = function () {
             e.preventDefault();
             var tag_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : baseurl + '/postingan/tagar',
                 type: 'post',
                 dataType: 'json',
@@ -81,7 +82,7 @@ var postjs = function () {
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : baseurl + '/postingan/tagar',
                 type: 'post',
                 dataType: 'json',

@@ -194,23 +194,31 @@ class PostController extends Controller
             }
             elseif ($request->_type == 'store'){
                 try {
-                    if (Category::create([
-                        'category_name' => $request->category_name,
-                        'category_desc' => $request->category_desc,
-
-                    ])){
+                    $validator = Validator::make($request->all(), ['category_name' => 'required'], ['category_name.required' => 'Kolom nama kategori tidak boleh kosong.']);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    } else {
+                        Category::create([
+                            'category_name' => $request->category_name,
+                            'category_desc' => $request->category_desc,
+                        ]);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Kategori berhasil di simpan.'];
                     }
-                } catch (\Exception $e){
+                }catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             elseif ($request->_type == 'update'){
                 try {
-                    if (Category::where('category_id', $request->category_id)->update([
-                        'category_name' => $request->category_name,
-                        'category_desc' => $request->category_desc,
-                    ])){
+                    $validator = Validator::make($request->all(), ['category_name' => 'required'], ['category_name.required' => 'Kolom nama kategori tidak boleh kosong.']);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        Category::where('category_id', $request->category_id)->update([
+                            'category_name' => $request->category_name,
+                            'category_desc' => $request->category_desc,
+                        ]);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Kategori berhasil diperbarui.'];
                     }
                 } catch (\Exception $e){
@@ -267,11 +275,12 @@ class PostController extends Controller
             }
             elseif ($request->_type == 'store'){
                 try {
-                    if (Tag::create([
-                        'tag_name' => $request->tag_name,
-                        'tag_desc' => $request->tag_desc,
-
-                    ])){
+                    $validator = Validator::make($request->all(), ['tag_name' => 'required'], ['tag_name.required' => 'Kolom nama tagar tidak boleh kosong.']);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        Tag::create(['tag_name' => $request->tag_name, 'tag_desc' => $request->tag_desc,]);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Taggar berhasil di simpan.'];
                     }
                 } catch (\Exception $e){
@@ -280,10 +289,13 @@ class PostController extends Controller
             }
             elseif ($request->_type == 'update'){
                 try {
-                    if (Tag::where('tag_id', $request->tag_id)->update([
-                        'tag_name' => $request->tag_name,
-                        'tag_desc' => $request->tag_desc,
-                    ])){
+                    $validator = Validator::make($request->all(), ['tag_name' => 'required'], ['tag_name.required' => 'Kolom nama tagar tidak boleh kosong.']);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        Tag::where('tag_id', $request->tag_id)->update(
+                            ['tag_name' => $request->tag_name, 'tag_desc' => $request->tag_desc,]);
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Taggar berhasil diperbarui.'];
                     }
                 } catch (\Exception $e){
