@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Student\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +15,9 @@ class StudentTableSeeder extends Seeder
      */
     public function run()
     {
+
+        User::factory(2)->create();
+
         $school_from = [
             [1, 'MA', 'MA'],
             [2,	'SMA',	'MA'],
@@ -48,6 +52,7 @@ class StudentTableSeeder extends Seeder
                 ]
             );
         }
+
         $school_kind = [
             [1, 'MA', 'ma'],
             [2, 'SMA', 'ma'],
@@ -108,7 +113,6 @@ class StudentTableSeeder extends Seeder
             [1, 'Perorangan'],
             [2, 'Kelompok']
         ];
-
         for ($i=0;$i<count($contest_category);$i++){
             DB::table('student_entity__contests_category')->insert(
                 [
@@ -119,16 +123,15 @@ class StudentTableSeeder extends Seeder
         }
 
         $contest_achievement = [
-            [0, 'Tidak Meraih Juara'],
-            [1, 'Juara I/Medali Emas'],
-            [2, 'Juara II/Medali Perak'],
-            [3, 'Juara III/Medali Perunggu'],
-            [4, 'Juara Harapan I'],
-            [5, 'Juara Harapan II'],
-            [6, 'Juara Harapan III'],
-            [7, 'Juara Favorit']
+            [1, 'Tidak Meraih Juara'],
+            [2, 'Juara I/Medali Emas'],
+            [3, 'Juara II/Medali Perak'],
+            [4, 'Juara III/Medali Perunggu'],
+            [5, 'Juara Harapan I'],
+            [6, 'Juara Harapan II'],
+            [7, 'Juara Harapan III'],
+            [8, 'Juara Favorit']
         ];
-
         for ($i=0;$i<count($contest_achievement);$i++){
             DB::table('student_entity__contests_achievement')->insert(
                 [
@@ -161,7 +164,6 @@ class StudentTableSeeder extends Seeder
             [5, 'Jalan-Jalan'],
             [6, 'Lainnya']
         ];
-
         for ($i=0;$i<count($hobby);$i++){
             DB::table('student_entity__hobbies')->insert(
                 [
@@ -172,18 +174,17 @@ class StudentTableSeeder extends Seeder
         }
 
         $purpose = [
-            [0, 'Lainnya'],
-            [1, 'PNS'],
-            [2, 'TNI/Polri'],
-            [3, 'Guru/Dosen'],
-            [4, 'Dokter'],
-            [5, 'Politikus'],
-            [6, 'Wiraswasta'],
-            [7, 'Seniman/Artis'],
-            [8, 'Ilmuwan'],
-            [9, 'Agamawan']
+            [1, 'Lainnya'],
+            [2, 'PNS'],
+            [3, 'TNI/Polri'],
+            [4, 'Guru/Dosen'],
+            [5, 'Dokter'],
+            [6, 'Politikus'],
+            [7, 'Wiraswasta'],
+            [8, 'Seniman/Artis'],
+            [9, 'Ilmuwan'],
+            [10, 'Agamawan']
         ];
-
         for ($i=0;$i<count($purpose);$i++){
             DB::table('student_entity__purposes')->insert(
                 [
@@ -203,7 +204,6 @@ class StudentTableSeeder extends Seeder
             [7, 'Rumah Singgah'],
             [8, 'Lainnya']
         ];
-
         for ($i=0;$i<count($residence);$i++){
             DB::table('student_entity__residences')->insert(
                 [
@@ -219,7 +219,6 @@ class StudentTableSeeder extends Seeder
             [3, 'Unggulan Sains & Bahasa'],
             [4, 'Kelas Reguler']
         ];
-
         for ($i=0;$i<count($program);$i++){
             DB::table('student_entity__programs')->insert(
                 [
@@ -241,6 +240,20 @@ class StudentTableSeeder extends Seeder
                     'status_name' => $status[$i][1]
                 ]
             );
+        }
+
+        $setting = [
+            ['app_name', 'Sistem Informasi Madrasah Terpadu'],
+            ['app_alias', 'SIMADU'],
+            ['app_logo', ''],
+            ['app_desc', ''],
+
+        ];
+        for ($i=0;$i<count($setting);$i++){
+            DB::table('student_entity__settings')->insert([
+                'setting_name' => $setting[$i][0],
+                'setting_value' => $setting[$i][1]
+            ]);
         }
     }
 }

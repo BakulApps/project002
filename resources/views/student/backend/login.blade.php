@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{config('app.locale')}}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{csrf_token()}}">
 
-    <title>{{!isset($title) ? $setting->value('app_name') .' - '. $setting->value('school_name') : $title .' - '. $setting->value('school_name')}}</title>
+    <title>{{$setting->value('app_name')}} | {{$setting->value('school_name')}}</title>
 
-    <link rel="shortcut icon" href="{{'storage/exam/fronted/images/'.asset($setting->value('school_logo'))}}">
+    <link rel="shortcut icon" href="{{asset('storage/master/images/'.$school->school_logo)}}">
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css"> -->
     <link href="{{asset('assets/fonts/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
@@ -23,24 +23,24 @@
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
 
     <script src="{{asset('assets/js/cores/app.js')}}"></script>
-    <script src="{{asset('assets/apps/exam/backend/js/login.js')}}"></script>
+    <script src="{{asset('assets/apps/student/backend/js/login.js')}}"></script>
 </head>
 <body class="bg-green-800">
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content d-flex justify-content-center align-items-center">
-            <form class="login-form" action="{{route('exam.admin.login')}}" method="post">
+            <form class="login-form" action="{{route('student.backend.login')}}" method="post">
                 {{csrf_field()}}
                 <div class="card mb-0">
                     <div class="card-body">
                         <div class="text-center">
                             <div class="card-img-actions d-inline-block mb-2">
-                                <img src="{{asset('storage/exam/images/'.$setting->value('school_logo'))}}" width="120" height="115" alt="">
+                                <img src="{{asset('storage/master/images/'.$school->school_logo)}}" width="120" height="115" alt="">
                             </div>
                         </div>
                         <div class="text-center mb-4">
-                            <h6 class="font-weight-semibold mb-0">Halaman Administrator</h6>
-                            <span class="d-block text-muted">{{$setting->value('school_name')}}</span>
+                            <h6 class="font-weight-semibold mb-0">{{$school->name()}}</h6>
+                            <span class="d-block text-muted">{{$setting->value('app_name')}}</span>
                         </div>
                         @if(session('msg'))
                             @php($msg = session('msg'))

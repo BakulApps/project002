@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'auth.exam' => \App\Http\Middleware\AuthenticateExam::class,
         'auth.graduate' => \App\Http\Middleware\AuthenticateGraduate::class,
         'auth.portal' => \App\Http\Middleware\AuthenticatePortal::class,
+        'auth.student' => \App\Http\Middleware\AuthenticateStudent::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,

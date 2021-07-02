@@ -41,6 +41,11 @@ return [
             'provider' => 'users',
         ],
 
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students'
+        ],
+
         'portal' => [
             'driver' => 'session',
             'provider' => 'portals'
@@ -89,6 +94,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student\User::class
         ],
 
         'portals' => [

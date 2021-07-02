@@ -13,18 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
 
-        //PortalSeeder
-        $this->call(PortalTableSeeder::class);
+//        PortalSeeder
+//        $this->call(PortalTableSeeder::class);
         $this->call(AdmissionTableSeeder::class);
         $this->call(MasterTableSeeder::class);
         $this->call(StudentTableSeeder::class);
 
-        //ExamSeeder
+//        ExamSeeder
         $this->call(ExamTableSeeder::class);
 
-        //GraduateSeeder
+//        GraduateSeeder
         $this->call(GraduateTableSeeder::class);
+
+//        FinanceSeeder
+        $this->call(FinanceTableSeeder::class);
     }
 }
