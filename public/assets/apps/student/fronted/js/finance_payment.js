@@ -167,8 +167,8 @@ var paymentjs = function () {
                         text: resp['text'],
                         addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
                     });
-                    $('#modal-payment').modal('hide')
                     $('.datatable-payment').DataTable().ajax.reload();
+                    $('#modal-invoice').modal('hide')
                 }
             })
         })

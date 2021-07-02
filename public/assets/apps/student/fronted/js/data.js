@@ -41,9 +41,22 @@ var datajs = function () {
         });
     }
 
+    var _componentSelect = function () {
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            dropdownAutoWidth: true,
+            width: 'auto'
+        });
+
+        $('.select').select2({
+            minimumResultsForSearch: Infinity
+        });
+    }
+
     return {
         init: function() {
             _componetnDataTable();
+            _componentSelect();
         }
     }
 }();

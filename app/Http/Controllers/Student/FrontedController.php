@@ -144,7 +144,7 @@ class FrontedController extends Controller
                         $payment_item,
                         $payment->created_at('d/m/Y H:i:s'),
                         $payment->payment_cost,
-                        $payment->payment_status == 1 ? '<span class="badge badge-danger badge-pill">Menunggu Pembayaran</span>' : ($payment->payment_status == 2 ? '<span class="badge badge badge-pill">Menunggu Verifikasi</span>' : '<span class="badge badge-success badge-pill">Pembayaran Diterima</span>'),
+                        $payment->payment_status == 1 ? '<span class="badge badge-danger badge-pill">Menunggu Pembayaran</span>' : ($payment->payment_status == 2 ? '<span class="badge badge-warning badge-pill">Menunggu Verifikasi</span>' : '<span class="badge badge-success badge-pill">Pembayaran Diterima</span>'),
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-info" data-num="'.$payment->payment_id.'"><i class="icon-info3"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$payment->payment_id.'"><i class="icon-trash"></i></button>
