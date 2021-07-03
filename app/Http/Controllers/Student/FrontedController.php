@@ -174,8 +174,8 @@ class FrontedController extends Controller
                     $payment = Payment::find($request->payment_id);
                     if ($request->hasFile('payment_file')) {
                         $file = $request->file('payment_file');
-                        Storage::delete('/public/payment/images/transfer'. $payment->payment_file);
-                        $file->store('public/payment/images/transfer');
+                        Storage::delete('/public/finance/images/transfer'. $payment->payment_file);
+                        $file->store('public/finance/images/transfer');
                         $payment_file = $file->hashName();
                     }
                     else {

@@ -435,7 +435,15 @@ class BackendController extends Controller
     public function verify($id, Request $request)
     {
         if ($request->isMethod('post')){
-
+            if ($request->_type == 'update'){
+                $payment = Payment::find($request->payment_id);
+                $payment->payment_status = 3;
+                $payment->payment_view = 1;
+                if ($payment->save()){
+                    $msg = ['status' => 'success', 'title' => 'Sukses !', 'class' => 'success', 'text' => 'Pembayaran berhasil di Verifikasi, anda akan dialikah dalam 2 detik.'];
+                }
+            }
+            return response()->json($msg);
         }
         else {
             $this->data['payment'] = Payment::find($id);
