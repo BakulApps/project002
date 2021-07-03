@@ -19,4 +19,13 @@ class Classes extends Model
     ];
     protected $primaryKey   = 'class_id';
     public $timestamps      = false;
+
+    public function major()
+    {
+        return $this->hasOne(
+            Major::class,
+            'major_id',
+            'class_major'
+        );
+    }
 }

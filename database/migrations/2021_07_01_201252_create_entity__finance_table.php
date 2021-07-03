@@ -19,6 +19,12 @@ class CreateEntityFinanceTable extends Migration
             $table->string('item_name', 100)->nullable();
         });
 
+        Schema::create('finance_entity__invoices', function (Blueprint $table){
+            $table->id('invoice_id');
+            $table->string('invoice_file')->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('finance_entity__lacks', function (Blueprint $table) {
             $table->id('lack_id');
             $table->string('lack_item', 3)->nullable();
@@ -49,6 +55,20 @@ class CreateEntityFinanceTable extends Migration
             $table->string('account_name', 100)->nullable();
             $table->boolean('account_active')->default(0)->nullable();
         });
+
+        Schema::create('finance_entity__users', function (Blueprint $table) {
+            $table->id('user_id');
+            $table->string('user_name');
+            $table->string('user_pass');
+            $table->string('user_fullname');
+            $table->rememberToken();
+        });
+
+        Schema::create('finance_entity__settings', function (Blueprint $table){
+            $table->id('setting_id');
+            $table->string('setting_name');
+            $table->string('setting_value')->nullable();
+        });
     }
 
     /**
@@ -59,8 +79,11 @@ class CreateEntityFinanceTable extends Migration
     public function down()
     {
         Schema::dropIfExists('finance_entity__items');
+        Schema::dropIfExists('finance_entity__invoices');
         Schema::dropIfExists('finance_entity__lacks');
         Schema::dropIfExists('finance_entity__payments');
         Schema::dropIfExists('finance_entity__accounts');
+        Schema::dropIfExists('finance_entity__users');
+        Schema::dropIfExists('finance_entity__settings');
     }
 }

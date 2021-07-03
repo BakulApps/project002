@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Classes;
 use App\Models\Master\School;
+use App\Models\Master\Year;
 use App\Models\Student\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -19,6 +21,205 @@ class MasterController extends Controller
     {
         $this->data['school'] = School::first();
         $this->data['setting'] = new Setting();
+    }
+
+    public function year(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                foreach (Year::OrderBy('year_number')->get() as $year){
+                    $data[] = [
+                        $year->year_number,
+                        $year->year_name,
+                        $year->year_desc,
+                        $year->year_active == 1 ? '<span class="badge badge-success badge-pill">Aktif</span>' : '<span class="badge badge-danger badge-pill">Tidak Aktif</span>',
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$year->year_id.'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$year->year_id.'"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'year'){
+                $year = Year::where('year_id', $request->year_id)->first();
+                $msg = $year;
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $year = Year::find($request->year_id);
+                    if ($year->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Tahun Pelajaran berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'update'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'year_number' => 'required',
+                        'year_name' => 'required',
+                        'year_active' => 'required'
+                    ], [
+                        'year_number.required' => 'Kolom Nomor Urut tidak boleh kosong.',
+                        'year_name.required' => 'Kolom Nama Tahun tidak boleh kosong.',
+                        'year_active.required' => 'Silahkan pilih status tahun.'
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else{
+                        $year = Year::find($request->year_id);
+                        $year->year_number = $request->year_number;
+                        $year->year_name = $request->year_name;
+                        $year->year_desc = $request->year_desc;
+                        $year->year_active = $request->year_active;
+                        if ($year->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Tahun Pelajaran berhasil diperbarui.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'store'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'year_number' => 'required',
+                        'year_name' => 'required',
+                        'year_active' => 'required'
+                    ], [
+                        'year_number.required' => 'Kolom Nomor Urut tidak boleh kosong.',
+                        'year_name.required' => 'Kolom Nama Tahun tidak boleh kosong.',
+                        'year_active.required' => 'Silahkan pilih status tahun.'
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $year = new Year();
+                        $year->year_number = $request->year_number;
+                        $year->year_name = $request->year_name;
+                        $year->year_desc = $request->year_desc;
+                        $year->year_active = $request->year_active;
+                        if ($year->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Tahun Pelajaran berhasil di simpan.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('student.backend.master_year', $this->data);
+        }
+    }
+
+    public function classes(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                $no = 1;
+                foreach (Classes::where('class_year', Year::active())->orderBy('class_level')->get() as $class){
+                    $data[] = [
+                        $no++,
+                        $class->class_level,
+                        $class->major->major_name,
+                        $class->class_name,
+                        $class->class_alias,
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$class->class_id.'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$class->class_id.'"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'class'){
+                $msg = Classes::where('class_id', $request->class_id)->first();
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $class = Classes::find($request->class_id);
+                    if ($class->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Kelas berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'update'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'class_level' => 'required',
+                        'class_major' => 'required',
+                        'class_name' => 'required',
+                        'class_alias' => 'required',
+                    ], [
+                        'class_level.required' => 'Kolom Tingkat Tidak boleh kosong, silahkah pilih Tingkat',
+                        'class_major.required' => 'Kolom Jurusan Tidak boleh kosong, silahkah pilih Jurusan',
+                        'class_name.required' => 'Kolom Rombel Tidak boleh kosong',
+                        'class_alias.required' => 'Kolom Nama Kelas Tidak boleh kosong',
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else{
+                        $class = Classes::find($request->class_id);
+                        $class->class_year = Year::active();
+                        $class->class_level = $request->class_level;
+                        $class->class_major = $request->class_major;
+                        $class->class_name = $request->class_name;
+                        $class->class_alias = $request->class_alias;
+                        if ($class->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Kelas berhasil diperbarui.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'store'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'class_level' => 'required',
+                        'class_major' => 'required',
+                        'class_name' => 'required',
+                        'class_alias' => 'required',
+                    ], [
+                        'class_level.required' => 'Kolom Tingkat Tidak boleh kosong, silahkah pilih Tingkat',
+                        'class_major.required' => 'Kolom Jurusan Tidak boleh kosong, silahkah pilih Jurusan',
+                        'class_name.required' => 'Kolom Rombel Tidak boleh kosong',
+                        'class_alias.required' => 'Kolom Nama Kelas Tidak boleh kosong',
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $class = new Classes();
+                        $class->class_year = Year::active();
+                        $class->class_level = $request->class_level;
+                        $class->class_major = $request->class_major;
+                        $class->class_name = $request->class_name;
+                        $class->class_alias = $request->class_alias;
+                        if ($class->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Kelas berhasil di simpan.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('student.backend.master_classes', $this->data);
+        }
     }
 
     public function school(Request $request)

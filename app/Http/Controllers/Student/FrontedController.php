@@ -143,7 +143,7 @@ class FrontedController extends Controller
                         $payment->payment_number,
                         $payment_item,
                         $payment->created_at('d/m/Y H:i:s'),
-                        $payment->payment_cost,
+                        number_format($payment->payment_cost),
                         $payment->payment_status == 1 ? '<span class="badge badge-danger badge-pill">Menunggu Pembayaran</span>' : ($payment->payment_status == 2 ? '<span class="badge badge-warning badge-pill">Menunggu Verifikasi</span>' : '<span class="badge badge-success badge-pill">Pembayaran Diterima</span>'),
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-info" data-num="'.$payment->payment_id.'"><i class="icon-info3"></i></button>
@@ -158,6 +158,16 @@ class FrontedController extends Controller
                 $payment = Payment::find($request->payment_id);
                 $payment->created_at_convert = $payment->created_at('d M Y');
                 $msg = $payment;
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $payment = Payment::find($request->payment_id);
+                    if ($payment->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Pembayaran berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
             }
             elseif ($request->_type == 'update' && $request->_data == 'payment'){
                 try {
@@ -187,7 +197,7 @@ class FrontedController extends Controller
                         'payment_number' => Str::upper(Str::random(7)),
                         'payment_student' => Session::get('student.auth')->student_id,
                         'payment_item' => json_encode($request->payment_item),
-                        'payment_cost' => $request->payment_cost,
+                        'payment_cost' => Str::of($request->payment_cost)->replace('.', ''),
                         'payment_type_account' => $request->payment_type_account,
                         'payment_number_account' => $request->payment_number_account,
                         'payment_name_account' => $request->payment_name_account,

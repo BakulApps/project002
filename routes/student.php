@@ -18,8 +18,11 @@ Route::group(['prefix' => 'administrator'], function (){
     Route::group(['middleware' => 'auth.student'], function (){
         Route::match(['get', 'post'], '/', 'BackendController@home')->name('student.backend.home');
         Route::match(['get', 'post'], '/master/tahun', 'MasterController@year')->name('student.backend.master.year');
-        Route::match(['get', 'post'], '/master/tingkat', 'MasterController@ladder')->name('student.backend.master.ladder');
+        Route::match(['get', 'post'], '/master/jurusan', 'MasterController@major')->name('student.backend.master.major');
+        Route::match(['get', 'post'], '/master/kelas', 'MasterController@classes')->name('student.backend.master.classes');
         Route::match(['get', 'post'], '/master/sekolah', 'MasterController@school')->name('student.backend.master.school');
+        Route::match(['get', 'post'], '/siswa/semua', 'BackendController@student')->name('student.backend.student.all');
+        Route::match(['get', 'post'], '/siswa/{id}/detail', 'BackendController@detail')->name('student.backend.student.detail');
         Route::match(['get', 'post'], 'pengaturan', 'BackendController@setting')->name('student.backend.setting');
     });
 });

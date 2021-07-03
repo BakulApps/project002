@@ -67,7 +67,7 @@
                                     <span class="input-group-prepend">
                                         <span class="input-group-text">Rp</span>
                                     </span>
-                                    <input type="text" id="payment_cost" class="form-control" disabled>
+                                    <input type="text" id="payment_cost" class="form-control" data-mask="999,999,9999" disabled>
                                 </div>
                             </div>
                         </div>

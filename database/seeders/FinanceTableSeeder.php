@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Finance\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +15,8 @@ class FinanceTableSeeder extends Seeder
      */
     public function run()
     {
+        User::factory(2)->create();
+
         $items = [
             ['TTL', 'Tagihan Tahun Lalu'],
             ['SRG', 'Seragam Sekolah'],
@@ -65,6 +68,20 @@ class FinanceTableSeeder extends Seeder
                 'account_bank' => $accounts[$i][0],
                 'account_number' => $accounts[$i][1],
                 'account_name' => $accounts[$i][2]
+            ]);
+        }
+
+        $setting = [
+            ['app_name', 'Sistem Informasi Madrasah Terpadu'],
+            ['app_alias', 'SIMADU'],
+            ['app_logo', ''],
+            ['app_desc', ''],
+
+        ];
+        for ($i=0;$i<count($setting);$i++){
+            DB::table('finance_entity__settings')->insert([
+                'setting_name' => $setting[$i][0],
+                'setting_value' => $setting[$i][1]
             ]);
         }
     }

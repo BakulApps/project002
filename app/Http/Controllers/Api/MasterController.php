@@ -3,18 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Bank;
 use App\Models\Master\Civic;
+use App\Models\Master\Classes;
 use App\Models\Master\Distance;
 use App\Models\Master\Earning;
 use App\Models\Master\Gender;
 use App\Models\Master\Home;
 use App\Models\Master\Job;
 use App\Models\Master\Ladder;
+use App\Models\Master\Level;
+use App\Models\Master\Major;
 use App\Models\Master\Religion;
+use App\Models\Master\School;
 use App\Models\Master\Study;
 use App\Models\Master\Territory;
 use App\Models\Master\Transport;
 use App\Models\Master\Travel;
+use App\Models\Master\Year;
 use Illuminate\Http\Request;
 
 class MasterController extends Controller
@@ -22,6 +28,18 @@ class MasterController extends Controller
     public function index(Request $request)
     {
         switch ($request->_data){
+            case 'bank':
+                $msg = $this->bank($request);
+                break;
+            case 'class':
+                $msg = $this->classes($request);
+                break;
+            case 'major':
+                $msg = $this->major($request);
+                break;
+            case 'level':
+                $msg = $this->level($request);
+                break;
             case 'school_status':
                 $msg = $this->school_status($request);
                 break;
@@ -75,6 +93,50 @@ class MasterController extends Controller
                 break;
         }
 
+        return $msg;
+    }
+
+    protected function bank(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $banks = Bank::all();
+            foreach ($banks as $bank){
+                $msg[] = ['id' => $bank->bank_id, 'text' => $bank->bank_code];
+            }
+        }
+        return $msg;
+    }
+
+    protected function classes(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $classes = Classes::where('class_year', Year::active())->get();
+            foreach ($classes as $class){
+                $msg[] = ['id' => $class->class_id, 'text' => 'Kelas '. $class->class_alias];
+            }
+        }
+        return $msg;
+    }
+
+    protected function major(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $majors = Major::all();
+            foreach ($majors as $major){
+                $msg[] = ['id' => $major->major_id, 'text' => $major->major_name];
+            }
+        }
+        return $msg;
+    }
+
+    protected function level(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $levels = Level::where('level_ladder', School::first()->value('school_ladder'))->get();
+            foreach ($levels as $level){
+                $msg[] = ['id' => $level->level_id, 'text' => $level->level_name];
+            }
+        }
         return $msg;
     }
 

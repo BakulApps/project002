@@ -6,10 +6,11 @@
                 <a href="#" class="nav-link {{$title == 'Master Data' ? 'active' : null}}"><i class="icon-box"></i> <span> Master Data</span></a>
                 <ul class="nav nav-group-sub" data-submenu-title="Postingan">
                     <li class="nav-item"><a href="{{route('student.backend.master.year')}}" class="nav-link">Tahun Pelajaran</a></li>
-                    <li class="nav-item"><a href="{{route('student.backend.master.ladder')}}" class="nav-link">Data Tingkat</a></li>
+                    <li class="nav-item"><a href="{{route('student.backend.master.classes')}}" class="nav-link">Data Kelas</a></li>
                     <li class="nav-item"><a href="{{route('student.backend.master.school')}}" class="nav-link">Data Madrasah</a></li>
                 </ul>
             </li>
+            <li class="nav-item"><a href="{{route('student.backend.student.all')}}" class="nav-link {{$title == 'Peserta Didik' ? 'active' : null}}"><i class="icon-users"></i><span>Peserta Didik</span></a></li>
             <li class="nav-item"><a href="{{route('student.backend.setting')}}" class="nav-link {{$title == 'Pengaturan' ? 'active' : null}}"><i class="icon-cog"></i><span>Pengaturan</span></a></li>
         </ul>
     </div>

@@ -60,6 +60,27 @@ var paymentjs = function () {
                     $('#modal-invoice').modal('show');
                 }
             });
+        }).on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            var payment_id = $(this).data('num');
+            $.ajax({
+                headers: csrf_token,
+                url: baseurl + '/keuangan/pembayaran',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    '_type': 'delete',
+                    'payment_id': payment_id,
+                },
+                success: function (resp) {
+                    new PNotify({
+                        title: resp['title'],
+                        text: resp['text'],
+                        addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
+                    });
+                    $('.datatable-payment').DataTable().ajax.reload();
+                }
+            });
         });
     }
 

@@ -56,6 +56,11 @@ return [
             'provider' => 'graduates'
         ],
 
+        'finance' => [
+            'driver' => 'session',
+            'provider' => 'finances',
+        ],
+
         'exam' => [
             'driver' => 'session',
             'provider' => 'exams',
@@ -109,6 +114,11 @@ return [
         'graduates' => [
             'driver' => 'eloquent',
             'model' => App\Models\Graduate\User::class
+        ],
+
+        'finances' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Finance\User::class
         ],
 
         'exams' => [

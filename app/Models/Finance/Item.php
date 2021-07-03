@@ -16,4 +16,10 @@ class Item extends Model
     ];
     protected $primaryKey   = 'item_id';
     public $timestamps      = false;
+
+    static function getFromCode($item_code, $column=null)
+    {
+        $column = $column == null ? 'item_id' : $column;
+        return self::where('item_code', $item_code)->value($column);
+    }
 }

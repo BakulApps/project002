@@ -33,6 +33,7 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace_graduate = 'App\\Http\\Controllers\\Graduate';
     protected $namespace_portal = 'App\\Http\\Controllers\\Portal';
     protected $namespace_student = 'App\\Http\\Controllers\\Student';
+    protected $namespace_finance = 'App\\Http\\Controllers\\Finance';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -68,6 +69,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace_student)
                 ->group(base_path('routes/student.php'));
+
+            Route::prefix('keuangan')
+                ->middleware('web')
+                ->namespace($this->namespace_finance)
+                ->group(base_path('routes/finance.php'));
 
             Route::middleware('web')
                 ->namespace($this->namespace_portal)

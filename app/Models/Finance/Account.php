@@ -18,6 +18,7 @@ class Account extends Model
         'account_active',
     ];
     protected $primaryKey   = 'account_id';
+    public $timestamps      = false;
 
     public function bank()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Models\Finance;
 
+use App\Models\Master\Student;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,5 +31,19 @@ class Payment extends Model
     {
         $format = $format == null ? 'd/m/Y' : $format;
         return Carbon::parse($this->crerated_at)->translatedFormat($format);
+    }
+
+    public function student()
+    {
+        return $this->hasOne(
+            Student::class,
+            'student_id',
+            'payment_student'
+        );
+    }
+
+    static function notify()
+    {
+        return self::where('payment_view', 0)->count();
     }
 }
