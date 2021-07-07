@@ -374,10 +374,12 @@ class WidgetController extends Controller
                     $validator = Validator::make($request->all(), [
                         'teacher_name' => 'required',
                         'teacher_job' => 'required',
+                        'teacher_about' => 'required',
                         'teacher_image' => 'mimes:jpg,jpeg,png|max:512'
                     ], [
                         'teacher_name.required' => 'Kolom nama guru tidak boleh kosong.',
                         'teacher_job.required' => 'Kolom jabatan guru tidak boleh kosong.',
+                        'teacher_about.required' => 'Kolom Tentang guru tidak boleh kosong.',
                         'teacher_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'teacher_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -393,9 +395,14 @@ class WidgetController extends Controller
                         }
                         $teacher->teacher_name  = $request->teacher_name;
                         $teacher->teacher_job  = $request->teacher_job;
-                        $teacher->teacher_link  = $request->teacher_link;
+                        $teacher->teacher_mail  = $request->teacher_mail;
+                        $teacher->teacher_facebook  = $request->teacher_facebook;
+                        $teacher->teacher_twitter  = $request->teacher_twitter;
+                        $teacher->teacher_instagram  = $request->teacher_instagram;
+                        $teacher->teacher_about  = $request->teacher_about;
+                        $teacher->teacher_achievement  = $request->teacher_achievement;
                         if ( $teacher->save()){
-                            $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Guru berhasil disimpan.'];
+                            $msg = ['status' => 'success', 'title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Guru berhasil disimpan.'];
                         }
                     }
                 }catch (\Exception $e){
@@ -407,10 +414,12 @@ class WidgetController extends Controller
                     $validator = Validator::make($request->all(), [
                         'teacher_name' => 'required',
                         'teacher_job' => 'required',
+                        'teacher_about' => 'required',
                         'teacher_image' => 'mimes:jpg,jpeg,png|max:512'
                     ], [
                         'teacher_name.required' => 'Kolom nama guru tidak boleh kosong.',
                         'teacher_job.required' => 'Kolom jabatan guru tidak boleh kosong.',
+                        'teacher_about.required' => 'Kolom Tentang guru tidak boleh kosong.',
                         'teacher_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'teacher_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -427,9 +436,14 @@ class WidgetController extends Controller
                         }
                         $teacher->teacher_name  = $request->teacher_name;
                         $teacher->teacher_job  = $request->teacher_job;
-                        $teacher->teacher_link  = $request->teacher_link;
+                        $teacher->teacher_mail  = $request->teacher_mail;
+                        $teacher->teacher_facebook  = $request->teacher_facebook;
+                        $teacher->teacher_twitter  = $request->teacher_twitter;
+                        $teacher->teacher_instagram  = $request->teacher_instagram;
+                        $teacher->teacher_about  = $request->teacher_about;
+                        $teacher->teacher_achievement  = $request->teacher_achievement;
                         if ( $teacher->save()){
-                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Guru berhasil diperbarui.'];
+                            $msg = ['status' => 'success', 'title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Guru berhasil diperbarui.'];
                         }
                     }
                 }catch (\Exception $e){

@@ -54,7 +54,12 @@ var teacherjs = function () {
                     $('#teacher_id').val(resp.teacher_id);
                     $('#teacher_name').val(resp.teacher_name);
                     $('#teacher_job').val(resp.teacher_job);
-                    $('#teacher_link').val(resp.teacher_link);
+                    $('#teacher_mail').val(resp.teacher_mail);
+                    $('#teacher_facebook').val(resp.teacher_facebook);
+                    $('#teacher_twitter').val(resp.teacher_twitter);
+                    $('#teacher_instagram').val(resp.teacher_instagram);
+                    $('#teacher_about').val(resp.teacher_about);
+                    $('#teacher_achievment').val(resp.teacher_achievment);
                     $('.title').html('Ubah Data Guru');
                     $('#submit').val('update');
                     $('#modal-teacher').modal('show');
@@ -97,7 +102,12 @@ var teacherjs = function () {
             fd.append('teacher_id', $('#teacher_id').val());
             fd.append('teacher_name', $('#teacher_name').val());
             fd.append('teacher_job', $('#teacher_job').val());
-            fd.append('teacher_link', $('#teacher_link').val());
+            fd.append('teacher_mail', $('#teacher_mail').val());
+            fd.append('teacher_facebook', $('#teacher_facebook').val());
+            fd.append('teacher_twitter', $('#teacher_twitter').val());
+            fd.append('teacher_instagram', $('#teacher_instagram').val());
+            fd.append('teacher_about', $('#teacher_about').val());
+            fd.append('teacher_achievement', $('#teacher_achievement').val());
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/widget/guru',
@@ -112,17 +122,39 @@ var teacherjs = function () {
                         text: resp['text'],
                         addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
                     });
-                    $('.datatable-teacher').DataTable().ajax.reload();
-                    $('#teacher_id').val('');
-                    $('#teacher_name').val('');
-                    $('#teacher_job').val('');
-                    $('#teacher_link').val('');
-                    $('#teacher_image').val('');
-                    $('#submit').val('store');
-                    $('#modal-teacher').modal('hide');
+                    if (resp.status === 'success'){
+                        $('.datatable-teacher').DataTable().ajax.reload();
+                        $('#teacher_id').val('');
+                        $('#teacher_name').val('');
+                        $('#teacher_job').val('');
+                        $('#teacher_mail').val('');
+                        $('#teacher_facebook').val('');
+                        $('#teacher_twitter').val('');
+                        $('#teacher_instagram').val('');
+                        $('#teacher_about').val('');
+                        $('#teacher_achievement').val('');
+                        $('#teacher_image').val('');
+                        $('#submit').val('store');
+                        $('.title').html('Tambah Data Guru');
+                        $('#modal-teacher').modal('hide');
+                    }
                 }
             });
         });
+        $('#close').click(function (){
+            $('#teacher_id').val('');
+            $('#teacher_name').val('');
+            $('#teacher_job').val('');
+            $('#teacher_mail').val('');
+            $('#teacher_facebook').val('');
+            $('#teacher_twitter').val('');
+            $('#teacher_instagram').val('');
+            $('#teacher_about').val('');
+            $('#teacher_achievement').val('');
+            $('#teacher_image').val('');
+            $('#submit').val('store');
+            $('.title').html('Tambah Data Guru');
+        })
     }
 
     var _componentSelect2 = function() {
@@ -131,9 +163,6 @@ var teacherjs = function () {
             dropdownAutoWidth: true,
             width: 'auto'
         });
-        $('.select').select2({
-            minimumResultsForSearch: Infinity,
-        })
     };
 
     var _componentFileUpload = function () {

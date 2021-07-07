@@ -33,13 +33,19 @@ class CreateEntityPortalsTable extends Migration
 //            $table->string('program_image');
 //        });
 //
-//        Schema::create('portal_entity__teachers', function (Blueprint $table){
-//            $table->id('teacher_id');
-//            $table->string('teacher_name', 100)->nullable();
-//            $table->string('teacher_job', 100)->nullable();
-//            $table->string('teacher_link', 200)->nullable();
-//            $table->string('teacher_image')->nullable();
-//        });
+        Schema::create('portal_entity__teachers', function (Blueprint $table){
+            $table->id('teacher_id');
+            $table->string('teacher_name', 100)->nullable();
+            $table->string('teacher_job', 100)->nullable();
+            $table->string('teacher_mail', 200)->nullable();
+            $table->string('teacher_facebook', 200)->nullable();
+            $table->string('teacher_twitter', 200)->nullable();
+            $table->string('teacher_instagram', 200)->nullable();
+            $table->string('teacher_about', 200)->nullable();
+            $table->string('teacher_achievement', 200)->nullable();
+            $table->string('teacher_desc', 200)->nullable();
+            $table->string('teacher_image')->nullable();
+        });
 //
 //        Schema::create('portal_entity__extracurriculars', function (Blueprint $table) {
 //            $table->id('extracurricular_id');
@@ -180,6 +186,6 @@ class CreateEntityPortalsTable extends Migration
 //        Schema::dropIfExists('portal_entity__settings');
 //        Schema::dropIfExists('portal_entity__users');
 //        Schema::dropIfExists('portal_entity__roles');
-//        Schema::dropIfExists('portal_entity__teachers');
+        Schema::dropIfExists('portal_entity__teachers');
     }
 }

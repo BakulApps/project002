@@ -102,6 +102,16 @@ class FrontedController extends Controller
         return view('portal.fronted.event_read', $this->data);
     }
 
+    public function teacher(){
+        $this->data['teachers'] = Teacher::paginate(8);
+        return view('portal.fronted.layouts.teacher', $this->data);
+    }
+
+    public function teacher_detail($id)
+    {
+
+    }
+
     public function category($id)
     {
         $this->data['page']     = 'Artikel';

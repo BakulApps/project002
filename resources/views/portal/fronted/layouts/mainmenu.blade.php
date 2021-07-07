@@ -19,7 +19,7 @@
                                     <li><a href="#">Sejarah</a></li>
                                     <li><a href="#">Visi & Misi</a></li>
                                     <li><a href="#">Bid. Kesiswaan</a></li>
-                                    <li><a href="#">Bid. Kepegawaian</a></li>
+                                    <li><a href="{{route('portal.teacher')}}">Bid. Kepegawaian</a></li>
                                     <li><a href="#">Bid. Kurikulum</a></li>
                                     <li><a href="#">Bid. Sarana & Prasarana</a></li>
                                 </ul>

@@ -19,6 +19,10 @@ Route::match(['get', 'post'],'/artikel/{id}/lihat', 'FrontedController@article_r
 Route::get('/artikel/kategori/{id}', 'FrontedController@category')->name('portal.category');
 Route::get('/acara', 'FrontedController@event')->name('portal.event');
 Route::get('/acara/{id}/baca', 'FrontedController@event_read')->name('portal.event.read');
+Route::get('/guru', 'FrontedController@teacher')->name('portal.teacher');
+Route::get('/guru/{id}/lihat', 'FrontedController@teacher_detail')->name('portal.teacher.read');
+Route::get('/ekstrakurikuler', 'FrontedController@extracurricular')->name('portal.extracurricular');
+Route::get('/guru/{id}/detail', 'FrontedController@extracurricular')->name('portal.extracurricular.detail');
 
 Route::group(['prefix' => 'administrator'], function (){
     Route::match(['get', 'post'],'/masuk', 'AuthController@login')->name('portal.admin.login');

@@ -63,9 +63,37 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <label>Tautan :</label>
-                                <input type="text" id="teacher_link" placeholder="https://example.sch.id/artikel/3/baca" class="form-control">
+                            <div class="col-sm-6">
+                                <label>Mail :</label>
+                                <input type="text" id="teacher_mail" placeholder="sholihin@darul-hikmah.sch.id" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Facebook :</label>
+                                <input type="text" id="teacher_facebook" placeholder="sholihin" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Twitter :</label>
+                                <input type="text" id="teacher_twitter" placeholder="sholihin" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Instagram :</label>
+                                <input type="text" id="teacher_instagram" placeholder="sholihin" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Tentang :</label>
+                                <textarea id="teacher_about" placeholder="Orang paling bijaksana mengikuti arahan mereka sendiri." class="form-control"></textarea>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Prestasi :</label>
+                                <textarea id="teacher_achievement" placeholder="Guru teladan tahun pelajaran 2020/2021" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -80,7 +108,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="submit" value="store" class="btn btn-sm bg-primary btn-labeled btn-labeled-left"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
-                    <button type="button" class="btn btn-sm bg-danger btn-labeled btn-labeled-left" data-dismiss="modal"><b><i class="icon-close2"></i> </b>KELUAR</button>
+                    <button type="button" id="close" class="btn btn-sm bg-danger btn-labeled btn-labeled-left" data-dismiss="modal"><b><i class="icon-close2"></i> </b>KELUAR</button>
                 </div>
             </div>
         </div>

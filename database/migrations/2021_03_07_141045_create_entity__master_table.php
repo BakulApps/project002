@@ -197,12 +197,14 @@ class CreateEntityMasterTable extends Migration
 
             $table->string('student_kip_no', 10)->nullable();
             $table->string('student_kip_file')->nullable();
-            $table->string('student_kk_no', 16)->nullable();
-            $table->string('student_head_family', 200)->nullable();
             $table->string('student_kk_file')->nullable();
 
+
+            $table->string('student_kk_no', 16)->nullable();
+            $table->string('student_head_family', 200)->nullable();
             $table->string('student_father_name', 100)->nullable();
             $table->string('student_father_status', 2)->nullable();
+            $table->string('student_father_civic', 2)->nullable();
             $table->string('student_father_nik', 16)->nullable();
             $table->string('student_father_birthplace', 50)->nullable();
             $table->date('student_father_birthday')->nullable();
@@ -213,6 +215,7 @@ class CreateEntityMasterTable extends Migration
 
             $table->string('student_mother_name', 100)->nullable();
             $table->string('student_mother_status', 2)->nullable();
+            $table->string('student_mother_civic', 2)->nullable();
             $table->string('student_mother_nik', 16)->nullable();
             $table->string('student_mother_birthplace', 50)->nullable();
             $table->date('student_mother_birthday')->nullable();
@@ -223,6 +226,7 @@ class CreateEntityMasterTable extends Migration
 
             $table->string('student_regent_name', 100)->nullable();
             $table->string('student_regent_status', 2)->nullable();
+            $table->string('student_regent_civic', 2)->nullable();
             $table->string('student_regent_nik', 16)->nullable();
             $table->string('student_regent_birthplace', 50)->nullable();
             $table->date('student_regent_birthday')->nullable();
