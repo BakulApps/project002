@@ -253,30 +253,15 @@ class FrontedController extends Controller
     }
 
     public function schedule(Request $request){
-        if ($request->isMethod('post')){
 
-        }
-        else {
-            return view('student.fronted.academic_schedule', $this->data);
-        }
     }
 
     public function presence(Request $request){
-        if ($request->isMethod('post')){
 
-        }
-        else {
-            return view('student.fronted.academic_presence', $this->data);
-        }
     }
 
     public function report(Request $request){
-        if ($request->isMethod('post')){
 
-        }
-        else {
-            return view('student.fronted.academic_report', $this->data);
-        }
     }
 
     public function invoice()
@@ -303,7 +288,7 @@ class FrontedController extends Controller
                         $payment->payment_number,
                         $payment_item,
                         $payment->created_at('d/m/Y H:i:s'),
-                        number_format($payment->payment_cost),
+                        number_format(str_replace(',', '', $payment->payment_cost)),
                         $payment->payment_status == 1 ? '<span class="badge badge-danger badge-pill">Menunggu Pembayaran</span>' : ($payment->payment_status == 2 ? '<span class="badge badge-warning badge-pill">Menunggu Verifikasi</span>' : '<span class="badge badge-success badge-pill">Pembayaran Diterima</span>'),
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-info" data-num="'.$payment->payment_id.'"><i class="icon-info3"></i></button>

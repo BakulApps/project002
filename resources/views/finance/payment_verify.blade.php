@@ -28,7 +28,7 @@
                                     <td>#{{$payment->payment_number}}</td>
                                     <td style="width: 20%">JML PEMBAYARAN</td>
                                     <td style="width: 1%">:</td>
-                                    <td class="text-right">Rp. {{number_format($payment->payment_cost)}}</td>
+                                    <td class="text-right">Rp. {{number_format(str_replace(',', '', $payment->payment_cost))}}</td>
                                 </tr>
                                 <tr>
                                     <td>NAMA</td>
@@ -80,7 +80,7 @@
                                 @endfor
                                 <tr>
                                     <td colspan="3" class="text-center font-weight-semibold">JUMLAH TAGIHAN</td>
-                                    <td class="text-right font-italic font-weight-semibold">Rp. {{number_format($payment->payment_cost)}}</td>
+                                    <td class="text-right font-italic font-weight-semibold">Rp. {{number_format(str_replace(',', '', $payment->payment_cost))}}</td>
                                 </tr>
                                 </tbody>
                             </table>

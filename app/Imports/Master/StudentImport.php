@@ -20,7 +20,7 @@ class StudentImport implements ToCollection, WithHeadingRow
             $student->student_name = $row['nama_lengkap'];
             $student->student_nisn = $row['nisn'];
             $student->student_nism = $row['nism'];
-            $student->student_nik = $row['nism'];
+            $student->student_nik = $row['nik'];
             $student->student_birthplace = $row['tempat_lahir'];
             $student->student_birthday = Carbon::createFromFormat('d/m/Y', $row['tanggal_lahir'])->format('Y-m-d');
             $student->student_gender = $row['jk'];

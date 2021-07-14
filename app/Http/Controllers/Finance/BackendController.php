@@ -343,8 +343,8 @@ class BackendController extends Controller
                         $payment->student->student_name,
                         $payment->student->classes()->where('class_year', Year::active())->value('class_alias'),
                         $payment_item,
-                        number_format($payment->payment_cost),
-                        Carbon::parse($payment->date)->format('d/m/Y H:i:s'),
+                        number_format(str_replace(',', '', $payment->payment_cost)),
+                        Carbon::parse($payment->payment_date)->formatLocalized('d/m/Y H:i:s'),
                         $payment->payment_status == 1 ? '<span class="badge badge-pill badge-danger">Menunggu Pembayaran</span>' : ($payment->payment_status == 2 ? '<span class="badge badge-pill badge-warning">Menunggu Verifikasi</span>' : '<span class="badge badge-pill badge-success">Pembayaran Diterima</span>'),
                         '<div class="btn-group">
                             <a href="'.route('finance.payment.verify', $payment->payment_id).'" class="btn btn-outline-primary bt-sm"><i class="icon-info3"></i></a>

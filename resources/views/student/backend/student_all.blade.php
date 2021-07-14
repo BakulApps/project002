@@ -56,7 +56,7 @@
                         <label>Berkas Unggahan</label>
                         <input type="file" id="data_student" class="form-control-uniform-custom">
                     </div>
-                    <p>Silahkan unduh template Data Siswa <a href="{{route('graduate.admin.student')}}/?_type=download&_data=student" class="badge badge-info">disini</a></p>
+                    <p>Silahkan unduh template Data Siswa <a href="{{route('portal.home')}}/assets/file/template_siswa.xlsx" class="badge badge-info">disini</a></p>
                 </div>
             </div>
         </div>
