@@ -7,17 +7,19 @@
     {!! isset($meta->keyword) ? '<meta name="keyword" content="'. $meta->keyword .'">': null !!}
     {!! isset($meta->author) ? '<meta name="author" content="'. $meta->author .'">': null !!}
 
-    <title>{{$title}}</title>
+    <title>{{!isset($title) ? $setting->value('app_name') .' - '. $setting->value_school_name : $title .' - '. $setting->value('app_name')}}</title>
 
-    <link rel="shortcut icon" href="{{asset('storage/portal/fronted/images/logo.png')}}" type="image/png">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/slick.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/animate.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/nice-select.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/jquery.nice-number.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/magnific-popup.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/fonts/awesome/font-awesome.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/default.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/portal/fronted/css/responsive.css')}}">
+    <link rel="shortcut icon"
+          href="{{asset($setting->value('school_logo') == null ? 'assets/apps/portal/images/kemenag.png' : 'storage/portal/images/' . $setting->value('school_logo'))}}" type="image/png">
+
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/slick.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/animate.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/nice-select.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/jquery.nice-number.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/magnific-popup.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/fonts/awesome/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/default.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/apps/portal/fronted/css/responsive.css')}}">
 </head>

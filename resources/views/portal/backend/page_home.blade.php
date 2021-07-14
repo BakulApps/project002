@@ -1,10 +1,10 @@
-@extends('portal.backend.layouts.master')
-@section('js')
+@extends('portal.backend.layouts.master', ['title' => 'Halaman'])
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
-    <script src="{{asset('assets/portal/backend/js/page_home.js')}}"></script>
+@section('jsscript')
+    <script src="{{asset('assets/apps/portal/backend/js/page_home.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Halaman</span>

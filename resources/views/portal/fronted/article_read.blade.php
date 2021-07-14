@@ -1,6 +1,6 @@
-@extends('portal.fronted.layouts.master')
+@extends('portal.fronted.layouts.master', ['title' => $post->post_title])
 @section('content')
-    <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($section->value('article_section_title_bg'))}})">
+    <section id="page-banner" class="pt-105 pb-130 bg_cover" data-overlay="8" style="background-image: url({{asset($post->post_image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}})">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -8,8 +8,8 @@
                         <h2>{{$post->post_title}}</h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{route('potral.home')}}">Beranda</a></li>
-                                <li class="breadcrumb-item"><a href="{{route('potral.article')}}">Artikel</a></li>
+                                <li class="breadcrumb-item"><a href="{{route('portal.home')}}">Beranda</a></li>
+                                <li class="breadcrumb-item"><a href="{{route('portal.article')}}">Artikel</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">{{$post->post_title}}</li>
                             </ol>
                         </nav>
@@ -24,7 +24,7 @@
                 <div class="col-lg-8">
                     <div class="blog-details mt-30">
                         <div class="thum">
-                            <img src="{{asset($post->post_image)}}" alt="Blog Details" style="width: 772px">
+                            <img src="{{asset($post->post_image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="Blog Details" style="width: 772px">
                         </div>
                         <div class="cont">
                             <h3>{{$post->post_title}}</h3>
@@ -33,13 +33,12 @@
                                 <li><a href="#"><i class="fa fa-user"></i>{{$post->user->user_name}}</a></li>
                                 <li><a href="#"><i class="fa fa-tags"></i>{{$post->category->category_name}}</a></li>
                             </ul>
-                            <p style="text-align: justify">{{$post->post_content}}</>
+                            <p style="text-align: justify">{!! $post->post_content !!}</p>
                             <ul class="share">
                                 <li class="title">Share :</li>
-                                <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-whatsapp"></i></a></li>
+                                <li><a href="http://www.facebook.com/sharer.php?u={{route('portal.article.read', $post->post_id)}}"><i class="fa fa-facebook-f"></i></a></li>
+                                <li><a href="https://twitter.com/share?text={{urlencode($post->post_title)}}&amp;url={{urlencode(route('portal.article.read', $post->post_id))}}"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="whatsapp://send?text={{route('portal.article.read', $post->post_id)}}"><i class="fa fa-whatsapp"></i></a></li>
                             </ul>
                             @if($post->post_comment == 1)
                             <div class="blog-comment pt-45">
@@ -52,7 +51,7 @@
                                         <div class="comment">
                                             <div class="comment-author">
                                                 <div class="author-thum">
-                                                    <img src="images/review/r-2.jpg" alt="Reviews">
+                                                    <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Reviews">
                                                 </div>
                                                 <div class="comment-name">
                                                     <h6>{{$comment->comment_name}}</h6>
@@ -72,7 +71,7 @@
                                                 <div class="comment">
                                                     <div class="comment-author">
                                                         <div class="author-thum">
-                                                            <img src="images/review/r-2.jpg" alt="Reviews">
+                                                            <img src="{{asset('assets/apps/portal/fronted/images/bg/blog-1.jpg')}}" alt="Reviews">
                                                         </div>
                                                         <div class="comment-name">
                                                             <h6>{{$parent->comment_name}}</h6>
@@ -93,7 +92,7 @@
                                     <h3>Tinggalkan Komentar</h3>
                                 </div>
                                 <div class="comment-form">
-                                    <form action="{{route('potral.article.read', $post->post_id)}}" method="post">
+                                    <form action="{{route('portal.article.read', $post->post_id)}}" method="post">
                                         @csrf
                                         <div class="row">
                                             <div class="col-md-6">
@@ -149,13 +148,13 @@
                                     <ul>
                                         @foreach($populars as $popular)
                                             <li>
-                                                <a href="{{route('potral.article.read', $popular->post_id)}}">
+                                                <a href="{{route('portal.article.read', $popular->post_id)}}">
                                                     <div class="singel-post">
                                                         <div class="thum">
-                                                            <img src="{{asset($popular->post_image)}}" alt="Blog" style="height: 92px">
+                                                            <img src="{{asset('assets/apps/portal/images/blog-1.jpg')}}" alt="Blog" style="height: 92px">
                                                         </div>
                                                         <div class="cont">
-                                                            <h6>{{$popular->post_title}}</h6>
+                                                            <p>{{$popular->post_title}}</p>
                                                             <span>{{$popular->created_at()}}</span>
                                                         </div>
                                                     </div>

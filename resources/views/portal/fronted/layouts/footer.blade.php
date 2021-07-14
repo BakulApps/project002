@@ -5,9 +5,9 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="footer-about mt-40">
                         <div class="logo">
-                            <a href="#"><img src="{{asset($setting->value('footer_logo'))}}" alt="Logo"></a>
+                            <a href="#"><img src="{{asset('storage/portal/images/'. $setting->value('app_logo'))}}" alt="Logo"></a>
                         </div>
-                        <p>{{$setting->value('footer_desc')}}</p>
+                        <p>{{$setting->value('app_desc')}}</p>
                         <ul class="mt-20">
                             <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>

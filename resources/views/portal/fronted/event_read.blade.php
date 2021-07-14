@@ -1,6 +1,6 @@
 @extends('portal.fronted.layouts.master')
 @section('content')
-    <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8" style="background-image: url(images/page-banner-3.jpg)">
+    <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8" style="background-image: url({{asset($event->event_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -27,13 +27,13 @@
                             <h3>{{$event->event_title}}</h3>
                             <a href="#"><span><i class="fa fa-calendar"></i> {{$event->date_start()}}</span></a>
                             <a href="#"><span><i class="fa fa-map-marker"></i> {{$event->event_place}}</span></a>
-                            <img src="{{asset('storage/portal/fronted/images/event/'. $event->event_image)}}" alt="Event">
-                            <p>{{$event->event_content}}</p>
+                            <img style="width: 900px" src="{{asset($event->event_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}" alt="Event">
+                            <p>{!! $event->event_content !!}</p>
                         </div>
                     </div>
                     <div class="col-lg-4">
                         <div class="events-right">
-                            <div class="events-coundwon bg_cover" data-overlay="8" style="background-image: url(images/event/singel-event/coundown.jpg)">
+                            <div class="events-coundwon bg_cover" data-overlay="8" style="background-image: url({{asset($event->event_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}">
                                 <div data-countdown="2020/03/12"></div>
                                 <div class="events-coundwon-btn pt-30">
                                     <a href="#" class="main-btn">Book Your Seat</a>
@@ -75,7 +75,6 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <div id="contact-map" class="mt-25"></div>
                             </div>
                         </div>
                     </div>

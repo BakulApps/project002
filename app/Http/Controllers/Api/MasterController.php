@@ -3,17 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master\Bank;
 use App\Models\Master\Civic;
+use App\Models\Master\Classes;
 use App\Models\Master\Distance;
 use App\Models\Master\Earning;
 use App\Models\Master\Gender;
 use App\Models\Master\Home;
 use App\Models\Master\Job;
+use App\Models\Master\Ladder;
+use App\Models\Master\Level;
+use App\Models\Master\Major;
 use App\Models\Master\Religion;
+use App\Models\Master\School;
 use App\Models\Master\Study;
 use App\Models\Master\Territory;
 use App\Models\Master\Transport;
 use App\Models\Master\Travel;
+use App\Models\Master\Year;
 use Illuminate\Http\Request;
 
 class MasterController extends Controller
@@ -21,6 +28,24 @@ class MasterController extends Controller
     public function index(Request $request)
     {
         switch ($request->_data){
+            case 'bank':
+                $msg = $this->bank($request);
+                break;
+            case 'class':
+                $msg = $this->classes($request);
+                break;
+            case 'major':
+                $msg = $this->major($request);
+                break;
+            case 'level':
+                $msg = $this->level($request);
+                break;
+            case 'school_status':
+                $msg = $this->school_status($request);
+                break;
+            case 'ladder':
+                $msg = $this->ladder($request);
+                break;
             case 'gender':
                 $msg = $this->gender($request);
                 break;
@@ -71,7 +96,71 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function gender(Request $request)
+    protected function bank(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $banks = Bank::all();
+            foreach ($banks as $bank){
+                $msg[] = ['id' => $bank->bank_id, 'text' => $bank->bank_code];
+            }
+        }
+        return $msg;
+    }
+
+    protected function classes(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $classes = Classes::where('class_year', Year::active())->get();
+            foreach ($classes as $class){
+                $msg[] = ['id' => $class->class_id, 'text' => 'Kelas '. $class->class_alias];
+            }
+        }
+        return $msg;
+    }
+
+    protected function major(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $majors = Major::all();
+            foreach ($majors as $major){
+                $msg[] = ['id' => $major->major_id, 'text' => $major->major_name];
+            }
+        }
+        return $msg;
+    }
+
+    protected function level(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $levels = Level::where('level_ladder', School::first()->value('school_ladder'))->get();
+            foreach ($levels as $level){
+                $msg[] = ['id' => $level->level_id, 'text' => $level->level_name];
+            }
+        }
+        return $msg;
+    }
+
+    protected function school_status(Request $request)
+    {
+        $msg = [
+            ['id' => 1, 'text' => '1. Negeri'],
+            ['id' => 2, 'text' => '2. Swasta']
+        ];
+        return $msg;
+    }
+
+    protected function ladder(Request $request)
+    {
+        if ($request->_type == 'select'){
+            $ladders = Ladder::all();
+            foreach ($ladders as $ladder){
+                $msg[] = ['id' => $ladder->ladder_id, 'text' => $ladder->ladder_id .' - '. $ladder->ladder_name];
+            }
+        }
+        return $msg;
+    }
+
+    protected function gender(Request $request)
     {
         if ($request->_type == 'select'){
             $genders = Gender::all();
@@ -82,7 +171,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function religion(Request $request)
+    protected function religion(Request $request)
     {
         if ($request->_type == 'select'){
             $religions = Religion::all();
@@ -93,7 +182,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function civic(Request $request)
+    protected function civic(Request $request)
     {
         if ($request->_type == 'select'){
             $civics = Civic::all();
@@ -104,7 +193,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function province(Request $request)
+    protected function province(Request $request)
     {
         if ($request->_type == 'select'){
             $provinces = Territory::select(['code_province', 'name_province'])->distinct()->orderBy('name_province')->get();
@@ -115,7 +204,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function distric(Request $request)
+    protected function distric(Request $request)
     {
         if ($request->_type == 'select'){
             $districs = Territory::select(['code_distric', 'name_distric'])->distinct()->where('code_province', $request->province)->orderBy('name_distric')->get();
@@ -126,7 +215,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function subdistric(Request $request)
+    protected function subdistric(Request $request)
     {
         if ($request->_type == 'select'){
             $subdistrics = Territory::select(['code_subdistric', 'name_subdistric'])->distinct()->where('code_distric', $request->distric)->orderBy('name_subdistric')->get();
@@ -137,7 +226,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function village(Request $request)
+    protected function village(Request $request)
     {
         if ($request->_type == 'select'){
             $villages = Territory::select(['code_village', 'name_village'])->distinct()->where('code_subdistric', $request->subdistric)->orderBy('name_village')->get();
@@ -148,7 +237,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function distance(Request $request)
+    protected function distance(Request $request)
     {
         if ($request->_type == 'select'){
             $distances = Distance::all();
@@ -159,7 +248,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function transport(Request $request)
+    protected function transport(Request $request)
     {
         if ($request->_type == 'select'){
             $transports = Transport::all();
@@ -170,7 +259,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function travel(Request $request)
+    protected function travel(Request $request)
     {
         if ($request->_type == 'select'){
             $travels = Travel::all();
@@ -181,7 +270,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function study(Request $request)
+    protected function study(Request $request)
     {
         if ($request->_type == 'select'){
             $studies = Study::all();
@@ -192,7 +281,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function job(Request $request)
+    protected function job(Request $request)
     {
         if ($request->_type == 'select'){
             $jobs = Job::all();
@@ -202,7 +291,7 @@ class MasterController extends Controller
         }
         return $msg;
     }
-    public function earning(Request $request)
+    protected function earning(Request $request)
     {
         if ($request->_type == 'select'){
             $earnings = Earning::all();
@@ -213,7 +302,7 @@ class MasterController extends Controller
         return $msg;
     }
 
-    public function home(Request $request)
+    protected function home(Request $request)
     {
         if ($request->_type == 'select'){
             $homes = Home::all();

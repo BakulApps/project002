@@ -23,7 +23,7 @@ class AuthController extends Controller
             return $this->authentication($request);
         }
         else {
-            return view('portal.fronted.login', $this->data);
+            return view('portal.backend.login', $this->data);
         }
     }
 

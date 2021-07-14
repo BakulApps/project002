@@ -1,6 +1,5 @@
-@extends('portal.backend.layouts.master')
-
-@section('js')
+@extends('portal.backend.layouts.master', ['title' => 'Postingan'])
+@section('jsplugin')
     <link href="{{asset('assets/js/plugins/summernote/summernote-bs4.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/summernote/summernote-bs4.min.js')}}"></script>
@@ -8,8 +7,8 @@
     <script src="{{asset('assets/js/plugins/media/fancybox.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
 @endsection
-@section('jspage')
-    <script src="{{asset('assets/portal/backend/js/post_edit.js')}}"></script>
+@section('jsscript')
+    <script src="{{asset('assets/apps/portal/backend/js/post_edit.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Postingan</span>
@@ -108,7 +107,7 @@
                             <h6 class="card-title font-weight-semibold">GAMBAR</h6>
                         </div>
                         <div class="card-img-actions">
-                            <img class="img-fluid image-view" src="{{asset($post->post_image == null ? 'assets/portal/fronted/images/bg/blog-1.jpg' : $post->post_image)}}" alt="">
+                            <img class="img-fluid image-view" src="{{asset($post->post_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="">
                         </div>
                         <div class="card-body">
                             <input type="file" id="post_image" class="form-control-uniform" value="{{$post->post_image}}" data-fouc>

@@ -3,7 +3,7 @@
     @if($sliders->count() >= 1)
     <section id="slider-part" class="slider-active">
         @foreach($sliders as $slider)
-        <div class="single-slider bg_cover pt-150" style="background-image: url({{asset('storage/portal/fronted/images/slider/'. $slider->slider_image)}})" data-overlay="4">
+        <div class="single-slider bg_cover pt-150" style="background-image: url({{asset('storage/portal/images/slider/'. $slider->slider_image)}})" data-overlay="4">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-7 col-lg-9">
@@ -40,7 +40,7 @@
                                 <a href="{{$program->program_link}}">
                                     <span class="singel-category text-center color-1">
                                         <span class="icon">
-                                            <img src="{{asset('storage/portal/fronted/images/program/'. $program->program_image)}}" alt="Icon">
+                                            <img src="{{asset('storage/portal/images/program/'. $program->program_image)}}" alt="Icon">
                                         </span>
                                         <span class="cont">
                                             <span>{{$program->program_name}}</span>
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="about-bg">
-            <img src="{{asset('storage/portal/fronted/images/'. $section->value('home_section_about_image'))}}" alt="About">
+            <img src="{{asset('storage/portal/images/home/'. $section->value('home_section_about_image'))}}" alt="About">
         </div>
     </section>
     <section id="apply-aprt" class="pb-120">
@@ -133,7 +133,7 @@
                     <div class="singel-course">
                         <div class="thum">
                             <div class="image">
-                                <img src="{{asset('storage/portal/fronted/images/extracurricular/'. $extracurricular->extracurricular_image)}}" alt="Course">
+                                <img src="{{asset('storage/portal/images/extracurricular/'. $extracurricular->extracurricular_image)}}" alt="Course">
                             </div>
                         </div>
                         <div class="cont">
@@ -147,7 +147,7 @@
         </div>
         @endif
     </section>
-    <section id="video-feature" class="bg_cover pt-60 pb-110" style="background-image: url({{asset($section->value('home_section_yt_background'))}})">
+    <section id="video-feature" class="bg_cover pt-60 pb-110" style="background-image: url({{asset('storage/portal/images/home/'. $section->value('home_section_yt_background'))}})">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 order-last order-lg-first">
@@ -164,7 +164,7 @@
                             <li>
                                 <div class="singel-feature">
                                     <div class="icon">
-                                        <img src="{{$section->value('home_section_4_icon_1')}}" alt="icon">
+                                        <img src="{{asset('storage/portal/images/home/'. $section->value('home_section_4_icon_1'))}}" alt="icon" width=70px">
                                     </div>
                                     <div class="cont">
                                         <h4>{{$section->value('home_section_4_title_1')}}</h4>
@@ -175,7 +175,7 @@
                             <li>
                                 <div class="singel-feature">
                                     <div class="icon">
-                                        <img src="{{$section->value('home_section_4_icon_2')}}" alt="icon">
+                                        <img src="{{asset('storage/portal/images/home/'. $section->value('home_section_4_icon_2'))}}" alt="icon" width=70px">
                                     </div>
                                     <div class="cont">
                                         <h4>{{$section->value('home_section_4_title_2')}}</h4>
@@ -186,7 +186,7 @@
                             <li>
                                 <div class="singel-feature">
                                     <div class="icon">
-                                        <img src="{{$section->value('home_section_4_icon_3')}}" alt="icon">
+                                        <img src="{{asset('storage/portal/images/home/'. $section->value('home_section_4_icon_3'))}}" alt="icon" width=70px">
                                     </div>
                                     <div class="cont">
                                         <h4>{{$section->value('home_section_4_title_3')}}</h4>
@@ -207,7 +207,7 @@
                 <div class="col-lg-5">
                     <div class="section-title mt-50">
                         <h5>Guru & Karyawan</h5>
-                        <h2>MTs. Darul Hikmah Menganti</h2>
+                        <h2>{{$setting->value('school_name')}}</h2>
                     </div>
                     <div class="teachers-cont" style="text-align: justify">
                         <p>Guru yang berkualitas yaitu guru yang memiliki pengetahuan yang baik atau mendalam tentang kurikulum pendidiksn dan mampu mengembangkannya dengan baik serta sesuai dengan aturan pendidikan yang berlaku. Guru yang berkualitas mampu memahami, memperhatikan, dan memiliki metode pembelajaran sesuai dengan kemampuan peserta didiknya.</p>
@@ -217,50 +217,19 @@
                 <div class="col-lg-6 offset-lg-1">
                     <div class="teachers mt-20">
                         <div class="row">
+                            @foreach($teachers as $teacher)
                             <div class="col-sm-6">
                                 <div class="singel-teachers mt-30 text-center">
                                     <div class="image">
-                                        <img src="{{asset('storage/portal/fronted/images/teacher/sholihin.jpg')}}" alt="Teachers">
+                                        <img src="{{asset($teacher->teacher_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/teacher/'. $teacher->teacher_image)}}" alt="Teachers">
                                     </div>
                                     <div class="cont">
-                                        <a href="#"><h6>Sholihin, S.Ag.</h6></a>
-                                        <span>Kepala Madrasah</span>
+                                        <a href="{{$teacher->teacher_link}}"><h6>{{$teacher->teacher_name}}</h6></a>
+                                        <span>{{$teacher->teacher_job}}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="singel-teachers mt-30 text-center">
-                                    <div class="image">
-                                        <img src="{{asset('storage/portal/fronted/images/teacher/sholihatun.jpg')}}" alt="Teachers">
-                                    </div>
-                                    <div class="cont">
-                                        <a href="#"><h6>Sholihatun, S.Pd.I.</h6></a>
-                                        <span>Waka. Kesiswaan</span>
-                                    </div>
-                                </div> <!-- singel teachers -->
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="singel-teachers mt-30 text-center">
-                                    <div class="image">
-                                        <img src="{{asset('storage/portal/fronted/images/teacher/puji.jpg')}}" alt="Teachers">
-                                    </div>
-                                    <div class="cont">
-                                        <a href="#"><h6>Fuji Nur Afida, S.Pd.</h6></a>
-                                        <span>Guru BK</span>
-                                    </div>
-                                </div> <!-- singel teachers -->
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="singel-teachers mt-30 text-center">
-                                    <div class="image">
-                                        <img src="{{asset('storage/portal/fronted/images/teacher/bambang.jpg')}}" alt="Teachers">
-                                    </div>
-                                    <div class="cont">
-                                        <a href="#"><h6>Bambang, S.Pd.</h6></a>
-                                        <span>Guru IPS</span>
-                                    </div>
-                                </div> <!-- singel teachers -->
-                            </div>
+                            @endforeach
                         </div> <!-- row -->
                     </div> <!-- teachers -->
                 </div>
@@ -287,7 +256,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-8">
                     <div class="singel-publication mt-30">
                         <div class="image">
-                            <img src="{{asset($facility->facility_image)}}" alt="Publication">
+                            <img src="{{asset($facility->facility_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/facility/'. $facility->facility_image)}}" alt="Publication">
                         </div>
                         <div class="cont">
                             <div class="name">
@@ -316,7 +285,7 @@
                 <div class="col-lg-6">
                     <div class="singel-testimonial">
                         <div class="testimonial-thum">
-                            <img src="{{asset($testimonial->testimonial_image)}}" alt="Testimonial">
+                            <img src="{{asset($testimonial->testimonial_image == null ? 'assets/apps/portal/images/blog-1.jpg' :'storage/portal/images/testimonial/'. $testimonial->testimonial_image)}}" alt="Testimonial">
                             <div class="quote">
                                 <i class="fa fa-quote-right"></i>
                             </div>
@@ -343,28 +312,30 @@
                 </div>
             </div>
             <div class="row">
+                @if(isset($post_single))
                 <div class="col-lg-6">
                     <div class="singel-news mt-30">
                         <div class="news-thum pb-25">
-                            <img src="{{asset($post_single->post_image)}}" alt="News">
+                            <img src="{{asset($post_single->post_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post_single->post_image)}}" alt="News">
                         </div>
                         <div class="news-cont">
                             <ul>
                                 <li><a href="#"><i class="fa fa-calendar"></i>{{$post_single->created_at()}} </a></li>
                                 <li><a href="#"> <span>Oleh</span> {{$post_single->user->user_name}}</a></li>
                             </ul>
-                            <a href="{{route('potral.article.read', $post_single->post_id)}}"><h3>{{$post_single->post_title}}</h3></a>
-                            <p style="text-align: justify">{{Str::limit($post_single->post_content, 200)}}</p>
+                            <a href="{{route('portal.article.read', $post_single->post_id)}}"><h3>{{$post_single->post_title}}</h3></a>
+                            <p style="text-align: justify">{{strip_tags(Str::limit($post_single->post_content, 200))}}</p>
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="col-lg-6">
                     @foreach($posts as $post)
                     <div class="singel-news news-list">
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="news-thum mt-30">
-                                    <img src="{{asset($post->post_image)}}" alt="News">
+                                    <img src="{{asset($post->post_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/post/'. $post->post_image)}}" alt="News">
                                 </div>
                             </div>
                             <div class="col-sm-8">
@@ -373,8 +344,8 @@
                                         <li><a href="#"><i class="fa fa-calendar"></i>{{$post->created_at()}} </a></li>
                                         <li><a href="#"> <span>Oleh</span> {{$post->user->user_name}}</a></li>
                                     </ul>
-                                    <a href="{{route('potral.article.read', $post->post_id)}}"><h3>{{$post->post_title}}</h3></a>
-                                    <p style="text-align: justify">{{Str::limit($post->post_content, 100)}}</p>
+                                    <a href="{{route('portal.article.read', $post->post_id)}}"><h3>{{$post->post_title}}</h3></a>
+                                    <p style="text-align: justify">{{strip_tags(Str::limit($post->post_content, 100))}}</p>
                                 </div>
                             </div>
                         </div>
@@ -389,32 +360,32 @@
             <div class="row patnar-slied">
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/portal/fronted/images/patnar/kemenag.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/kemenag.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/portal/fronted/images/patnar/kemendikbud.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/kemendikbud.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/portal/fronted/images/patnar/ayomondok.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/ayomondok.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/portal/fronted/images/patnar/kemadrasah.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/kemadrasah.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/portal/fronted/images/patnar/madrasahhebat.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/madrasahhebat.png')}}" alt="Logo">
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="singel-patnar text-center mt-40">
-                        <img src="{{asset('assets/portal/fronted/images/patnar/ayomadrasah.png')}}" alt="Logo">
+                        <img src="{{asset('assets/apps/portal/images/ayomadrasah.png')}}" alt="Logo">
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
-@extends('portal.backend.layouts.master')
+@extends('portal.backend.layouts.master', ['title' => 'Acara & Kegiatan'])
 
-@section('js')
+@section('jsplugin')
     <link href="{{asset('assets/js/plugins/summernote/summernote-bs4.min.css')}}" rel="stylesheet" type="text/css">
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
@@ -9,8 +9,8 @@
     <script src="{{asset('assets/js/plugins/media/fancybox.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
 @endsection
-@section('jspage')
-    <script src="{{asset('assets/portal/backend/js/event_edit.js')}}"></script>
+@section('jsscript')
+    <script src="{{asset('assets/apps/portal/backend/js/event_edit.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Acara & Kegiatan</span>
@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" id="event_title" value="{{$event->event_title}}">
                             </div>
-                            <div id="event_content">{{$event->event_content}}</div>
+                            <div id="event_content">{!! $event->event_content !!}</div>
                         </div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                             <h6 class="card-title font-weight-semibold">GAMBAR</h6>
                         </div>
                         <div class="card-img-actions">
-                            <img class="img-fluid image-view" src="{{asset($event->event_image == null ? 'assets/portal/fronted/images/bg/blog-1.jpg' : 'storage/portal/fronted/images/event/'. $event->event_image)}}" width="" style="width: 100%">
+                            <img class="img-fluid image-view" src="{{asset($event->event_image == null ? 'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}" width="" style="width: 100%">
                         </div>
                         <div class="card-body">
                             <input type="file" id="event_image" class="form-control-uniform" data-fouc>

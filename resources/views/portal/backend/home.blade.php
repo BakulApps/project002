@@ -1,4 +1,4 @@
-@extends('portal.backend.layouts.master')
+@extends('portal.backend.layouts.master', ['title' => 'Dashboard'])
 @section('content')
     <div class="row">
         <div class="col-md-3">

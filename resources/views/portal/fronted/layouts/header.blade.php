@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-lg-4 col-md-4">
                 <div class="logo">
-                    <a href="{{route('potral.home')}}">
-                        <img src="{{asset($setting->value('header_logo'))}}" alt="Logo">
+                    <a href="{{route('portal.home')}}">
+                        <img src="{{asset('storage/portal/images/'. $setting->value('app_logo'))}}" alt="Logo">
                     </a>
                 </div>
             </div>
@@ -12,7 +12,7 @@
                 <div class="support-button float-right d-none d-md-block">
                     <div class="support float-left">
                         <div class="icon">
-                            <img src="{{asset('assets/portal/fronted/images/icon/support.png')}}" alt="icon">
+                            <img src="{{asset('assets/apps/portal/images/support.png')}}" alt="icon">
                         </div>
                         <div class="cont">
                             <p>Butuh bantuan? hubungi kami</p>

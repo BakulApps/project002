@@ -14,6 +14,7 @@ use App\Models\Portal\Section;
 use App\Models\Portal\Setting;
 use App\Models\Portal\Slider;
 use App\Models\Portal\Tag;
+use App\Models\Portal\Teacher;
 use App\Models\Portal\Testimonial;
 use Illuminate\Http\Request;
 
@@ -27,11 +28,11 @@ class FrontedController extends Controller
         $this->setting = new Setting();
         $this->data['setting'] = $this->setting;
         $this->data['meta'] = (object) [
-            'title'         => $this->setting->value('app_name'),
             'description'   => 'Portal Resmi MTs. Darul Hikmah Menganti',
-            'keyword'       => 'Porta, portal resmi, madrasah, madrasah tsanawiyah, mts darul hikmah, mts darul hikmah menganti',
+            'keyword'       => 'Portal, portal resmi, madrasah, madrasah tsanawiyah, mts darul hikmah, mts darul hikmah menganti',
             'author'        => 'MTs. Darul Hikmah Menganti'
         ];
+        $this->data['section'] = new Section();
         $this->data['title'] = $this->setting->value('app_name') .' - '. $this->setting->value('school_name');
     }
 
@@ -42,11 +43,12 @@ class FrontedController extends Controller
         $this->data['sliders']  = Slider::where('slider_status', 1)->get();
         $this->data['programs'] = Program::all();
         $this->data['facilities'] = Facility::limit(4)->get();
-        $this->data['events']   = Event::where('event_date_start', '>', now())->limit(3)->get();
+        $this->data['events']   = Event::where('event_date_start', '>', now())->orderBy('event_date_start', 'ASC')->limit(3)->get();
         $this->data['extracurriculars'] = Extracurricular::limit(10)->get();
         $this->data['testimonials'] = Testimonial::all();
         $this->data['post_single'] = Post::first();
         $this->data['posts'] = Post::orderBy('created_at', 'DESC')->limit(3)->get();
+        $this->data['teachers'] = Teacher::orderBy('teacher_name', 'ASC')->limit(4)->get();
         return view('portal.fronted.home', $this->data);
     }
 
@@ -98,6 +100,17 @@ class FrontedController extends Controller
         $this->data['event'] = $event = Event::find($id);
         $this->data['page'] = $event->event_title;
         return view('portal.fronted.event_read', $this->data);
+    }
+
+    public function teacher(){
+        $this->data['teachers'] = Teacher::orderBy('teacher_id', 'ASC')->paginate(8);
+        return view('portal.fronted.teacher', $this->data);
+    }
+
+    public function teacher_detail($id)
+    {
+        $this->data['teacher'] = Teacher::find($id);
+        return view('portal.fronted.teacher_detail', $this->data);
     }
 
     public function category($id)

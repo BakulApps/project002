@@ -1,11 +1,11 @@
-@extends('portal.backend.layouts.master')
-@section('js')
+@extends('portal.backend.layouts.master', ['title' => 'Widget'])
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
-    <script src="{{asset('assets/portal/backend/js/widget_extracurricular.js')}}"></script>
+@section('jsscript')
+    <script src="{{asset('assets/apps/portal/backend/js/widget_extracurricular.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Widget</span>
@@ -18,7 +18,7 @@
                 <div class="card-header bg-white header-elements-inline">
                     <h6 class="card-title font-weight-semibold">DATA EKSTRAKURIKULER</h6>
                     <div class="header-elements">
-                        <button type="button" class="btn btn-primary btn-labeled btn-labeled-left font-weight-semibold" data-toggle="modal" data-target="#modal-extracurricular"><b><i class="icon-file-video"></i> </b>TAMBAH</button>
+                        <button type="button" class="btn btn-primary btn-labeled btn-labeled-left font-weight-semibold" data-toggle="modal" data-target="#modal-extracurricular"><b><i class="icon-add"></i> </b>TAMBAH</button>
                     </div>
                 </div>
                 <table class="table datatable-extracurricular table-bordered">

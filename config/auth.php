@@ -41,9 +41,29 @@ return [
             'provider' => 'users',
         ],
 
+        'student' => [
+            'driver' => 'session',
+            'provider' => 'students'
+        ],
+
         'portal' => [
             'driver' => 'session',
             'provider' => 'portals'
+        ],
+
+        'graduate' => [
+            'driver' => 'session',
+            'provider' => 'graduates'
+        ],
+
+        'finance' => [
+            'driver' => 'session',
+            'provider' => 'finances',
+        ],
+
+        'exam' => [
+            'driver' => 'session',
+            'provider' => 'exams',
         ],
 
         'admission' => [
@@ -81,9 +101,29 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'students' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Student\User::class
+        ],
+
         'portals' => [
             'driver' => 'eloquent',
             'model' => App\Models\Portal\User::class
+        ],
+
+        'graduates' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Graduate\User::class
+        ],
+
+        'finances' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Finance\User::class
+        ],
+
+        'exams' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Exam\User::class
         ],
 
         'admissions' => [

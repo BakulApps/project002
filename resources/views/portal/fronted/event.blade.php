@@ -24,13 +24,13 @@
                 <div class="col-lg-6">
                     <div class="singel-event-list mt-30">
                         <div class="event-thum">
-                            <img src="{{asset('storage/portal/fronted/images/'. $event->event_image)}}" alt="Event">
+                            <img src="{{asset($event->event_image == null ?'assets/apps/portal/images/blog-1.jpg' : 'storage/portal/images/event/'. $event->event_image)}}" alt="Event">
                         </div>
                         <div class="event-cont">
                             <span><i class="fa fa-calendar"></i> {{$event->date_start() .' - '. $event->date_end()}}</span>
                             <a href="{{route('portal.event.read', $event->event_id)}}"><h4>{{$event->event_title}}</h4></a>
                             <span><i class="fa fa-map-marker"></i> {{$event->event_place}}</span>
-                            <p style="text-align: justify">{{Str::limit($event->event_content, 100)}}</p>
+                            <p style="text-align: justify">{{strip_tags(Str::limit($event->event_content, 100))}}</p>
                         </div>
                     </div>
                 </div>

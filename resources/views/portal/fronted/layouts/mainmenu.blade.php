@@ -11,7 +11,7 @@
                     <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a @if($page == 'home') class="active" @endif href="{{route('potral.home')}}">BERANDA</a>
+                                <a @if($page == 'home') class="active" @endif href="{{route('portal.home')}}">BERANDA</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#">PROFIL MADRASAH</a>
@@ -19,13 +19,13 @@
                                     <li><a href="#">Sejarah</a></li>
                                     <li><a href="#">Visi & Misi</a></li>
                                     <li><a href="#">Bid. Kesiswaan</a></li>
-                                    <li><a href="#">Bid. Kepegawaian</a></li>
+                                    <li><a href="{{route('portal.teacher')}}">Bid. Kepegawaian</a></li>
                                     <li><a href="#">Bid. Kurikulum</a></li>
                                     <li><a href="#">Bid. Sarana & Prasarana</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a href="{{route('portal.event')}}">KEGIATAN</a></li>
-                            <li class="nav-item"><a href="{{route('potral.article')}}">ARTIKEL</a></li>
+                            <li class="nav-item"><a href="{{route('portal.article')}}">ARTIKEL</a></li>
                         </ul>
                     </div>
                 </nav>
