@@ -103,13 +103,14 @@ class FrontedController extends Controller
     }
 
     public function teacher(){
-        $this->data['teachers'] = Teacher::paginate(8);
-        return view('portal.fronted.layouts.teacher', $this->data);
+        $this->data['teachers'] = Teacher::orderBy('teacher_id', 'ASC')->paginate(8);
+        return view('portal.fronted.teacher', $this->data);
     }
 
     public function teacher_detail($id)
     {
-
+        $this->data['teacher'] = Teacher::find($id);
+        return view('portal.fronted.teacher_detail', $this->data);
     }
 
     public function category($id)
