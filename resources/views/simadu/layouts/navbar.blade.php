@@ -1,6 +1,6 @@
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
-        <a href="{{route('student.home')}}" class="d-inline-block">
+        <a href="{{route('simadu.home')}}" class="d-inline-block">
             <img src="{{asset($setting->value('app_logo') == null ? 'assets/images/logo_light.png' : 'storage/student/images/'. $setting->value('app_logo'))}}" alt="">
         </a>
     </div>
@@ -22,15 +22,18 @@
         </ul>
         <a target="_blank" href="{{route('portal.home')}}" class="badge bg-success ml-md-3 mr-md-auto">Kunjungi Situs</a>
         <ul class="navbar-nav navbar-right">
-            @if(auth('student')->check())
+            @if(session()->has('simadu.auth'))
                 <li class="nav-item dropdown dropdown-user">
                     <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+                        @if(session()->get('simadu.auth')->student_photo_file == '')
                         <img src="{{asset('storage/master/images/'.$school->school_logo)}}" class="rounded-circle mr-2" height="34" alt="">
-                        <span>{{auth('student')->user()->user_fullname}}</span>
+                        @else
+                        <img src="{{asset('storage/master/images/student/'.session()->get('student.auth')->student_photo_file)}}" class="rounded-circle mr-2" height="34" alt="">
+                        @endif
+                        <span>{{session()->get('simadu.auth')->student_name}}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a href="{{route('student.setting')}}" class="dropdown-item"><i class="icon-cog"></i> Pengaturan</a>
-                        <a href="{{route('student.logout')}}" class="dropdown-item"><i class="icon-switch2"></i> Keluar</a>
+                        <a href="{{route('simadu.logout')}}" class="dropdown-item"><i class="icon-switch2"></i> Keluar</a>
                     </div>
                 </li>
             @endif

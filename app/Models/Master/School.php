@@ -63,7 +63,7 @@ class School extends Model
             $name = $school->ladder->ladder_name ." ". $school->school_name;
         }
         else {
-            $name = $school->ladder->ladder_code .". ". $school->school_name;
+            $name = $school->ladder->ladder_code ." ". $school->school_name;
         }
 
         return $name;

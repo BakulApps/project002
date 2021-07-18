@@ -23,13 +23,13 @@
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
 
     <script src="{{asset('assets/js/cores/app.js')}}"></script>
-    <script src="{{asset('assets/apps/student/backend/js/login.js')}}"></script>
+    <script src="{{asset('assets/apps/student/js/login.js')}}"></script>
 </head>
 <body class="bg-green-800">
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content d-flex justify-content-center align-items-center">
-            <form class="login-form" action="{{route('student.backend.login')}}" method="post">
+            <form class="login-form" action="{{route('student.login')}}" method="post">
                 {{csrf_field()}}
                 <div class="card mb-0">
                     <div class="card-body">

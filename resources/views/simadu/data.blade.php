@@ -1,10 +1,10 @@
-@extends('student.layouts.master', ['title' => 'Data Siswa'])
+@extends('simadu.layouts.master', ['title' => 'Data Siswa'])
 @section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset("assets/apps/student/fronted/js/data.js")}}"></script>
+    <script src="{{asset("assets/apps/simadu/js/data.js")}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item active">Data Siswa</span>

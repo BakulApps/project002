@@ -1,4 +1,4 @@
-@extends('student.layouts.master', ['title' => 'Keuangan'])
+@extends('simadu.layouts.master', ['title' => 'Keuangan'])
 @section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
@@ -6,7 +6,11 @@
     <script src="{{asset('assets/js/plugins/input/inputmask.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset("assets/apps/student/fronted/js/finance_payment.js")}}"></script>
+    <script src="{{asset("assets/apps/simadu/js/finance_payment.js")}}"></script>
+@endsection
+@section('breadcrumb')
+    <span class="breadcrumb-item">Keuangan</span>
+    <span class="breadcrumb-item active">Pembayaran</span>
 @endsection
 @section('content')
     <div class="row">
@@ -149,14 +153,14 @@
                         <div class="mb-4 mb-md-4">
                             <span class="text-muted">Tagihan Ke:</span>
                             <ul class="list list-unstyled mb-0">
-                                <li><h5 class="my-2">{{session()->get('student.auth')->student_name}}</h5></li>
-                                <li><span class="font-weight-semibold">{{session()->get('student.auth')->student_address}}</span></li>
+                                <li><h5 class="my-2">{{session()->get('simadu.auth')->student_name}}</h5></li>
+                                <li><span class="font-weight-semibold">{{session()->get('simadu.auth')->student_address}}</span></li>
                                 <li>
-                                    {{\App\Models\Master\Territory::subdistric(session()->get('student.auth')->student_subdistric, false)}} -
-                                    {{\App\Models\Master\Territory::distric(session()->get('student.auth')->student_distric, false)}} -
-                                    {{\App\Models\Master\Territory::province(session()->get('student.auth')->student_province, false)}}
+                                    {{\App\Models\Master\Territory::subdistric(session()->get('simadu.auth')->student_subdistric, false)}} -
+                                    {{\App\Models\Master\Territory::distric(session()->get('simadu.auth')->student_distric, false)}} -
+                                    {{\App\Models\Master\Territory::province(session()->get('simadu.auth')->student_province, false)}}
                                 </li>
-                                <li>{{session()->get('student.auth')->student_phone}}</li>
+                                <li>{{session()->get('simadu.auth')->student_phone}}</li>
                             </ul>
                         </div>
                         <div class="mb-2 ml-auto">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Imports\Master\StudentImport;
+use App\Models\Master\Classes;
 use App\Models\Master\School;
 use App\Models\Master\Student;
 use App\Models\Master\Year;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
-class BackendController extends Controller
+class MainController extends Controller
 {
     protected $data;
 
@@ -25,7 +26,7 @@ class BackendController extends Controller
     }
     public function home()
     {
-        return view('student.backend.home', $this->data);
+        return view('student.home', $this->data);
     }
 
     public function student(Request $request)
@@ -123,7 +124,7 @@ class BackendController extends Controller
             return response()->json($msg);
         }
         else {
-            return view('student.backend.student_all', $this->data);
+            return view('student.student_all', $this->data);
         }
     }
 
@@ -166,7 +167,7 @@ class BackendController extends Controller
             return response()->json($msg);
         }
         else {
-            return view('student.backend.setting', $this->data);
+            return view('student.setting', $this->data);
         }
     }
 }

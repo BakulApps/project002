@@ -135,7 +135,7 @@ var school = function() {
         $('#address').click(function (){
             $.ajax({
                 headers: csrf_token,
-                url: adminurl + '/master/sekolah',
+                url: baseurl + '/master/sekolah',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -165,7 +165,7 @@ var school = function() {
         $('#school').click(function (){
             $.ajax({
                 headers: csrf_token,
-                url: adminurl + '/master/sekolah',
+                url: baseurl + '/master/sekolah',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -216,7 +216,7 @@ var school = function() {
             }
             $.ajax({
                 headers: csrf_token,
-                url: adminurl + '/master/sekolah',
+                url: baseurl + '/master/sekolah',
                 type: 'post',
                 dataType: 'json',
                 data: fd,

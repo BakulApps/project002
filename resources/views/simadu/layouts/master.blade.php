@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{Str::of(config('app.locale'))->replace('_', '-')}}">
-@include('student.layouts.head')
+@include('simadu.layouts.head')
 <body>
 <script type="text/javascript">
     var siteurl = "{{route('portal.home')}}"
-    var baseurl = "{{route('student.home')}}";
+    var baseurl = "{{route('simadu.home')}}";
 </script>
-@include('student.layouts.navbar')
+@include('simadu.layouts.navbar')
     <div class="page-content">
         <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">
             <div class="sidebar-mobile-toggler text-center">
@@ -30,15 +30,15 @@
                         </div>
                     </div>
                 </div>
-                @include('student.layouts.mainmenu')
+                @include('simadu.layouts.mainmenu')
             </div>
         </div>
         <div class="content-wrapper">
-            @include('student.layouts.header')
+            @include('simadu.layouts.header')
             <div class="content">
                 @yield('content')
             </div>
-            @include('student.layouts.footer')
+            @include('simadu.layouts.footer')
         </div>
     </div>
     @yield('modal')

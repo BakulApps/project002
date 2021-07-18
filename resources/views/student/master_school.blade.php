@@ -6,7 +6,7 @@
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset("assets/apps/student/backend/js/master_school.js")}}"></script>
+    <script src="{{asset("assets/apps/student/js/master_school.js")}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Master Data</span>

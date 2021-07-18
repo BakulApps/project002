@@ -4,7 +4,7 @@
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset('assets/apps/student/backend/js/setting.js')}}"></script>
+    <script src="{{asset('assets/apps/student/js/setting.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item active">Pengaturan</span>

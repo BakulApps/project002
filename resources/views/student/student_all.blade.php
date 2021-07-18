@@ -5,7 +5,7 @@
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset('assets/apps/student/backend/js/student_all.js')}}"></script>
+    <script src="{{asset('assets/apps/student/js/student_all.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Peserta Didik</span>

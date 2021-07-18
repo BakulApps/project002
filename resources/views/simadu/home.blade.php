@@ -1,6 +1,6 @@
-@extends('student.layouts.master', ['title' => 'Beranda'])
+@extends('simadu.layouts.master', ['title' => 'Beranda'])
 @section('jsscript')
-    <script src="{{asset("assets/apps/student/fronted/js/home.js")}}"></script>
+    <script src="{{asset("assets/apps/simadu/js/home.js")}}"></script>
 @endsection
 @section('content')
     <div class="row">
@@ -13,14 +13,14 @@
                         Jadwal Pelajaran, Administrasi Keuangan, dan lain-lain. Bagi Guru, SIMADU memiliki fasilitas khususnya untuk kegiatan belajar mengajar seperti,
                         presensi, jurnal kelas, dan lain-lain.
                     </h5>
-                    @if(!session()->has('student.auth'))
-                    <a href="{{route('student.login')}}" class="btn btn-outline-primary">Masuk Aplikasi Kesiswaan</a>
+                    @if(!session()->has('simadu.auth'))
+                    <a href="{{route('simadu.login')}}" class="btn btn-outline-primary">Masuk Aplikasi Kesiswaan</a>
                     @endif
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            @if(session()->has('student.auth'))
+            @if(session()->has('simadu.auth'))
                 <div class="card">
                     <div class="card-header bg-white">
                         <h5 class="card-title font-weight-semibold">Informasi</h5>
@@ -41,7 +41,7 @@
                     <div class="form-group">
                             <button type="button" class="btn bg-primary btn-labeled btn-labeled-left col-md-12" id="submit"><b><i class="icon-paperplane"></i></b> PERIKSA</button>
                     </div>
-                    <p class="font-italic" id="forget">Lupa NISN? Klik <a href="{{route('student.data')}}">Disini</a>.</p>
+                    <p class="font-italic" id="forget">Lupa NISN? Klik <a href="{{route('simadu.data')}}">Disini</a>.</p>
                     <div class="row" id="lack_detail">
                         <div class="col-md-12">
                             <div class="table-responsive">

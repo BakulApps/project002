@@ -1,4 +1,8 @@
-@extends('student.layouts.master', ['title' => 'Keuangan'])
+@extends('simadu.layouts.master', ['title' => 'Keuangan'])
+@section('breadcrumb')
+    <span class="breadcrumb-item">Keuangan</span>
+    <span class="breadcrumb-item active">Tagihan</span>
+@endsection
 @section('content')
     <div class="row">
         <div class="col-md-8">
@@ -14,17 +18,17 @@
                                 <tr>
                                     <td style="width: 10%">NAMA</td>
                                     <td style="width: 2%">:</td>
-                                    <td>{{session()->get('student.auth')->student_name}}</td>
+                                    <td>{{session()->get('simadu.auth')->student_name}}</td>
                                 </tr>
                                 <tr>
                                     <td>NISN</td>
                                     <td>: </td>
-                                    <td>{{session()->get('student.auth')->student_nisn}}</td>
+                                    <td>{{session()->get('simadu.auth')->student_nisn}}</td>
                                 </tr>
                                 <tr>
                                     <td>NISM</td>
                                     <td>:</td>
-                                    <td>{{session()->get('student.auth')->student_nism}}</td>
+                                    <td>{{session()->get('simadu.auth')->student_nism}}</td>
                                 </tr>
                                 </tbody>
                             </table>

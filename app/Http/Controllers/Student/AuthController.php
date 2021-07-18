@@ -24,7 +24,7 @@ class AuthController extends Controller
         if ($request->isMethod('post')) {
             return $this->authentication($request);
         } else {
-            return view('student.backend.login', $this->data);
+            return view('student.login', $this->data);
         }
     }
 
@@ -32,7 +32,7 @@ class AuthController extends Controller
     {
         $credentials = ['user_name' => $request->user_name, 'password' => $request->user_pass];
         if (Auth::guard('student')->attempt($credentials, $request->remember)) {
-            return redirect()->route('student.backend.home');
+            return redirect()->route('student.home');
         } else {
             return redirect()->back()->withInput()->with('msg', ['class' => 'danger', 'text' => 'Nama Pengguna dan Kata Sandi tidak tepat']);
         }
@@ -41,6 +41,6 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::guard('student')->logout();
-        return redirect()->route('student.backend.login')->with('msg', ['class' => 'success', 'text' => 'Anda berhasil keluar']);
+        return redirect()->route('student.login')->with('msg', ['class' => 'success', 'text' => 'Anda berhasil keluar']);
     }
 }

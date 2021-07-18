@@ -1,7 +1,7 @@
-var classjs = function () {
+var studentalljs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
-        $('.datatable-class').DataTable({
+        $('.datatable-student').DataTable({
             autoWidth: false,
             bLengthChange: true,
             bSort: false,
@@ -25,10 +25,11 @@ var classjs = function () {
                 {className: 'text-center', targets: 3},
                 {className: 'text-center', targets: 4},
                 {className: 'text-center', targets: 5},
+                {className: 'text-center', targets: 6},
             ],
             ajax: ({
                 headers: csrf_token,
-                url: adminurl + '/master/kelas',
+                url: baseurl + '/siswa/semua',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -41,7 +42,7 @@ var classjs = function () {
             var class_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/master/kelas',
+                url : baseurl + '/master/kelas',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -64,7 +65,7 @@ var classjs = function () {
             var class_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/master/kelas',
+                url : baseurl + '/master/kelas',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -92,27 +93,13 @@ var classjs = function () {
         $('.select').select2({
             minimumResultsForSearch: Infinity
         });
-        $('#class_level').select2({
+        $('#class_id').select2({
             ajax: {
                 headers: csrf_token,
                 url: siteurl + '/api/master',
                 dataType: 'json',
                 type: 'post',
-                data: {_type: 'select', _data: 'level'},
-                processResults: function (data) {
-                    return {results: data}
-                },
-                cache: true
-            },
-            minimumResultsForSearch: Infinity
-        });
-        $('#class_major').select2({
-            ajax: {
-                headers: csrf_token,
-                url: siteurl + '/api/master',
-                dataType: 'json',
-                type: 'post',
-                data: {_type: 'select', _data: 'major'},
+                data: {_type: 'select', _data: 'class'},
                 processResults: function (data) {
                     return {results: data}
                 },
@@ -126,7 +113,7 @@ var classjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/master/kelas',
+                url : baseurl + '/master/kelas',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -157,15 +144,75 @@ var classjs = function () {
         })
     }
 
+    var _componentUniform = function () {
+        $('.form-control-uniform-custom').uniform({
+            fileButtonClass: 'action btn bg-blue',
+            selectClass: 'uniform-select bg-pink-400 border-pink-400',
+            fileButtonHtml: 'Pilih Berkas',
+            fileDefaultHtml: 'Tidak ada berkas terpilih'
+        });
+    }
+
+    var _componentUpload = function () {
+        $('#data_student').change(function () {
+            $('#modal-upload').modal('hide');
+            var notice = new PNotify({
+                text: "Mengunggah...",
+                addclass: 'bg-primary border-primary',
+                type: 'info',
+                icon: 'icon-spinner4 spinner',
+                hide: false,
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                opacity: .9,
+                width: "200px"
+            });
+            var fd = new FormData();
+            var files = $('#data_student')[0].files[0];
+            fd.append('_type', 'data');
+            fd.append('_data', 'upload');
+            fd.append('class_id', $('#class_id').val());
+            fd.append('data_student', files);
+            $.ajax({
+                headers: csrf_token,
+                url: baseurl + '/siswa/semua',
+                type: 'post',
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function(resp){
+                    var options = {
+                        title: resp.title,
+                        addclass: 'alert bg-'+resp.class+' border-'+resp.class+' alert-styled-left',
+                        type: resp.class,
+                        icon: false,
+                        hide: true,
+                        text: resp.text,
+                        buttons: {closer: true, sticker: true},
+                        opacity: 1,
+                        width: PNotify.prototype.options.width,
+                    };
+                    notice.update(options);
+                    $('data_student').val('');
+                    $('.datatable-student').DataTable().ajax.reload();
+                },
+            });
+        })
+    }
+
     return {
         init: function() {
             _componetnDataTable();
             _componentSelect();
             _componentSubmit();
+            _componentUniform();
+            _componentUpload();
         }
     }
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    classjs.init();
+    studentalljs.init();
 });

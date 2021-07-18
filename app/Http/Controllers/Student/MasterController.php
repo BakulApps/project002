@@ -115,7 +115,7 @@ class MasterController extends Controller
             return response()->json($msg);
         }
         else {
-            return view('student.backend.master_year', $this->data);
+            return view('student.master_year', $this->data);
         }
     }
 
@@ -218,7 +218,7 @@ class MasterController extends Controller
             return response()->json($msg);
         }
         else {
-            return view('student.backend.master_classes', $this->data);
+            return view('student.master_classes', $this->data);
         }
     }
 
@@ -365,7 +365,7 @@ class MasterController extends Controller
         else {
             $this->data['school']->school_lisence_date = Carbon::parse($this->data['school']->school_lisence_date)->format('d/m/Y');
             $this->data['school']->school_kemenkumham_date = Carbon::parse($this->data['school']->school_kemenkumham_date)->format('d/m/Y');
-            return view('student.backend.master_school', $this->data);
+            return view('student.master_school', $this->data);
         }
     }
 

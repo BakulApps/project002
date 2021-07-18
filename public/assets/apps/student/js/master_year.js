@@ -27,7 +27,7 @@ var yearjs = function () {
             ],
             ajax: ({
                 headers: csrf_token,
-                url: adminurl + '/master/tahun',
+                url: baseurl + '/master/tahun',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -40,7 +40,7 @@ var yearjs = function () {
             var year_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/master/tahun',
+                url : baseurl + '/master/tahun',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -63,7 +63,7 @@ var yearjs = function () {
             var year_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/master/tahun',
+                url : baseurl + '/master/tahun',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -97,7 +97,7 @@ var yearjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : adminurl + '/master/tahun',
+                url : baseurl + '/master/tahun',
                 type: 'post',
                 dataType: 'json',
                 data: {

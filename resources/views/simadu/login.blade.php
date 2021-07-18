@@ -30,7 +30,7 @@
 <div class="page-content">
     <div class="content-wrapper">
         <div class="content d-flex justify-content-center align-items-center">
-            <form class="login-form" action="{{route('student.login')}}" method="post">
+            <form class="login-form" action="{{route('simadu.login')}}" method="post">
                 {{csrf_field()}}
                 <div class="card mb-0">
                     <div class="card-body">

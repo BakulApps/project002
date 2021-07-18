@@ -1,4 +1,4 @@
-@extends('student.layouts.master', ['title' => 'Informasi Pribadi'])
+@extends('simadu.layouts.master', ['title' => 'Informasi Pribadi'])
 @section('jsplugin')
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
@@ -6,7 +6,10 @@
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset('assets/apps/student/fronted/js/profile.js')}}"></script>
+    <script src="{{asset('assets/apps/simadu/js/profile.js')}}"></script>
+@endsection
+@section('breadcrumb')
+    <span class="breadcrumb-item active">Informasi Pribadi</span>
 @endsection
 @section('content')
     <div class="row">
