@@ -137,8 +137,26 @@
                             </div>
                         </div>
                         <div class="cont">
-                            <a href="{{$extracurricular->extracurricular_id}}"><h4>{{$extracurricular->extracurricular_name}}</h4></a>
-                            <div class="course-teacher"></div>
+                            <ul>
+                                @for($i=0;$i<$extracurricular->extracurricular_review;$i++)
+                                <li><i class="fa fa-star"></i></li>
+                                @endfor
+                            </ul>
+                            <span>({{$extracurricular->extracurricular_review}} Rating)</span><br/>
+                            <a href="{{route('portal.extracurricular.read', $extracurricular->extracurricular_id)}}"><h4>{{$extracurricular->extracurricular_name}}</h4></a>
+                            <div class="course-teacher">
+                                <div class="thum">
+                                    <a href="#"><img src="{{asset('assets/apps/portal/images/placeholder.jpg')}}" alt="teacher"></a>
+                                </div>
+                                <div class="name">
+                                    <a href="#"><h6>{{$extracurricular->extracurricular_teacher}}</h6></a>
+                                </div>
+                                <div class="admin">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-user"></i><span></span> {{$extracurricular->extracurricular_student}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

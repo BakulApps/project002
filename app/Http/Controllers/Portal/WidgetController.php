@@ -269,10 +269,24 @@ class WidgetController extends Controller
                 try {
                     $validator = Validator::make($request->all(), [
                         'extracurricular_name' => 'required',
+                        'extracurricular_desc' => 'required',
+                        'extracurricular_teacher' => 'required',
+                        'extracurricular_category' => 'required',
+                        'extracurricular_day' => 'required',
+                        'extracurricular_time' => 'required',
+                        'extracurricular_review' => 'required',
+                        'extracurricular_student' => 'required',
                         'extracurricular_image' => 'required|mimes:jpg,jpeg,png|max:512'
                     ], [
                         'extracurricular_name.required' => 'Kolom nama ekstrakurikuler tidak boleh kosong.',
-                        'extracurricular_image.required' => 'Gambar ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_desc.required' => 'Kolom diskrisi ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_teacher.required' => 'Kolom pelatih ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_category.required' => 'Kolom kategori ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_day.required' => 'Kolom hari ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_time.required' => 'Kolom waktu ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_review.required' => 'Kolom Rating tidak boleh kosong.',
+                        'extracurricular_student.required' => 'Kolom Peserta tidak boleh kosong.',
+                        'extracurricular_images.required' => 'Gambar ekstrakurikuler tidak boleh kosong.',
                         'extracurricular_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'extracurricular_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -286,10 +300,15 @@ class WidgetController extends Controller
                         $extracurricular = new Extracurricular();
                         $extracurricular->extracurricular_name  = $request->extracurricular_name;
                         $extracurricular->extracurricular_desc  = $request->extracurricular_desc;
-                        $extracurricular->extracurricular_link  = $request->extracurricular_link;
+                        $extracurricular->extracurricular_teacher  = $request->extracurricular_teacher;
+                        $extracurricular->extracurricular_category  = $request->extracurricular_category;
+                        $extracurricular->extracurricular_day  = $request->extracurricular_day;
+                        $extracurricular->extracurricular_time  = $request->extracurricular_time;
+                        $extracurricular->extracurricular_review  = $request->extracurricular_review;
+                        $extracurricular->extracurricular_student  = $request->extracurricular_student;
                         $extracurricular->extracurricular_image = $file->hashName();
                         if ( $extracurricular->save()){
-                            $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Ekstrakurikuler berhasil disimpan.'];
+                            $msg = ['status' => 'success', 'title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Ekstrakurikuler berhasil disimpan.'];
                         }
                     }
                 }catch (\Exception $e){
@@ -300,9 +319,23 @@ class WidgetController extends Controller
                 try {
                     $validator = Validator::make($request->all(), [
                         'extracurricular_name' => 'required',
-                        'extracurricular_image' => 'mimes:jpg,jpeg,png|max:512'
+                        'extracurricular_desc' => 'required',
+                        'extracurricular_teacher' => 'required',
+                        'extracurricular_category' => 'required',
+                        'extracurricular_day' => 'required',
+                        'extracurricular_time' => 'required',
+                        'extracurricular_review' => 'required',
+                        'extracurricular_student' => 'required',
                     ], [
                         'extracurricular_name.required' => 'Kolom nama ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_desc.required' => 'Kolom diskrisi ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_teacher.required' => 'Kolom pelatih ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_category.required' => 'Kolom kategori ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_day.required' => 'Kolom hari ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_time.required' => 'Kolom waktu ekstrakurikuler tidak boleh kosong.',
+                        'extracurricular_review.required' => 'Kolom Rating tidak boleh kosong.',
+                        'extracurricular_student.required' => 'Kolom Peserta tidak boleh kosong.',
+                        'extracurricular_images.required' => 'Gambar ekstrakurikuler tidak boleh kosong.',
                         'extracurricular_image.mimes' => 'Gambar harus berformat jp/jpeg/png.',
                         'extracurricular_image.max' => 'Ukuran gambar maksimal 512Kb.'
                     ]);
@@ -319,9 +352,14 @@ class WidgetController extends Controller
                         }
                         $extracurricular->extracurricular_name  = $request->extracurricular_name;
                         $extracurricular->extracurricular_desc  = $request->extracurricular_desc;
-                        $extracurricular->extracurricular_link  = $request->extracurricular_link;
+                        $extracurricular->extracurricular_teacher  = $request->extracurricular_teacher;
+                        $extracurricular->extracurricular_category  = $request->extracurricular_category;
+                        $extracurricular->extracurricular_day  = $request->extracurricular_day;
+                        $extracurricular->extracurricular_time  = $request->extracurricular_time;
+                        $extracurricular->extracurricular_review  = $request->extracurricular_review;
+                        $extracurricular->extracurricular_student  = $request->extracurricular_student;
                         if ( $extracurricular->save()){
-                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Ekstrakurikuler berhasil diperbarui.'];
+                            $msg = ['status' => 'success', 'title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Ekstrakurikuler berhasil diperbarui.'];
                         }
                     }
                 }catch (\Exception $e){

@@ -42,13 +42,7 @@
                 <li class="nav-item"><a href="{{route('portal.admin.widget.testimonial')}}" class="nav-link">Testimoni</a></li>
             </ul>
         </li>
-{{--        <li class="nav-item">--}}
-{{--            <a href="{{route('portal.message.all')}}" class="nav-link">--}}
-{{--                <i class="icon-mailbox"></i>--}}
-{{--                <span>Perpesanan</span>--}}
-{{--                <span class="badge bg-blue-400 align-self-center ml-auto">{{\App\Models\Message::unred()}}</span>--}}
-{{--            </a>--}}
-{{--        </li>--}}
+        <li class="nav-item"><a href="{{route('portal.admin.mainmenu')}}" class="nav-link {{$title == 'Mainmenu' ? 'active' : null}}"><i class="icon-list"></i><span>Mainmenu</span></a></li>
         @if(auth('portal')->user()->user_role == 1)
         <li class="nav-item">
             <a href="{{route('portal.admin.user')}}" class="nav-link {{$title == 'Pengguna' ? 'active' : null}}"><i class="icon-user"></i> <span> Pengguna</span></a>

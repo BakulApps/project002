@@ -49,7 +49,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <label>Nama Ekstrakurikuler :</label>
-                                <input type="text" id="extracurricular_name" placeholder="Bola Volly" class="form-control">
+                                <input type="text" id="extracurricular_name" placeholder="Ex. Bola Volly" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -57,15 +57,43 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <label>Diskripsi :</label>
-                                <textarea id="extracurricular_desc" placeholder="Tulis Diskripsi Ekstrakurikuler" class="form-control"></textarea>
+                                <textarea id="extracurricular_desc" placeholder="Ex. Tulis Diskripsi Ekstrakurikuler" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <label>Tautan :</label>
-                                <input type="text" id="extracurricular_link" placeholder="https://example.sch.id/artikel/3/baca" class="form-control">
+                            <div class="col-sm-6">
+                                <label>Pelatih :</label>
+                                <input type="text" id="extracurricular_teacher" placeholder="Ex. Agus Nugroho, S.Pd." class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Kategori :</label>
+                                <input type="text" id="extracurricular_category" placeholder="Ex. Olahraga" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Hari :</label>
+                                <input type="text" id="extracurricular_day" placeholder="Ex. Kamis" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Jam :</label>
+                                <input type="text" id="extracurricular_time" placeholder="Ex. 14:00 WIB" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Rating :</label>
+                                <input type="text" id="extracurricular_review" placeholder="Ex. 5" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Jumlah Peserta :</label>
+                                <input type="text" id="extracurricular_student" placeholder="Ex. 20 Siswa" class="form-control">
                             </div>
                         </div>
                     </div>

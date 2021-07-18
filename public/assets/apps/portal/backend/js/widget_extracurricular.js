@@ -54,7 +54,12 @@ var extracurricularjs = function () {
                     $('#extracurricular_id').val(resp.extracurricular_id);
                     $('#extracurricular_name').val(resp.extracurricular_name);
                     $('#extracurricular_desc').val(resp.extracurricular_desc);
-                    $('#extracurricular_link').val(resp.extracurricular_link);
+                    $('#extracurricular_teacher').val(resp.extracurricular_teacher);
+                    $('#extracurricular_category').val(resp.extracurricular_category);
+                    $('#extracurricular_day').val(resp.extracurricular_day);
+                    $('#extracurricular_time').val(resp.extracurricular_time);
+                    $('#extracurricular_review').val(resp.extracurricular_review);
+                    $('#extracurricular_student').val(resp.extracurricular_student);
                     $('.title').html('Ubah Ekstrakurikuler');
                     $('#submit').val('update');
                     $('#modal-extracurricular').modal('show');
@@ -97,7 +102,12 @@ var extracurricularjs = function () {
             fd.append('extracurricular_id', $('#extracurricular_id').val());
             fd.append('extracurricular_name', $('#extracurricular_name').val());
             fd.append('extracurricular_desc', $('#extracurricular_desc').val());
-            fd.append('extracurricular_link', $('#extracurricular_link').val());
+            fd.append('extracurricular_teacher', $('#extracurricular_teacher').val());
+            fd.append('extracurricular_category', $('#extracurricular_category').val());
+            fd.append('extracurricular_day', $('#extracurricular_day').val());
+            fd.append('extracurricular_time', $('#extracurricular_time').val());
+            fd.append('extracurricular_review', $('#extracurricular_review').val());
+            fd.append('extracurricular_student', $('#extracurricular_student').val());
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/widget/ekstrakurikuler',
@@ -113,13 +123,20 @@ var extracurricularjs = function () {
                         addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
                     });
                     $('.datatable-extracurricular').DataTable().ajax.reload();
-                    $('#extracurricular_id').val('');
-                    $('#extracurricular_name').val('');
-                    $('#extracurricular_desc').val('');
-                    $('#extracurricular_link').val('');
-                    $('#extracurricular_image').val('');
-                    $('#submit').val('store');
-                    $('#modal-extracurricular').modal('hide');
+                    if (resp.status === 'success'){
+                        $('#extracurricular_id').val('');
+                        $('#extracurricular_name').val('');
+                        $('#extracurricular_desc').val('');
+                        $('#extracurricular_teacher').val('');
+                        $('#extracurricular_category').val('');
+                        $('#extracurricular_image').val('');
+                        $('#extracurricular_day').val('');
+                        $('#extracurricular_time').val('');
+                        $('#extracurricular_review').val('');
+                        $('#extracurricular_student').val('');
+                        $('#submit').val('store');
+                        $('#modal-extracurricular').modal('hide');
+                    }
                 }
             });
         });

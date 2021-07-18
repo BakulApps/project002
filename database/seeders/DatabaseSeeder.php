@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
 //        PortalSeeder
 //        $this->call(PortalTableSeeder::class);
         $this->call(AdmissionTableSeeder::class);
-        $this->call(MasterTableSeeder::class);
-        $this->call(StudentTableSeeder::class);
+//        $this->call(MasterTableSeeder::class);
+//        $this->call(StudentTableSeeder::class);
 
 //        ExamSeeder
         $this->call(ExamTableSeeder::class);
@@ -27,6 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GraduateTableSeeder::class);
 
 //        FinanceSeeder
-        $this->call(FinanceTableSeeder::class);
+//        $this->call(FinanceTableSeeder::class);
     }
 }

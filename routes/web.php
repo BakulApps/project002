@@ -22,7 +22,7 @@ Route::get('/acara/{id}/baca', 'FrontedController@event_read')->name('portal.eve
 Route::get('/guru', 'FrontedController@teacher')->name('portal.teacher');
 Route::get('/guru/{id}/lihat', 'FrontedController@teacher_detail')->name('portal.teacher.read');
 Route::get('/ekstrakurikuler', 'FrontedController@extracurricular')->name('portal.extracurricular');
-Route::get('/guru/{id}/detail', 'FrontedController@extracurricular')->name('portal.extracurricular.detail');
+Route::get('/ekstrakurikuler/{id}/lihat', 'FrontedController@extracurricular_detail')->name('portal.extracurricular.read');
 
 Route::group(['prefix' => 'administrator'], function (){
     Route::match(['get', 'post'],'/masuk', 'AuthController@login')->name('portal.admin.login');
@@ -47,6 +47,7 @@ Route::group(['prefix' => 'administrator'], function (){
         Route::match(['get', 'post'],'/widget/testimoni', 'WidgetController@testimonial')->name('portal.admin.widget.testimonial');
         Route::match(['get', 'post'],'/komentar', 'CommentController@all')->name('portal.admin.comment.all');
         Route::match(['get', 'post'],'/komentar/{id}/lihat', 'CommentController@detail')->name('portal.admin.comment.detail');
+        Route::match(['get', 'post'], '/mainmenu', 'BackendController@mainmenu')->name('portal.admin.mainmenu');
         Route::match(['get', 'post'],'/pengguna', 'BackendController@user')->name('portal.admin.user');
         Route::match(['get', 'post'],'/pengaturan', 'BackendController@setting')->name('portal.admin.setting');
     });

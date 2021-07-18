@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 @endforeach
-            </div> <!-- row -->
+            </div>
             <div class="row">
                 @if($teachers->lastPage() > 1)
                 <div class="col-lg-12">

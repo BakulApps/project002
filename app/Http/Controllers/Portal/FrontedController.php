@@ -102,6 +102,18 @@ class FrontedController extends Controller
         return view('portal.fronted.event_read', $this->data);
     }
 
+    public function extracurricular()
+    {
+        $this->data['extracurriculars'] = Extracurricular::paginate(6);
+        return view('portal.fronted.extracurricular', $this->data);
+    }
+
+    public function extracurricular_detail($id)
+    {
+        $this->data['extracurricular'] = Extracurricular::find($id);
+        return view('portal.fronted.extracurricular_detail', $this->data);
+    }
+
     public function teacher(){
         $this->data['teachers'] = Teacher::orderBy('teacher_id', 'ASC')->paginate(8);
         return view('portal.fronted.teacher', $this->data);

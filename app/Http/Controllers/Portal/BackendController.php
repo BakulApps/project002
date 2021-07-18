@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Portal;
 use App\Http\Controllers\Controller;
 use App\Models\Portal\Comment;
 use App\Models\Portal\Event;
+use App\Models\Portal\Mainmenu;
 use App\Models\Portal\Post;
 use App\Models\Portal\Setting;
 use App\Models\Portal\User;
@@ -30,6 +31,105 @@ class BackendController extends Controller
         $this->data['events'] = Event::all();
         $this->data['comments'] = Comment::all();
         return view('portal.backend.home', $this->data);
+    }
+
+    public function mainmenu(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all') {
+                $no = 1;
+                foreach (Mainmenu::orderBy('menu_id')->get() as $menu) {
+                    $parent = Mainmenu::where('menu_id', $menu->menu_parent);
+                    $data[] = [
+                        $no++,
+                        $menu->menu_name,
+                        $parent->count() >= 1 ? $parent->first()->menu_name : '-',
+                        $menu->menu_link,
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $menu->menu_id .'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $menu->menu_id . '"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'parent'){
+                $menus = Mainmenu::where('menu_parent', 0)->get();
+                foreach ($menus as $menu){
+                    $msg[] = ['id' => $menu->menu_id, 'text' => $menu->menu_name];
+                }
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'menu'){
+                $msg = Mainmenu::find($request->menu_id);
+            }
+            elseif ($request->_type == 'store'){
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'menu_name' => 'required',
+                        'menu_link' => 'required'
+                    ], [
+                        'menu_name.required' => 'Kolom Nama Mainmenu tidak boleh kosong.',
+                        'menu_link.required' => 'Kolom Link Mainmenu tidak boleh kosong.',
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $menu = new Mainmenu();
+                        $menu->menu_name = $request->menu_name;
+                        $menu->menu_parent = $request->menu_parent == null ? 0 : $request->menu_parent;
+                        $menu->menu_link = $request->menu_link;
+                        if ($menu->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Mainmenu berhasil simpan.'];
+                        }
+                    }
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'update'){
+                try {
+                    $validator = Validator::make($request->all(), [
+                        'menu_name' => 'required',
+                        'menu_link' => 'required'
+                    ], [
+                        'menu_name.required' => 'Kolom Nama Mainmenu tidak boleh kosong.',
+                        'menu_link.required' => 'Kolom Link Mainmenu tidak boleh kosong.',
+                    ]);
+                    if ($validator->fails()) {
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $menu = Mainmenu::find($request->menu_id);
+                        $menu->menu_name = $request->menu_name;
+                        $menu->menu_parent = $request->menu_parent == null ? 0 : $request->menu_parent;
+                        $menu->menu_link = $request->menu_link;
+                        if ($menu->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Mainmenu berhasil diperbarui.'];
+                        }
+                    }
+                }
+                catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'delete'){
+                $menu = Mainmenu::find($request->menu_id);
+                try {
+                    if ($menu->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Mainmenu berhasil dihapus.'];
+                    }
+                }catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('portal.backend.mainmenu', $this->data);
+        }
     }
 
     public function user(Request $request)
