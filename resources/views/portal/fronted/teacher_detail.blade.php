@@ -1,5 +1,23 @@
-@extends('portal.fronted.layouts.master', ['page' => 'Data Guru'])
+@extends('portal.fronted.layouts.master', ['page' => 'PROFIL MADRASAH', 'title' => $teacher->teacher_name])
 @section('content')
+    <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8" style="background-image: url({{$section->value('article_section_title_bg')}})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="page-banner-cont">
+                        <h2>Profil Madrasah</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#">Profil Madrasah</a></li>
+                                <li class="breadcrumb-item" aria-current="page">Pendidik & Tenaga Kependidikan</li>
+                                <li class="breadcrumb-item active" aria-current="page">{{$teacher->teacher_name}}</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <section id="teachers-singel" class="pt-70 pb-120 gray-bg">
         <div class="container">
             <div class="row justify-content-center">

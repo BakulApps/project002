@@ -1,4 +1,4 @@
-@extends('portal.fronted.layouts.master', ['page' => 'Data Guru'])
+@extends('portal.fronted.layouts.master', ['page' => 'PROFIL MADRASAH', 'title' => 'PENDIDIK & TENAGA KEPENDIDIKAN'])
 
 @section('content')
     <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8" style="background-image: url({{$section->value('article_section_title_bg')}})">
@@ -6,11 +6,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="page-banner-cont">
-                        <h2>Data Guru</h2>
+                        <h2>Profil Madrasah</h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Beranda</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Data Guru</li>
+                                <li class="breadcrumb-item"><a href="#">Profil Madrasah</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Pendidik & Tenaga Kependidikan</li>
                             </ol>
                         </nav>
                     </div>

@@ -38,7 +38,7 @@ class FrontedController extends Controller
 
     public function home()
     {
-        $this->data['page']     = 'home';
+        $this->data['page']     = 'BERANDA';
         $this->data['section']  = new Section();
         $this->data['sliders']  = Slider::where('slider_status', 1)->get();
         $this->data['programs'] = Program::all();
@@ -54,7 +54,7 @@ class FrontedController extends Controller
 
     public function article()
     {
-        $this->data['page']     = 'Artikel';
+        $this->data['page']     = 'ARTIKEL';
         $this->data['section']  = new Section();
         $this->data['categories'] = Category::orderBy('category_name', 'ASC')->get();
         $this->data['posts'] = Post::orderBy('created_at', 'DESC')->paginate(4);
@@ -80,7 +80,7 @@ class FrontedController extends Controller
             }
             return redirect()->back()->withErrors($msg);
         }
-        $this->data['page']     = 'Artikel';
+        $this->data['page']     = 'ARTIKEL';
         $this->data['section']  = new Section();
         $this->data['categories'] = Category::orderBy('category_name', 'ASC')->get();
         $this->data['post'] = Post::where('post_id', $id)->first();
@@ -104,41 +104,38 @@ class FrontedController extends Controller
 
     public function extracurricular()
     {
+        $this->data['page']     = 'EKSTRAKURIKULER';
         $this->data['extracurriculars'] = Extracurricular::paginate(6);
         return view('portal.fronted.extracurricular', $this->data);
     }
 
     public function extracurricular_detail($id)
     {
+        $this->data['page']     = 'EKSTRAKURIKULER';
         $this->data['extracurricular'] = Extracurricular::find($id);
         return view('portal.fronted.extracurricular_detail', $this->data);
     }
 
     public function teacher(){
+        $this->data['page'] = 'PROFIL MADRASAH';
         $this->data['teachers'] = Teacher::orderBy('teacher_id', 'ASC')->paginate(8);
         return view('portal.fronted.teacher', $this->data);
     }
 
     public function teacher_detail($id)
     {
+        $this->data['page'] = 'PROFIL MADRASAH';
         $this->data['teacher'] = Teacher::find($id);
         return view('portal.fronted.teacher_detail', $this->data);
     }
 
     public function category($id)
     {
-        $this->data['page']     = 'Artikel';
+        $this->data['page']     = 'ARTIKEL';
         $this->data['section']  = new Section();
         $this->data['categories'] = Category::orderBy('category_name', 'ASC')->get();
         $this->data['posts'] = Post::where('post_category', $id)->orderBy('created_at', 'DESC')->paginate(4);
         $this->data['populars'] = Post::orderBy('post_read', 'DESC')->limit(4)->get();
         return view('portal.fronted.article', $this->data);
-    }
-
-    public function test()
-    {
-        $test = Post::first();
-
-        return response()->json($test->comment);
     }
 }

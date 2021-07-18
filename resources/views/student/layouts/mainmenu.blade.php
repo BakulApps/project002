@@ -35,7 +35,6 @@
                     <li class="nav-item"><a href="{{route('student.finance.payment')}}" class="nav-link">Pembayaran</a></li>
                 </ul>
             </li>
-            <li class="nav-item"><a href="{{route('student.backend.setting')}}" class="nav-link {{$title == 'Pengaturan' ? 'active' : null}}"><i class="icon-cog"></i><span>Pengaturan</span></a></li>
         </ul>
     </div>
 @endif

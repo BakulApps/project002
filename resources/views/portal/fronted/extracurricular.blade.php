@@ -1,4 +1,4 @@
-@extends('portal.fronted.layouts.master', ['page' => 'Ekatrakurikuler'])
+@extends('portal.fronted.layouts.master', ['page' => 'EKSTRAKURIKULER', 'title' => 'Ektrakurikuler'])
 
 @section('content')
     <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8" style="background-image: url({{$section->value('article_section_title_bg')}})">
@@ -9,7 +9,6 @@
                         <h2>Ekstrakurikuler</h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Beranda</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Ekstrakurikuler</li>
                             </ol>
                         </nav>
