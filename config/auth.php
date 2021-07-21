@@ -66,6 +66,11 @@ return [
             'provider' => 'exams',
         ],
 
+        'employee' => [
+            'driver' => 'session',
+            'provider' => 'employees',
+        ],
+
         'admission' => [
             'driver' => 'session',
             'provider' => 'admissions',
@@ -124,6 +129,11 @@ return [
         'exams' => [
             'driver' => 'eloquent',
             'model' => App\Models\Exam\User::class
+        ],
+
+        'employees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Employee\User::class
         ],
 
         'admissions' => [
