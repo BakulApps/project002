@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Finance;
 
 use App\Http\Controllers\Controller;
-use App\Imports\Finance\invoiceImport;
 use App\Imports\Finance\LackImport;
 use App\Models\Finance\Account;
 use App\Models\Finance\Item;
@@ -14,6 +13,7 @@ use App\Models\Master\School;
 use App\Models\Master\Student;
 use App\Models\Master\Year;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -453,8 +453,28 @@ class BackendController extends Controller
 
     public function test()
     {
-        $array = [1, 2, 3, 4, 5];
-        array_push($array, 7);
-        return response()->json($array);
+        $client     = new Client(['base_uri' => 'https://sandbox.partner.api.bri.co.id/']);
+        $path = 'v2/inquiry/588901011409501';
+        $verb = 'GET';
+        $timestamp = Carbon::now('UTC')->toIso8601ZuluString('millisecond');
+        $client_secret = 'aOWs812hnZkpYp9Y';
+        $token = $this->token();
+        $payload = 'path='.$path.'&verb='.$verb.'&token=Bearer '.$token.'&timestamp='.$timestamp.'&body=';
+        $signature = hash_hmac('sha256', $payload, $client_secret, true);
+        $statement = $client->request($verb, $path)
+            ->withAddedHeader('BRI-Timestamp', $timestamp)
+            ->withAddedHeader('BRI-Signature', base64_encode($signature))
+            ->withAddedHeader('Authorization', 'Bearer '.$token)->getBody()->getContents();
+        return response()->json($statement);
+    }
+
+    public function token()
+    {
+        $client     = new Client(['base_uri' => 'https://sandbox.partner.api.bri.co.id/']);
+        $response = $client->request('POST', 'oauth/client_credential/accesstoken?grant_type=client_credentials', [
+            'auth' => ['KfFYqewhAJinq2SCvBDQoMdkjHxUkwj2', 'phMFB8dDIhX4UofE']
+        ])->getBody()->getContents();
+        $response =  json_decode($response, false);
+        return $response->access_token;
     }
 }

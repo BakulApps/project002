@@ -7,6 +7,7 @@
 @endsection
 @section('jsscript')
     <script src="{{asset("assets/apps/simadu/js/finance_payment.js")}}"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Keuangan</span>
@@ -25,12 +26,13 @@
                 <table class="table datatable-payment table-bordered">
                     <thead>
                     <tr>
-                        <th>No</th>
-                        <th>TAGIHAN</th>
-                        <th>ITEM</th>
-                        <th>TANGGAL</th>
-                        <th>JUMLAH</th>
+                        <th>#</th>
+                        <th>PEMBAYARAN</th>
+                        <th>METODE</th>
+                        <th>RILIS</th>
+                        <th>JATUH TEMPO</th>
                         <th>STATUS</th>
+                        <th>JUMLAH</th>
                         <th>AKSI</th>
                     </tr>
                     </thead>
@@ -87,34 +89,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>BANK</label>
-                                <select id="payment_type_account" class="form-control select" data-fouc>
-                                    <option value="1">BNI</option>
-                                    <option value="2">BRI</option>
-                                    <option value="3">BCA</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label>NOMOR REKENING</label>
-                                <input type="text" id="payment_number_account" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label>NAMA REKENING</label>
-                                <input type="text" id="payment_name_account" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <p class="font-italic">Jika melakukan akan melakukan transfer melalui penyedia jasa transfer, silahkan kosongi kolom Nomor Rekening & Nama Rekening.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="submit"n value="store" class="btn bg-primary">SIMPAN</button>
+                    <button type="button" id="submit" value="store" class="btn bg-primary btn-labeled btn-labeled-left"><b><i class="icon-credit-card pay"></i></b> Bayar Tagihan</button>
                 </div>
             </div>
         </div>
@@ -207,7 +184,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id="update" value="update" class="btn bg-primary">SIMPAN</button>
+                    <button type="button" id="pay-button" value="payment" class="btn bg-primary">SIMPAN</button>
                 </div>
             </div>
         </div>

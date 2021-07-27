@@ -4,10 +4,10 @@ var paymentjs = function () {
 
     var _componetnDataTable = function () {
         $('.datatable-payment').DataTable({
-            autoWidth: false,
+            autoWidth: true,
             bLengthChange: true,
             bSort: false,
-            scrollX: true,
+            scrollX: false,
             dom: '<"datatable-header"fBl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
             language: {
                 binfo: false,
@@ -22,12 +22,13 @@ var paymentjs = function () {
             },
             columnDefs : [
                 {className: 'text-center', targets: 0},
-                {className: 'text-center', targets: 1},
+                {className: 'text-center', targets: 1, width: 10},
                 {className: 'text-center', targets: 2},
                 {className: 'text-center', targets: 3},
                 {className: 'text-center', targets: 4},
                 {className: 'text-center', targets: 5},
-                {className: 'text-center', targets: 6}
+                {className: 'text-center', targets: 6},
+                {className: 'text-center', targets: 7},
             ],
             ajax: ({
                 headers: csrf_token,
@@ -129,6 +130,8 @@ var paymentjs = function () {
             }).get();
         });
         $("#submit").click(function () {
+            $('i.pay').replaceWith("<i class='icon-spinner spinner'></i>")
+            $(this).attr('disabled', 'disabled')
             $.ajax({
                 headers: csrf_token,
                 url : baseurl + '/keuangan/pembayaran',
@@ -139,57 +142,157 @@ var paymentjs = function () {
                     'payment_id': $('#payment_id').val(),
                     'payment_item': payment_item,
                     'payment_cost': $('#payment_cost').val(),
-                    'payment_type_account': $('#payment_type_account').val(),
-                    'payment_number_account': $('#payment_number_account').val(),
-                    'payment_name_account': $('#payment_name_account').val(),
                 },
                 success : function (resp) {
-                    new PNotify({
-                        title: resp['title'],
-                        text: resp['text'],
-                        addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
-                    });
-                    $('#submit').val('store');
-                    $('#payment_id').val('')
-                    $('#payment_item').val('')
-                    $('#payment_cost').val('')
-                    $('#payment_type_account').val('');
-                    $('#payment_number_account').val('');
-                    $('#payment_name_account').val('');
-                    $('.datatable-payment').DataTable().ajax.reload();
-                    $('#modal-payment').modal('hide');
+                    if (resp.status === 'success'){
+                        $('#submit').val('store');
+                        $('#payment_id').val('')
+                        $('#payment_item').val('')
+                        $.ajax({
+                            headers: csrf_token,
+                            url: baseurl + '/keuangan/pembayaran',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                '_type': 'getAuthToken',
+                                '_data': resp.data
+                            },
+                            success: function (resp) {
+                                var transaction;
+                                window.snap.pay(resp.token, {
+                                    onSuccess: function(result){
+                                        $.ajax({
+                                            headers: csrf_token,
+                                            url: baseurl + '/keuangan/pembayaran',
+                                            type: 'post',
+                                            dataType: 'json',
+                                            data: {
+                                                '_type': 'update',
+                                                '_data': 'payment',
+                                                'payment_number': result.order_id,
+                                                'payment_transaction': result
+                                            },
+                                            success: function (){
+                                                new PNotify({
+                                                    title: 'Pembayaran Berhasil!',
+                                                    text: result.status_message,
+                                                    addclass: 'alert bg-success border-success alert-styled-left'
+                                                });
+                                                $('.datatable-payment').DataTable().ajax.reload();
+                                            }
+                                        })
+                                    },
+                                    onPending: function(result){
+                                        $.ajax({
+                                            headers: csrf_token,
+                                            url: baseurl + '/keuangan/pembayaran',
+                                            type: 'post',
+                                            dataType: 'json',
+                                            data: {
+                                                '_type': 'update',
+                                                '_data': 'payment',
+                                                'payment_number': result.order_id,
+                                                'payment_transaction': result
+                                            },
+                                            success: function (){
+                                                new PNotify({
+                                                    title: 'Pembayaran Tertunda!',
+                                                    text: result.status_message,
+                                                    addclass: 'alert bg-warning border-warning alert-styled-left'
+                                                });
+                                                $('.datatable-payment').DataTable().ajax.reload();
+                                            }
+                                        })
+                                    },
+                                    onError: function(result){
+                                        $.ajax({
+                                            headers: csrf_token,
+                                            url: baseurl + '/keuangan/pembayaran',
+                                            type: 'post',
+                                            dataType: 'json',
+                                            data: {
+                                                '_type': 'update',
+                                                '_data': 'payment',
+                                                'payment_number': result.order_id,
+                                                'payment_transaction': result
+                                            },
+                                            success: function (){
+                                                new PNotify({
+                                                    title: 'Pembayaran Gagal!',
+                                                    text: result.status_message,
+                                                    addclass: 'alert bg-danger border-danger alert-styled-left'
+                                                });
+                                                $('.datatable-payment').DataTable().ajax.reload();
+                                            }
+                                        })
+                                    },
+                                    onClose: function(){
+                                        new PNotify({
+                                            title: 'Pembayaran Batal!',
+                                            text: 'Transaksi selesai tanpa menyelesainkan pembayaran',
+                                            addclass: 'alert bg-info border-info alert-styled-left'
+                                        });
+                                        $('.datatable-payment').DataTable().ajax.reload();
+                                    }
+                                });
+                                $('#payment_cost').val('')
+                                $('#modal-payment').modal('hide');
+                            }
+                        })
+                    }
+                    else {
+                        new PNotify({
+                            title: resp['title'],
+                            text: resp['text'],
+                            addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
+                        });
+                    }
                 }
             })
         })
-        $("#update").click(function () {
-            var fd = new FormData();
-            var payment_file = $('#payment_file')[0].files[0];
-            fd.append('_type', 'update');
-            fd.append('_data', 'payment');
-            fd.append('payment_id', $('#payment_id').val());
-            fd.append('payment_date', $('#payment_date').val());
-            if (payment_file !== undefined){
-                fd.append('payment_file', payment_file);
-            }
-            else {
-                fd.append('payment_file', null);
-            }
+        // $("#update").click(function () {
+        //     var fd = new FormData();
+        //     var payment_file = $('#payment_file')[0].files[0];
+        //     fd.append('_type', 'update');
+        //     fd.append('_data', 'payment');
+        //     fd.append('payment_id', $('#payment_id').val());
+        //     fd.append('payment_date', $('#payment_date').val());
+        //     if (payment_file !== undefined){
+        //         fd.append('payment_file', payment_file);
+        //     }
+        //     else {
+        //         fd.append('payment_file', null);
+        //     }
+        //     $.ajax({
+        //         headers: csrf_token,
+        //         url: baseurl + '/keuangan/pembayaran',
+        //         type: 'post',
+        //         dataType: 'json',
+        //         data: fd,
+        //         contentType: false,
+        //         processData: false,
+        //         success: function (resp) {
+        //             new PNotify({
+        //                 title: resp['title'],
+        //                 text: resp['text'],
+        //                 addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
+        //             });
+        //             $('.datatable-payment').DataTable().ajax.reload();
+        //             $('#modal-invoice').modal('hide')
+        //         }
+        //     })
+        // })
+        $('#pay-button').click(function (){
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/keuangan/pembayaran',
                 type: 'post',
                 dataType: 'json',
-                data: fd,
-                contentType: false,
-                processData: false,
+                data: {
+                    '_type': 'getAuthToken'
+                },
                 success: function (resp) {
-                    new PNotify({
-                        title: resp['title'],
-                        text: resp['text'],
-                        addclass: 'alert bg-' + resp['class'] + ' border-' + resp['class'] + ' alert-styled-left'
-                    });
-                    $('.datatable-payment').DataTable().ajax.reload();
-                    $('#modal-invoice').modal('hide')
+                    window.snap.pay(resp.token);
                 }
             })
         })

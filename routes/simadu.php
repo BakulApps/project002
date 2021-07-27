@@ -10,5 +10,8 @@ Route::match(['get', 'post'], '/akademik/kehadiran', 'AcademicController@presenc
 Route::match(['get', 'post'], '/akademik/raport', 'AcademicController@report')->name('simadu.academic.report');
 Route::match(['get', 'post'], '/keuangan/tagihan', 'FinanceController@invoice')->name('simadu.finance.invoice');
 Route::match(['get', 'post'], '/keuangan/pembayaran', 'FinanceController@payment')->name('simadu.finance.payment');
+Route::match(['get', 'post'], '/keuangan/pembayaran/notifikasi', 'FinanceController@notify')->name('simadu.finance.notify');
 Route::match(['get', 'post'], '/masuk', 'AuthController@login')->name('simadu.login');
 Route::match(['get', 'post'], '/keluar', 'AuthController@logout')->name('simadu.logout');
+
+Route::match(['get', 'post'], '/test', 'FinanceController@test');

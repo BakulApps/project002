@@ -7,12 +7,15 @@ use App\Models\Finance\Item;
 use App\Models\Finance\Payment;
 use App\Models\Master\School;
 use App\Models\Master\Student;
+use App\Models\Master\Territory;
 use App\Models\Student\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 class FinanceController extends Controller
 {
@@ -34,22 +37,22 @@ class FinanceController extends Controller
     {
         if ($request->isMethod('post')){
             if ($request->_type == 'data' && $request->_data == 'all'){
-                $no = 1;
                 $payment_item = '';
                 foreach (Payment::where('payment_student', Session::get('simadu.auth')
                     ->student_id)->OrderBy('payment_date', 'DESC')->get() as $payment){
                     $payment_items = json_decode($payment->payment_item, true);
                     for ($i=0;$i<count($payment_items);$i++){
-                        $payment_item .= Item::where('item_id', $payment_items[$i])->value('item_code') .', ';
+                        $payment_item .= Item::where('item_id', $payment_items[$i])->value('item_name') .', ';
                     }
                     $payment_item = Str::substr($payment_item, 0, -2);
                     $data[] = [
-                        $no++,
                         $payment->payment_number,
                         $payment_item,
+                        $payment->transaction() != null ? $payment->type($payment->transaction()->payment_type) : '',
                         $payment->created_at('d/m/Y H:i:s'),
-                        number_format(str_replace(',', '', $payment->payment_cost)),
-                        $payment->payment_status == 1 ? '<span class="badge badge-danger badge-pill">Menunggu Pembayaran</span>' : ($payment->payment_status == 2 ? '<span class="badge badge-warning badge-pill">Menunggu Verifikasi</span>' : '<span class="badge badge-success badge-pill">Pembayaran Diterima</span>'),
+                        $payment->transaction() != null ? $payment->transaction()->transaction_time : '',
+                        $payment->transaction() != null ? $payment->status($payment->transaction()->status_code) : '',
+                        number_format($payment->payment_cost),
                         '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-info" data-num="'.$payment->payment_id.'"><i class="icon-info3"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$payment->payment_id.'"><i class="icon-trash"></i></button>
@@ -76,43 +79,50 @@ class FinanceController extends Controller
             }
             elseif ($request->_type == 'update' && $request->_data == 'payment'){
                 try {
-                    $payment = Payment::find($request->payment_id);
-                    if ($request->hasFile('payment_file')) {
-                        $file = $request->file('payment_file');
-                        Storage::delete('/public/finance/images/transfer'. $payment->payment_file);
-                        $file->store('public/finance/images/transfer');
-                        $payment_file = $file->hashName();
-                    }
-                    else {
-                        $payment_file = $payment->payment_file;
-                    }
-                    $payment->payment_date = Carbon::createFromFormat('d/m/Y H:i:s', $request->payment_date)->format('Y-m-d H:i:s');
-                    $payment->payment_file = $payment_file;
-                    $payment->payment_status = 2;
-                    if ($payment->save()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pembayaran berhasil disimpan, silahkan silahkan menunggu verifikasi pembayaran.'];
-                    }
+                    $payment = Payment::where('payment_number', $request->payment_number);
+                    $payment->update([
+                        'payment_transaction' => json_encode($request->payment_transaction)
+                    ]);
+                    $msg = [];
                 }catch (\Exception $e){
                     $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
             elseif ($request->_type == 'store'){
                 try {
-                    if (Payment::create([
-                        'payment_number' => Str::upper(Str::random(7)),
-                        'payment_student' => Session::get('simadu.auth')->student_id,
-                        'payment_item' => json_encode($request->payment_item),
-                        'payment_cost' => Str::of($request->payment_cost)->replace('.', ''),
-                        'payment_type_account' => $request->payment_type_account,
-                        'payment_number_account' => $request->payment_number_account,
-                        'payment_name_account' => $request->payment_name_account,
-                        'payment_status' => 1,
-                    ])){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Tagihan berhasil dibuat, silahkan melakukan pembayaran'];
+                    $payment = new Payment();
+                    $payment->payment_number = Str::upper(Str::random(9));
+                    $payment->payment_student = Session::get('simadu.auth')->student_id;
+                    $payment->payment_item = json_encode($request->payment_item);
+                    $payment->payment_cost = preg_replace("/[^0-9]/", '', $request->payment_cost);
+                    $payment->payment_status = 0;
+                    $payment->payment_view = 0;
+                    if ($payment->save()){
+                        $params = [
+                            'transaction_details' => [
+                                'order_id' => $payment->payment_number,
+                                'gross_amount' => $payment->payment_cost
+                            ],
+                            'customer_details' => [
+                                'last_name' => Session::get('simadu.auth')->student_name,
+                                'email' => Session::get('simadu.auth')->student_mail,
+                                'phone' => Session::get('simadu.auth')->student_phone,
+                                'address' => Session::get('simadu.auth')->student_address,
+                                'city' => Territory::subdistric(Session::get('simadu.auth')->student_subdistric)
+                            ]
+                        ];
+                        $msg = ['status' => 'success', 'data' => $params];
                     }
                 } catch (\Exception $e){
-                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                    $msg = ['status' => 'failed', 'title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
+            }
+            elseif ($request->_type == 'getAuthToken'){
+                Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+                Config::$isProduction = false;
+                Config::$isSanitized = false;
+                Config::$is3ds = false;
+                $msg = ['token' => Snap::getSnapToken($request->_data)];
             }
             return response()->json($msg);
         }
@@ -120,5 +130,22 @@ class FinanceController extends Controller
             $this->data['lack'] = Student::find(Session::get('simadu.auth')->student_id)->lack()->get();
             return view('simadu.finance_payment', $this->data);
         }
+    }
+
+    public function notify(Request $request)
+    {
+        $payment = Payment::where('payment_number', $request->order_id);
+        $payment->update([
+            'payment_transaction' => json_encode($request->all())
+        ]);
+    }
+
+    public function getToken(Request $request)
+    {
+        Config::$serverKey = 'SB-Mid-server-LQSlncoaJDwOTwsEC-zXccf_';
+        Config::$isProduction = false;
+        Config::$isSanitized = false;
+        Config::$is3ds = false;
+        return Snap::getSnapToken($request->_data);
     }
 }

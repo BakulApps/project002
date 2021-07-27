@@ -38,13 +38,9 @@ class CreateEntityFinanceTable extends Migration
             $table->string('payment_student', 4)->nullable();
             $table->mediumText('payment_item', )->nullable();
             $table->string('payment_cost', 50)->nullable();
-            $table->string('payment_type_account', 2)->nullable();
-            $table->string('payment_number_account', 200)->nullable();
-            $table->string('payment_name_account', 200)->nullable();
-            $table->dateTime('payment_date')->nullable();
-            $table->string('payment_status', 1)->nullable();
-            $table->string('payment_file')->nullable();
-            $table->boolean('payment_view')->default(0)->nullable();
+            $table->boolean('payment_status')->nullable();
+            $table->text('payment_transaction')->nullable();
+            $table->boolean('payment_view')->nullable();
             $table->timestamps();
         });
 
