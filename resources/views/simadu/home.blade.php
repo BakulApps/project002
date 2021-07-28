@@ -14,7 +14,7 @@
                         presensi, jurnal kelas, dan lain-lain.
                     </h5>
                     @if(!session()->has('simadu.auth'))
-                    <a href="{{route('simadu.login')}}" class="btn btn-outline-primary">Masuk Aplikasi Kesiswaan</a>
+                    <a href="{{route('simadu.login')}}" class="btn btn-outline-primary">Masuk Aplikasi SIMADU</a>
                     @endif
                 </div>
             </div>

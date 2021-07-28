@@ -40,6 +40,7 @@ class CreateEntityFinanceTable extends Migration
             $table->string('payment_cost', 50)->nullable();
             $table->boolean('payment_status')->nullable();
             $table->text('payment_transaction')->nullable();
+            $table->dateTime('payment_expire')->nullable();
             $table->boolean('payment_view')->nullable();
             $table->timestamps();
         });

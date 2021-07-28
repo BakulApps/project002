@@ -14,7 +14,9 @@ class Student extends Model
     use HasFactory;
 
     protected $table        = 'entity__master_students';
-    protected $fillable     = ['student_name',
+    protected $fillable     = [
+        'student_id',
+        'student_name',
         'student_nisn',
         'student_civic',
         'student_nik',

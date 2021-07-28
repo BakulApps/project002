@@ -78,7 +78,15 @@ class Payment extends Model
             case '202':
                 return '<span class="badge badge-danger">Ditolak</span>';
             default:
-                return 'Lainnya';
+                return '<span class="badge badge-primary">Batal</span>';
+        }
+    }
+
+    public function expire($unit, $duration)
+    {
+        switch ($unit){
+            case 'minutes':
+
         }
     }
 }

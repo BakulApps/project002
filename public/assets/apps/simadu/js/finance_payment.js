@@ -158,73 +158,30 @@ var paymentjs = function () {
                                 '_data': resp.data
                             },
                             success: function (resp) {
-                                var transaction;
                                 window.snap.pay(resp.token, {
                                     onSuccess: function(result){
-                                        $.ajax({
-                                            headers: csrf_token,
-                                            url: baseurl + '/keuangan/pembayaran',
-                                            type: 'post',
-                                            dataType: 'json',
-                                            data: {
-                                                '_type': 'update',
-                                                '_data': 'payment',
-                                                'payment_number': result.order_id,
-                                                'payment_transaction': result
-                                            },
-                                            success: function (){
-                                                new PNotify({
-                                                    title: 'Pembayaran Berhasil!',
-                                                    text: result.status_message,
-                                                    addclass: 'alert bg-success border-success alert-styled-left'
-                                                });
-                                                $('.datatable-payment').DataTable().ajax.reload();
-                                            }
-                                        })
+                                        new PNotify({
+                                            title: 'Pembayaran Berhasil!',
+                                            text: result.status_message,
+                                            addclass: 'alert bg-success border-success alert-styled-left'
+                                        });
+                                        $('.datatable-payment').DataTable().ajax.reload();
                                     },
                                     onPending: function(result){
-                                        $.ajax({
-                                            headers: csrf_token,
-                                            url: baseurl + '/keuangan/pembayaran',
-                                            type: 'post',
-                                            dataType: 'json',
-                                            data: {
-                                                '_type': 'update',
-                                                '_data': 'payment',
-                                                'payment_number': result.order_id,
-                                                'payment_transaction': result
-                                            },
-                                            success: function (){
-                                                new PNotify({
-                                                    title: 'Pembayaran Tertunda!',
-                                                    text: result.status_message,
-                                                    addclass: 'alert bg-warning border-warning alert-styled-left'
-                                                });
-                                                $('.datatable-payment').DataTable().ajax.reload();
-                                            }
-                                        })
+                                        new PNotify({
+                                            title: 'Pembayaran Tertunda!',
+                                            text: result.status_message,
+                                            addclass: 'alert bg-warning border-warning alert-styled-left'
+                                        });
+                                        $('.datatable-payment').DataTable().ajax.reload();
                                     },
                                     onError: function(result){
-                                        $.ajax({
-                                            headers: csrf_token,
-                                            url: baseurl + '/keuangan/pembayaran',
-                                            type: 'post',
-                                            dataType: 'json',
-                                            data: {
-                                                '_type': 'update',
-                                                '_data': 'payment',
-                                                'payment_number': result.order_id,
-                                                'payment_transaction': result
-                                            },
-                                            success: function (){
-                                                new PNotify({
-                                                    title: 'Pembayaran Gagal!',
-                                                    text: result.status_message,
-                                                    addclass: 'alert bg-danger border-danger alert-styled-left'
-                                                });
-                                                $('.datatable-payment').DataTable().ajax.reload();
-                                            }
-                                        })
+                                        new PNotify({
+                                            title: 'Pembayaran Gagal!',
+                                            text: result.status_message,
+                                            addclass: 'alert bg-danger border-danger alert-styled-left'
+                                        });
+                                        $('.datatable-payment').DataTable().ajax.reload();
                                     },
                                     onClose: function(){
                                         new PNotify({
