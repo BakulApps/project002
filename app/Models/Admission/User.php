@@ -17,6 +17,8 @@ class User extends Authenticated
         'user_name',
         'user_pass',
         'user_fullname',
+        'user_email',
+        'user_role',
         'remember_token',
     ];
     protected $hidden = ['user_pass', 'remember_token'];
@@ -31,5 +33,14 @@ class User extends Authenticated
     public function getAuthPassword()
     {
         return $this->user_pass;
+    }
+
+    public function role()
+    {
+        return $this->hasOne(
+            Role::class,
+            'role_id',
+            'user_role'
+        );
     }
 }

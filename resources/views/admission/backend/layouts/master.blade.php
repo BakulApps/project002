@@ -1,4 +1,3 @@
-@php($setting = new \App\Models\Admission\Setting())
 <!DOCTYPE html>
 <html lang="{{config('app.locale')}}">
     @include('admission.backend.layouts.head')
@@ -20,12 +19,12 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="mr-2">
-                                    <a href="#"><img src="{{asset($setting->value('school_logo'))}}" width="50" height="50"></a>
+                                    <a href="#"><img src="{{asset('storage/master/images/'.$school->school_logo)}}" width="50" height="50"></a>
                                 </div>
                                 <div class="media-body">
-                                    <div class="media-title font-weight-semibold">{{$setting->value('school_name')}}</div>
+                                    <div class="media-title font-weight-semibold">{{$school->name(false)}}</div>
                                     <div class="font-size-xs opacity-50">
-                                        <i class="icon-pin font-size-sm"></i> &nbsp;{{$setting->value('school_address')}}
+                                        <i class="icon-pin font-size-sm"></i> &nbsp;{{$school->value('school_address')}}
                                     </div>
                                 </div>
                             </div>

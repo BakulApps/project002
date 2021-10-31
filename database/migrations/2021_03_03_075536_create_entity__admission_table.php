@@ -22,7 +22,7 @@ class CreateEntityAdmissionTable extends Migration
         Schema::create('admission_entity__students', function (Blueprint $table) {
             $table->id('student_id');
             $table->string('student_name', 100)->nullable();
-            $table->string('student_nisn', 10)->unique();
+            $table->string('student_nisn', 10)->unique()->nullable();
             $table->string('student_nik', 16)->unique();
             $table->string('student_birthplace', 50)->nullable();
             $table->date('student_birthday')->nullable();
@@ -33,11 +33,14 @@ class CreateEntityAdmissionTable extends Migration
             $table->integer('student_civic')->nullable();
             $table->integer('student_hobby')->nullable();
             $table->integer('student_purpose')->nullable();
+            $table->string('student_email')->nullable();
+            $table->string('student_phone')->nullable();
             $table->boolean('student_im_hepatitis')->default(0)->nullable();
             $table->boolean('student_im_polio')->default(0)->nullable();
             $table->boolean('student_im_bcg')->default(0)->nullable();
             $table->boolean('student_im_campak')->default(0)->nullable();
             $table->boolean('student_im_dpt')->default(0)->nullable();
+            $table->boolean('student_im_covid')->default(0)->nullable();
             $table->integer('student_residence')->nullable();
             $table->string('student_address', 200)->nullable();
             $table->integer('student_province')->nullable();
@@ -49,6 +52,7 @@ class CreateEntityAdmissionTable extends Migration
             $table->integer('student_transport')->nullable();
             $table->integer('student_travel')->nullable();
             $table->integer('student_program')->nullable();
+            $table->integer('student_boarding')->nullable();
             $table->string('student_no_kk', 16)->nullable();
             $table->string('student_head_family', 200)->nullable();
             $table->string('student_father_name', 100)->nullable();
@@ -96,11 +100,20 @@ class CreateEntityAdmissionTable extends Migration
             $table->integer('form_count');
         });
 
+        Schema::create('admission_entity__roles', function (Blueprint $table){
+            $table->id('role_id');
+            $table->string('role_name');
+            $table->string('role_desc')->nullable();
+        });;
+
         Schema::create('admission_entity__users', function (Blueprint $table){
             $table->id('user_id');
             $table->string('user_fullname', 200);
             $table->string('user_name', 100);
             $table->string('user_pass');
+            $table->string('user_email')->nullable();
+            $table->string('user_role');
+            $table->mediumText('user_desc')->nullable();
             $table->rememberToken();
         });
     }
@@ -115,6 +128,7 @@ class CreateEntityAdmissionTable extends Migration
         Schema::dropIfExists('admission_entity__settings');
         Schema::dropIfExists('admission_entity__students');
         Schema::dropIfExists('admission_entity__forms');
+        Schema::dropIfExists('admission_entity__roles');
         Schema::dropIfExists('admission_entity__users');
     }
 }

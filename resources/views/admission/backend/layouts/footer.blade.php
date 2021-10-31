@@ -8,7 +8,7 @@
     <div class="navbar-collapse collapse" id="navbar-footer">
         <span class="navbar-text">
             &copy; 2020 <a href="#">{{$setting->value('app_subname')}}</a>
-            Copyrigth By <a href="#">{{$setting->value('school_name')}}</a>
+            Copyrigth By <a href="#">{{$school->name(false)}}</a>
             Created By <span class="font-weight-semibold font-italic">Limitless</span>
         </span>
         <ul class="navbar-nav ml-lg-auto">

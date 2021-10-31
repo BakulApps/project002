@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admission;
 
-use App\Helpers\PDF;
 use App\Http\Controllers\Controller;
 use App\Models\Admission\Form;
 use App\Models\Admission\Setting;
 use App\Models\Admission\Student;
+use App\Models\Master\School;
 use Carbon\Carbon;
 use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
@@ -23,16 +23,8 @@ class FrontedController extends Controller
 
     public function __construct()
     {
-        $setting = new Setting();
-        $this->data = [
-            'setting' => $setting,
-            'meta' => (object) [
-                'title' => 'PPDB Online TP. 2021/2022',
-                'description' => 'Penerimaan Peserta Didik Baru Tahun Pelajaran 2021/2022',
-                'keyword'   => 'PPDB, PPDB Online, PPDB Online 2021/2022, PPDB MTs. Darul Hikmah Menganti',
-                'author' => 'MTs. Darul Hikmah Menganti'
-            ]
-        ];
+        $this->data['school'] = School::first();
+        $this->data['setting'] = new Setting();
     }
 
     public function home()
@@ -98,83 +90,129 @@ class FrontedController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'student_name' => 'required|string|max:200',
-            'student_nisn' => 'required|string|min:10|max:10',
-            'student_nik' => 'required|string|min:16|max:16',
-            'student_birthplace' => 'required|string',
-            'student_birthday' => 'required|date_format:d/m/Y',
-            'student_gender' => 'required',
-            'student_religion' => 'required',
-            'student_siblingplace' => 'required',
-            'student_sibling' => 'required',
-            'student_civic' => 'required',
-            'student_hobby' => 'required',
-            'student_purpose' => 'required',
-            'student_residence' => 'required',
-            'student_address' => 'required|string|max:200',
-            'student_province' => 'required',
-            'student_distric' => 'required',
-            'student_subdistric' => 'required',
-            'student_village' => 'required',
-            'student_distance' => 'required',
-            'student_transport' => 'required',
-            'student_travel' => 'required',
-            'student_program' => 'required'
-        ], [
-            'required' => 'kolom :attribute tidak boleh kosong',
-            'string' => 'kolom :attribute data harus bertipe huruf/angka',
-            'max' => 'nomor :attribute tidak sesuai',
-            'min' => 'nomor :attribute data tidak sesuai',
-        ]);
-        if ($validator->fails()) {
-            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $validator->errors()->first()];
-        } else {
-            try {
-                $student = new Student();
-                $student->student_name = $request->student_name;
-                $student->student_nisn = $request->student_nisn;
-                $student->student_nik = $request->student_nik;
-                $student->student_birthplace = $request->student_birthplace;
-                $student->student_birthday = Carbon::createFromFormat('d/m/Y', $request->student_birthday)->format('Y-m-d');
-                $student->student_gender = $request->student_gender;
-                $student->student_religion = $request->student_religion;
-                $student->student_siblingplace = $request->student_siblingplace;
-                $student->student_sibling = $request->student_sibling;
-                $student->student_civic = $request->student_civic;
-                $student->student_hobby = $request->student_hobby;
-                $student->student_purpose = $request->student_purpose;
-                $student->student_residence = $request->student_residence;
-                $student->student_address = $request->student_address;
-                $student->student_province = $request->student_province;
-                $student->student_distric = $request->student_distric;
-                $student->student_subdistric = $request->student_subdistric;
-                $student->student_village = $request->student_village;
-                $student->student_postal = $request->student_postal;
-                $student->student_distance = $request->student_distance;
-                $student->student_transport = $request->student_transport;
-                $student->student_travel = $request->student_travel;
-                $student->student_program = $request->student_program;
-                $student->student_im_hepatitis = $request->student_im_hepatitis;
-                $student->student_im_polio = $request->student_im_polio;
-                $student->student_im_bcg = $request->student_im_bcg;
-                $student->student_im_campak = $request->student_im_campak;
-                $student->student_im_dpt = $request->student_im_dpt;
-                if ($student->save()) {
-                    $form = new Form();
-                    $form->form_uuid = Str::uuid();
-                    $form->form_student = $student->student_id;
-                    $form->form_date    = Carbon::now()->format('Y-m-d');
-                    $form->form_count   = 0;
-                    $form->save();
-                    $path = storage_path('app/public/admission/fronted/images/student/' . $student->student_nisn . '_qrcode.png');
-                    QrCode::size(110)
-                        ->format('png')->generate(route('admission.authenticate', $form->form_uuid), $path);
-                    $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pendaftaran berhasil, silahkan masuk menggunakan NIS & Tanggal Lahir untuk melengkapi pendfataran.'];
-                }
-            } catch (\Exception $e) {
-                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+        try {
+            if ($request->check_agreement == null){
+                throw new \Exception('Silahkan centang persetujuan terlebih dahulu.');
             }
+            else {
+                if ($request->student_nisn != null && Student::where('student_nisn', $request->student_nisn)->count() >= 1){
+                    throw new \Exception('NISN telah terdaftar, silahkan melengkapi pendaftaran.');
+                }
+                elseif (Student::where('student_nik', $request->student_nik)->count() >= 1){
+                    throw new \Exception('NIK telah terdaftar, silahkan melengkapi pendaftaran.');
+                }
+                else {
+                    $validator = Validator::make($request->all(), [
+                        'student_name' => 'required|max:200',
+                        'student_nisn' => 'nullable|min:10|max:10',
+                        'student_nik' => 'required|min:16|max:16',
+                        'student_birthplace' => 'required',
+                        'student_birthday' => 'required|date_format:d/m/Y',
+                        'student_gender' => 'required',
+                        'student_religion' => 'required',
+                        'student_siblingplace' => 'required',
+                        'student_sibling' => 'required',
+                        'student_civic' => 'required',
+                        'student_hobby' => 'required',
+                        'student_purpose' => 'required',
+                        'student_email' => 'nullable|email',
+                        'student_phone' => 'required',
+                        'student_residence' => 'required',
+                        'student_address' => 'required|string|max:200',
+                        'student_province' => 'required',
+                        'student_distric' => 'required',
+                        'student_subdistric' => 'required',
+                        'student_village' => 'required',
+                        'student_distance' => 'required',
+                        'student_transport' => 'required',
+                        'student_travel' => 'required',
+                        'student_program' => 'required',
+                    ],
+                        [
+                            'student_name.required' => 'Kolom nama lengkap tidak boleh kosong.',
+                            'student_name.max' => 'Panjang karakter maksimal 200 huruf.',
+                            'student_nisn.min' => 'NISN salah, pastikan berjumlah 10 digit.',
+                            'student_nisn.max' => 'NISN salah, pastikan berjumlah 10 digit.',
+                            'student_nik.required' => 'NIK salah, pastikan berjumlah 16 digit.',
+                            'student_nik.min' => 'NIK salah, pastikan berjumlah 16 digit.',
+                            'student_nik.max' => 'NIK salah, pastikan berjumlah 16 digit.',
+                            'student_birthplace.required' => 'Kolom tempat lahir tidak boleh kosong.',
+                            'student_birthday.required' => 'Kolom tanggal lahir tidak boleh kosong.',
+                            'student_gender.required' => 'Kolom jenis kelamin tidak boleh kosong, silahkan pilih.',
+                            'student_religion.required' => 'Kolom agama tidak boleh kosong, silahkan pilih.',
+                            'student_siblingplace.required' => 'Kolom anak-ke tidak boleh kosong.',
+                            'student_sibling.required' => 'Kolom jumlah saudara tidak boleh kosong.',
+                            'student_civic.required' => 'Kolom kewarganegaraan tidak boleh kosong, silahkan pilih.',
+                            'student_hobby.required' => 'Kolom Hobi tidak boleh kosong, silahkan pilih.',
+                            'student_purpose.required' => 'Kolom cita-cita tidak boleh kosong, silahkan pilih.',
+                            'student_phone.required' => 'Kolom nomor HP tidak boleh kosong.',
+                            'student_residence.required' => 'Kolom status tempat tinggal tidak boleh kosong, silahkan pilih.',
+                            'student_address.required' => 'Kolom alamat tidak boleh kosong.',
+                            'student_province.required' => 'Kolom propinsi tidak boleh kosong, silahkan pilih.',
+                            'student_distric.required' => 'Kolom kabupaten tidak boleh kosong, silahkan pilih.',
+                            'student_subdistric.required' => 'Kolom kecamatan tidak boleh kosong, silahkan pilih.',
+                            'student_village.required' => 'Kolom kelurahan/desa tidak boleh kosong, silahkan pilih.',
+                            'student_distance.required' => 'Kolom jarak tempat tinggal tidak boleh kosong, silahkan pilih.',
+                            'student_transport.required' => 'Kolom transportasi tidak boleh kosong, silahkan pilih.',
+                            'student_travel.required' => 'Kolom waktu tempuh tidak boleh kosong, silahkan pilih.',
+                            'student_program.required' => 'Kolom program pilihan tidak boleh kosong, silahkan pilih.',
+                        ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $student = new Student();
+                        $student->student_name = $request->student_name;
+                        $student->student_nisn = $request->student_nisn;
+                        $student->student_nik = $request->student_nik;
+                        $student->student_birthplace = $request->student_birthplace;
+                        $student->student_birthday = Carbon::createFromFormat('d/m/Y', $request->student_birthday)->format('Y-m-d');
+                        $student->student_gender = $request->student_gender;
+                        $student->student_religion = $request->student_religion;
+                        $student->student_siblingplace = $request->student_siblingplace;
+                        $student->student_sibling = $request->student_sibling;
+                        $student->student_civic = $request->student_civic;
+                        $student->student_hobby = $request->student_hobby;
+                        $student->student_purpose = $request->student_purpose;
+                        $student->student_email = $request->student_email;
+                        $student->student_phone = $request->student_phone;
+                        $student->student_residence = $request->student_residence;
+                        $student->student_address = $request->student_address;
+                        $student->student_province = $request->student_province;
+                        $student->student_distric = $request->student_distric;
+                        $student->student_subdistric = $request->student_subdistric;
+                        $student->student_village = $request->student_village;
+                        $student->student_postal = $request->student_postal;
+                        $student->student_distance = $request->student_distance;
+                        $student->student_transport = $request->student_transport;
+                        $student->student_travel = $request->student_travel;
+                        $student->student_program = $request->student_program;
+                        $student->student_boarding = $request->student_boarding;
+                        $student->student_im_hepatitis = $request->student_im_hepatitis;
+                        $student->student_im_polio = $request->student_im_polio;
+                        $student->student_im_bcg = $request->student_im_bcg;
+                        $student->student_im_campak = $request->student_im_campak;
+                        $student->student_im_dpt = $request->student_im_dpt;
+                        $student->student_im_covid = $request->student_im_covid;
+                        if ($student->save()) {
+                            $form = new Form();
+                            $form->form_uuid    = Str::uuid();
+                            $form->form_letter  = Form::latest('form_letter')->first() == null ? 1 : Form::latest('form_letter')->first()->form_letter + 1;
+                            $form->form_student = $student->student_id;
+                            $form->form_date    = Carbon::now()->format('Y-m-d');
+                            $form->form_count   = 0;
+                            $form->save();
+                            $path = storage_path('app/public/admission/fronted/images/student/' . $student->student_nik . '_qrcode.png');
+                            QrCode::size(110)
+                                ->format('png')->generate(route('admission.authenticate', $form->form_uuid), $path);
+                            $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pendaftaran berhasil, silahkan masuk menggunakan NIS/NIK & Tanggal Lahir untuk melengkapi pendfataran.'];
+                        }
+                    }
+                }
+            }
+        }
+        catch (\Exception $e){
+            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
         }
         return $msg;
     }
@@ -349,18 +387,23 @@ class FrontedController extends Controller
 
     public function login(Request $request)
     {
-        $student = Student::where('student_nisn', $request->student_nisn)->first();
-        if ($student != null){
-            if ($student->birthday() == $request->student_birthday){
-                Session::put('auth', $student);
-                $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Berhasil masuk, anda akan di alihkan ke halaman lengkapi formulir dalam 2 detik.'];
+        try {
+            if(Student::where('student_nisn', $request->student_nisn)->first() != null || Student::where('student_nik', $request->student_nisn)->first() != null){
+                $student = $request->student_nisn == null ? Student::where('student_nisn', $request->student_nisn)->first() : Student::where('student_nik', $request->student_nisn)->first();
+                if ($student->birthday() == $request->student_birthday){
+                    Session::put('auth', $student);
+                    $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Berhasil masuk, anda akan di alihkan ke halaman lengkapi formulir dalam 2 detik.'];
+                }
+                else {
+                    throw new \Exception('NISN & Tanggal lahir tidak tepat, silahkan periksa kembali.');
+                }
             }
             else {
-                $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'NISN & Tanggal lahir tidak tepat, silahkan periksa kembali.'];
+                throw new \Exception('Gagal masuk, NISN/NIK tidak di temukan.');
             }
         }
-        else {
-            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Gagal masuk, NISN tidak di temukan.'];
+        catch (\Exception $e){
+            $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
         }
         return $msg;
     }

@@ -34,7 +34,7 @@ class PortalTableSeeder extends Seeder
 //        Facility::factory(10)->create();
 //        Testimonial::factory(5)->create();
 //        Tag::factory(10)->create();
-//        Role::factory(2)->create();
+        Role::factory(2)->create();
         User::factory(2)->create();
 //        Comment::factory(20)->create();
 

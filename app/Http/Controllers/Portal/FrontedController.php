@@ -138,4 +138,11 @@ class FrontedController extends Controller
         $this->data['populars'] = Post::orderBy('post_read', 'DESC')->limit(4)->get();
         return view('portal.fronted.article', $this->data);
     }
+
+    public function facility()
+    {
+        $this->data['page'] = "FASILITAS";
+        $this->data['facilities'] = Facility::paginate(6);
+        return view('portal.fronted.facility', $this->data);
+    }
 }

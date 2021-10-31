@@ -17,17 +17,17 @@ class DatabaseSeeder extends Seeder
 //        PortalSeeder
 //        $this->call(PortalTableSeeder::class);
         $this->call(AdmissionTableSeeder::class);
-//        $this->call(MasterTableSeeder::class);
-//        $this->call(StudentTableSeeder::class);
+        $this->call(MasterTableSeeder::class);
+        $this->call(StudentTableSeeder::class);
 
 //        ExamSeeder
-        $this->call(ExamTableSeeder::class);
+//        $this->call(ExamTableSeeder::class);
 
 //        GraduateSeeder
-        $this->call(GraduateTableSeeder::class);
+//        $this->call(GraduateTableSeeder::class);
 
 //        FinanceSeeder
 //        $this->call(FinanceTableSeeder::class);
-        $this->call(EmployeeTableSeeder::class);
+//        $this->call(EmployeeTableSeeder::class);
     }
 }

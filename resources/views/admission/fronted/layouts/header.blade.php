@@ -3,7 +3,7 @@
         <div class="page-title d-flex">
             <h4>
                 <i class="icon-display mr-2"></i>
-                <span class="font-weight-semibold">{{$setting->value('app_alias')}} TP. {{$setting->value('app_year')}}</span> - {{$setting->value('school_name')}}
+                <span class="font-weight-semibold">{{$setting->value('app_alias')}} TP. {{$setting->value('app_year')}}</span> - {{$school->name(false)}}
             </h4>
             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
         </div>

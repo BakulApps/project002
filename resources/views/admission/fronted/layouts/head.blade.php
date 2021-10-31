@@ -8,9 +8,9 @@
     {!! isset($meta->keyword) ? '<meta name="keyword" content="'.$meta->keyword.'">' : null !!}
     {!! isset($meta->author) ? '<meta name="author" content="'.$meta->author.'">' : null !!}
 
-    <title>{{isset($title) ? $title .' - '. $setting->value('app_alias') .' TP. '. $setting->value('app_year') : $setting->value('app_subname') .' TP. '. $setting->value('app_year') .' - '. $setting->value('school_name')}}</title>
+    <title>{{isset($title) ? $title .' - '. $setting->value('app_alias') .' TP. '. $setting->value('app_year') : $setting->value('app_alias') .' TP. '. $setting->value('app_year') .' - '. $school->name(false)}}</title>
 
-    <link rel="shortcut icon" href="{{asset('storage/admission/fronted/images/logo.png')}}">
+    <link rel="shortcut icon" href="{{asset('storage/master/images/'.$school->school_logo)}}">
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css"> -->
     <link href="{{asset('assets/fonts/icomoon/styles.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">

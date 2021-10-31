@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{csrf_token()}}">
 
-    <title>{{isset($title) ? $title .' - '. $setting->value('app_subname') .' TP. '. $setting->value('app_year') : $setting->value('app_subname') .' TP. '. $setting->value('app_year') .' - '. $setting->value('school_name')}}</title>
+    <title>{{isset($title) ? $title .' - '. $setting->value('app_alias') .' TP. '. $setting->value('app_year') : $setting->value('app_alias') .' TP. '. $setting->value('app_year') .' - '. $setting->value('school_name')}}</title>
 
     <link rel="shortcut icon" href="{{asset('storage/admission/fronted/images/logo.png')}}">
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css"> -->
@@ -19,8 +19,8 @@
     <script src="{{asset('assets/js/cores/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('assets/js/cores/blockui.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
-    @yield('js')
+    @yield('jsplugin')
 
     <script src="{{asset('assets/js/cores/app.js')}}"></script>
-    @yield('jspage')
+    @yield('jsscript')
 </head>

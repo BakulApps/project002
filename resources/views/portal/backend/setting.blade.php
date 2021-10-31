@@ -29,12 +29,6 @@
                                     Madrasah
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#card-bottom-database" class="nav-link" data-toggle="tab">
-                                    <i class="icon-database mr-2"></i>
-                                    Database
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>

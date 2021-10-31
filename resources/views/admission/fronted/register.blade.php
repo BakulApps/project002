@@ -130,6 +130,22 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Email :</label>
+                                    <input type="text" id="student_email" class="form-control" placeholder="Ex. arifmuntaha@gmail.com">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nomor HP :</label>
+                                    <input type="text" id="student_phone" class="form-control" placeholder="Ex. 6282229366509">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mb-3 mb-md-2">
                                     <label>Imunisasi :</label>
@@ -171,6 +187,14 @@
                                                 <label class="form-check-label">
                                                     <input type="checkbox" class="form-check-input-styled" id="student_im_dpt" value="1" data-fouc>
                                                     DPT
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input-styled" id="student_im_covid" value="1" data-fouc>
+                                                    Covid-19
                                                 </label>
                                             </div>
                                         </div>
@@ -276,19 +300,37 @@
                 <div class="card-body">
                     <h6 class="font-weight-semibold">C. Informasi Program Pilihan</h6>
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Program Pilihan :</label>
-                            <select id="student_program" data-placeholder="Pilih Program" class="form-control select2">
-                                <option></option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Program Pilihan :</label>
+                                    <select id="student_program" data-placeholder="Pilih Program" class="form-control select2">
+                                        <option></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Boarding/Non Boarding :</label>
+                                    <select id="student_boarding" data-placeholder="Pilih Program" class="form-control select2">
+                                        <option></option>
+                                        <option value="1">Ya</option>
+                                        <option value="2">Tidak</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <label class="form-check-label text-justify">
-                                    <input type="checkbox" class="form-check-input-styled-success" data-fouc>
-                                    Semua data yang saya masukkan adalah benar dan tidak ada manipulasi. Jika terjadi kesalahan
-                                    saya bersedia mempertanggungjawabkan sesuai dengan ketentuan yang berlaku.
-                                </label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <label class="form-check-label text-justify">
+                                            <input type="checkbox" class="form-check-input-styled-success" id="check_agreement" data-fouc>
+                                            Semua data yang saya masukkan adalah benar dan tidak ada manipulasi. Jika terjadi kesalahan
+                                            saya bersedia mempertanggungjawabkan sesuai dengan ketentuan yang berlaku.
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -305,7 +347,7 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <label>NISN:</label>
+                        <label>NISN/NIK:</label>
                         <input type="text" id="student_nisn_login" placeholder="Ex. 0034786736" class="form-control">
                     </div>
                     <div class="form-group">

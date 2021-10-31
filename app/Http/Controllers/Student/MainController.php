@@ -134,7 +134,7 @@ class MainController extends Controller
             if ($request->_type == 'update' && $request->_data == 'setting'){
                 try {
                     $validator = Validator::make($request->all(), [
-                        'app_name' => 'required',
+                        'user_fullname' => 'required',
                         'app_alias' => 'required',
                         'app_logo' => 'required|mimes:jpg,peg,png|max:512',
                     ], [

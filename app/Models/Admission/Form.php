@@ -13,12 +13,7 @@ class Form extends Model
     protected $fillable     = ['form_uuid', 'form_letter', 'form_student', 'form_count', 'form_date'];
     protected $primaryKey   = 'form_id';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->timestamps = false;
-    }
+    public $timestamps      = false;
 
 
     public function student()

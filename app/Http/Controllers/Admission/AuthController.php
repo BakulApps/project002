@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Admission;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admission\Setting;
+use App\Models\Master\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    protected $data;
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->data['school'] = School::first();
+        $this->data['setting'] = new Setting();
     }
 
     public function login(Request $request)
@@ -19,7 +25,7 @@ class AuthController extends Controller
             return $this->authentication($request);
         }
         else {
-            return view('admission.backend.login');
+            return view('admission.backend.login', $this->data);
         }
     }
 

@@ -19,9 +19,8 @@ class AdmissionTableSeeder extends Seeder
             ['app_name', 'Penerimaan Peserta Didik Baru'],
             ['app_alias', 'PPDB Online'],
             ['app_year', '2021/2022'],
-            ['school_logo', 'storage/admission/fronted/images/logo.png'],
-            ['school_name', 'MTs. Darul Hikmah Menganti'],
-            ['school_address', 'Jl. Bugel - Jepara KM 7 Menganti'],
+            ['app_logo', ''],
+            ['app_desc', '']
 
         ];
 
@@ -29,6 +28,17 @@ class AdmissionTableSeeder extends Seeder
             DB::table('admission_entity__settings')->insert([
                 'setting_name' => $setting[$i][0],
                 'setting_value' => $setting[$i][1]
+            ]);
+        }
+
+        $roles = [
+            ['Administrator', ''],
+            ['Keuangan', '']
+        ];
+
+        for ($i=0;$i<count($roles);$i++){
+            DB::table('admission_entity__roles')->insert([
+                'role_name' => $roles[$i][0],
             ]);
         }
 

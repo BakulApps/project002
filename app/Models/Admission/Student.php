@@ -13,10 +13,10 @@ class Student extends Model
     protected $table        = 'admission_entity__students';
     protected $fillable     = ['student_name', 'student_nisn', 'student_nik', 'student_birthplace', 'student_birthday',
         'student_gender', 'student_religion', 'student_siblingplace', 'student_sibling', 'student_civic', 'student_hobby',
-        'student_purpose', 'student_im_hepatitis', 'student_im_polio', 'student_im_bcg', 'student_im_campak',
-        'student_im_dpt', 'student_residence', 'student_address', 'student_province', 'student_distric',
+        'student_purpose', 'student_email', 'student_phone', 'student_im_hepatitis', 'student_im_polio', 'student_im_bcg', 'student_im_campak',
+        'student_im_dpt', 'student_im_covid', 'student_residence', 'student_address', 'student_province', 'student_distric',
         'student_subdistric', 'student_village', 'student_postal', 'student_distance', 'student_transport',
-        'student_travel', 'student_program', 'student_no_kk', 'student_head_family', 'student_father_name',
+        'student_travel', 'student_program', 'student_boarding', 'student_no_kk', 'student_head_family', 'student_father_name',
         'student_mother_name', 'student_father_birthday', 'student_mother_birthday', 'student_father_status',
         'student_mother_status', 'student_father_nik', 'student_mother_nik', 'student_father_study', 'student_mother_study',
         'student_father_job', 'student_mother_job', 'student_father_earning',

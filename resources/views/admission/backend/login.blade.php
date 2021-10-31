@@ -1,4 +1,3 @@
-@php($setting = new \App\Models\Admission\Setting())
 <!DOCTYPE html>
 <html lang="{{config('app.locale')}}">
 <head>
@@ -7,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{csrf_token()}}">
 
-    <title>{{$setting->value('app_name')}} | {{$setting->value('school_name')}}</title>
+    <title>{{$setting->value('app_name')}} | {{$school->name(false)}}</title>
 
     <link rel="shortcut icon" href="{{asset('storage/admission/fronted/images/logo.png')}}">
     <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css"> -->
@@ -24,7 +23,7 @@
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
 
     <script src="{{asset('assets/js/cores/app.js')}}"></script>
-    <script src="{{asset('assets/admission/backend/js/login.js')}}"></script>
+    <script src="{{asset('assets/apps/admission/backend/js/login.js')}}"></script>
 </head>
 <body class="bg-green-800">
 <div class="page-content">
@@ -36,12 +35,12 @@
                     <div class="card-body">
                         <div class="text-center">
                             <div class="card-img-actions d-inline-block mb-2">
-                                <img src="{{asset('storage/admission/fronted/images/logo.png')}}" width="120" height="115" alt="">
+                                <img src="{{asset('storage/master/images/'.$school->school_logo)}}" width="120" height="115" alt="">
                             </div>
                         </div>
                         <div class="text-center mb-4">
                             <h6 class="font-weight-semibold mb-0">Halaman Administrator</h6>
-                            <span class="d-block text-muted">{{$setting->value('school_name')}}</span>
+                            <span class="d-block text-muted">{{$setting->value('app_name')}}</span>
                         </div>
                         @if(session('msg'))
                             @php($msg = session('msg'))

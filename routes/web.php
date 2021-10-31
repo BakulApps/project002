@@ -23,6 +23,7 @@ Route::get('/guru', 'FrontedController@teacher')->name('portal.teacher');
 Route::get('/guru/{id}/lihat', 'FrontedController@teacher_detail')->name('portal.teacher.read');
 Route::get('/ekstrakurikuler', 'FrontedController@extracurricular')->name('portal.extracurricular');
 Route::get('/ekstrakurikuler/{id}/lihat', 'FrontedController@extracurricular_detail')->name('portal.extracurricular.read');
+Route::get('/fasilitas', 'FrontedController@facility')->name('portal.facility');
 
 Route::group(['prefix' => 'administrator'], function (){
     Route::match(['get', 'post'],'/masuk', 'AuthController@login')->name('portal.admin.login');

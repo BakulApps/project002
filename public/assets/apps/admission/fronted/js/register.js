@@ -244,6 +244,21 @@ var register = function() {
         });
     }
 
+    var _componentData = function () {
+        $('#student_program').on('change', function (){
+            var program_id = $(this).val();
+            if (program_id === '1' || program_id === '2'){
+                $('#student_boarding').val(1).change().prop('disabled', true);
+            }
+            else if (program_id === '4'){
+                $('#student_boarding').val(2).change().prop('disabled', true);
+            }
+            else {
+                $('#student_boarding').val(1).change().prop('disabled', false);
+            }
+        });
+    }
+
     var _componentSubmit = function (){
         $('#submit').click(function (){
             var fd = new FormData();
@@ -260,11 +275,14 @@ var register = function() {
             fd.append('student_civic', $('#student_civic').val());
             fd.append('student_hobby', $('#student_hobby').val());
             fd.append('student_purpose', $('#student_purpose').val());
+            fd.append('student_email', $('#student_email').val());
+            fd.append('student_phone', $('#student_phone').val());
             if ($('#student_im_hepatitis').is(':checked')){fd.append('student_im_hepatitis', 1)}
             if ($('#student_im_polio').is(':checked')){fd.append('student_im_polio', 1)}
             if ($('#student_im_bcg').is(':checked')){fd.append('student_im_bcg', 1)}
             if ($('#student_im_campak').is(':checked')){fd.append('student_im_campak', 1)}
             if ($('#student_im_dpt').is(':checked')){fd.append('student_im_dpt', 1)}
+            if ($('#student_im_covid').is(':checked')){fd.append('student_im_covid', 1)}
             fd.append('student_residence', $('#student_residence').val());
             fd.append('student_address', $('#student_address').val());
             fd.append('student_province', $('#student_province').val());
@@ -276,6 +294,8 @@ var register = function() {
             fd.append('student_transport', $('#student_transport').val());
             fd.append('student_travel', $('#student_travel').val());
             fd.append('student_program', $('#student_program').val());
+            fd.append('student_boarding', $('#student_boarding').val());
+            if ($('#check_agreement').is(':checked')){fd.append('check_agreement', 1)}
             $.ajax({
                 headers: csrf_token,
                 url: baseurl + '/pendaftaran',
@@ -329,6 +349,7 @@ var register = function() {
         init: function() {
             _componentCalender();
             _componentCheck();
+            _componentData();
             _componentSelect();
             _componentSubmit()
         }

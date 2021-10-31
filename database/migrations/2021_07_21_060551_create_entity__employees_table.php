@@ -13,11 +13,11 @@ class CreateEntityEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_entity__settings', function (Blueprint $table) {
-            $table->id('setting_id');
-            $table->string('setting_name',50);
-            $table->string('setting_value')->nullable();
-        });
+//        Schema::create('employee_entity__settings', function (Blueprint $table) {
+//            $table->id('setting_id');
+//            $table->string('setting_name',50);
+//            $table->string('setting_value')->nullable();
+//        });
     }
 
     /**
@@ -27,6 +27,6 @@ class CreateEntityEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee_entity__settings');
+//        Schema::dropIfExists('employee_entity__settings');
     }
 }

@@ -254,7 +254,7 @@ class MasterTableSeeder extends Seeder
             'school_postal' => 59463,
             'school_headmaster_name' => 'Sholihin, S.Ag',
             'school_headmaster_nip' => '-',
-            'school_logo' => ''
+            'school_logo' => 'logo_vs.png'
         ]);
 
         $banks = [

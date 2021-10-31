@@ -1,4 +1,4 @@
-@extends('admission.fronted.layouts.master', ['title' => 'Pendaftaran'])
+ @extends('admission.fronted.layouts.master', ['title' => 'Pendaftaran'])
 @section('js')
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>

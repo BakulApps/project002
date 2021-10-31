@@ -368,14 +368,4 @@ class MasterController extends Controller
             return view('student.master_school', $this->data);
         }
     }
-
-    public function test()
-    {
-        $school = School::first();
-
-        $school->school_logo = 'testing.jpg';
-        $school->save();
-
-        return $school;
-    }
 }

@@ -70,7 +70,6 @@ class CreateEntityStudentTable extends Migration
             $table->string('residence_name', 50);
         });
 
-
         Schema::create('student_entity__status', function (Blueprint $table) {
             $table->id('status_id');
             $table->string('status_name', 20);

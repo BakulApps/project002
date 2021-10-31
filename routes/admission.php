@@ -14,7 +14,13 @@ Route::match(['get', 'post'], '/pendaftar', 'FrontedController@registrant')->nam
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.admission'], function (){
     Route::get('/', 'BackendController@home')->name('admission.admin.home');
+    Route::match(['get', 'post'],'/master/sekolah', 'MasterController@school')->name('admission.admin.master.school');
+    Route::match(['get', 'post'],'/master/agama', 'MasterController@religion')->name('admission.admin.master.religion');
+    Route::match(['get', 'post'],'/master/hobi', 'MasterController@hobby')->name('admission.admin.master.hobby');
+    Route::match(['get', 'post'],'/master/cita', 'MasterController@future')->name('admission.admin.master.future');
     Route::match(['get', 'post'],'/siswa', 'BackendController@student')->name('admission.admin.student');
     Route::match(['get', 'post'],'/siswa/tambah', 'BackendController@studentadd')->name('admission.admin.studentadd');
-    Route::get('/pengaturan', 'BackendController@setting')->name('admission.admin.setting');
+    Route::match(['get', 'post'], '/keuangan', 'BackendController@finance')->name('admission.admin.finance');
+    Route::match(['get', 'post'], '/pengguna', 'BackendController@user')->name('admission.admin.user');
+    Route::match(['get', 'post'], '/pengaturan', 'BackendController@setting')->name('admission.admin.setting');
 });

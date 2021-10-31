@@ -12,12 +12,7 @@ class Setting extends Model
     protected $fillable     = ['setting_name', 'setting_value'];
     protected $primaryKey   = 'setting_id';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->timestamps = false;
-    }
+    public $timestamps      = false;
 
     public function value($setting)
     {

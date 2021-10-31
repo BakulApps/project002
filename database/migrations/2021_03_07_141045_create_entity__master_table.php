@@ -28,20 +28,20 @@ class CreateEntityMasterTable extends Migration
             $table->string('civic_name', 20);
         });
 
-        Schema::create('entity__master_territories', function (Blueprint $table) {
-            $table->integer('code_province');
-            $table->integer('code_distric');
-            $table->integer('code_subdistric');
-            $table->integer('code_village');
-            $table->string('name_village', 100);
-            $table->string('name_subdistric', 100);
-            $table->string('name_distric', 100);
-            $table->string('name_province', 100);
-            $table->integer('id_province');
-            $table->integer('id_distric');
-            $table->integer('id_subdistric');
-            $table->integer('id_village');
-        });
+//        Schema::create('entity__master_territories', function (Blueprint $table) {
+//            $table->integer('code_province');
+//            $table->integer('code_distric');
+//            $table->integer('code_subdistric');
+//            $table->integer('code_village');
+//            $table->string('name_village', 100);
+//            $table->string('name_subdistric', 100);
+//            $table->string('name_distric', 100);
+//            $table->string('name_province', 100);
+//            $table->integer('id_province');
+//            $table->integer('id_distric');
+//            $table->integer('id_subdistric');
+//            $table->integer('id_village');
+//        });
 
         Schema::create('entity__master_distances', function (Blueprint $table) {
             $table->id('distance_id');
@@ -281,7 +281,7 @@ class CreateEntityMasterTable extends Migration
         Schema::dropIfExists('entity__master_genders');
         Schema::dropIfExists('entity__master_religions');
         Schema::dropIfExists('entity__master_civics');
-        Schema::dropIfExists('entity__master_territories');
+//        Schema::dropIfExists('entity__master_territories');
         Schema::dropIfExists('entity__master_distances');
         Schema::dropIfExists('entity__master_transports');
         Schema::dropIfExists('entity__master_travels');
