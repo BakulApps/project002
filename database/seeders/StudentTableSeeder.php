@@ -30,18 +30,15 @@ class StudentTableSeeder extends Seeder
             [10, 'SD',	'MI'],
             [11, 'SDLB', 'MI'],
             [12, 'SD di Luar Negeri', 'MI'],
-            [15, 'TK', 'RA'],
+            [13, 'Lainnya', 00],
             [14, 'RA', 'RA'],
+            [15, 'TK', 'RA'],
             [16, 'PAUD', 'RA'],
             [17, 'Langsung dari Orang Tua', 'RA'],
             [18, 'Kelompok Bermain', 'RA'],
             [19, 'Paket B', 'MA'],
             [20, 'Pondok Pesantren', 'MA'],
-            [13, 'Lainnya', 00],
             [21, 'SMP di Luar Negeri', 'MA'],
-            [22, 'SMA', 'MA'],
-            [23, 'SD', 'MI'],
-            [24, 'SMP', 'MTS']
         ];
         for ($i=0;$i<count($school_from);$i++){
             DB::table('student_entity__schools_from')->insert(

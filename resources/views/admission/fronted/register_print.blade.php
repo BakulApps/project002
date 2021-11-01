@@ -1,21 +1,20 @@
-@php($setting = new \App\Models\Admission\Setting())
 <!DOCTYPE html>
 <html lang="id">
     <body>
         <table style="width: 100%;">
             <tr>
                 <td style="width: 15%; vertical-align: top">
-                    <img src="{{public_path('storage/admission/fronted/images/logo.png')}}" style="width: 90px; display: block">
+                    <img src="{{public_path('storage/master/images/'.$school->school_logo)}}" style="width: 90px; display: block">
                 </td>
                 <td style="width: 85%; vertical-align: top; text-align: center">
                     <span style="font-size: 16px; font-weight: bold; line-height: 0">
                         PENERIMAAN PESERTA DIDIK BARU (PPDB)
                     </span><br>
-                    <span style="font-size: 18px; font-weight: bold; line-height: 0">MTs. DARUL HIKMAH MENGANTI</span><br>
-                    <span style="font-size: 18px; font-weight: bold; line-height: 0">TAHUN PELAJARAN 2021/2022</span><br>
+                    <span style="font-size: 18px; font-weight: bold; line-height: 0">{{strtoupper($school->name(false))}}</span><br>
+                    <span style="font-size: 18px; font-weight: bold; line-height: 0">TAHUN PELAJARAN {{$setting->value('app_year')}}</span><br>
                     <span style="font-size: 9px; font-style: italic; line-height: 1;">
-                        Sekretariat: Jl. Bugel - Jepara KM 7 Menganti, Kedung, Jepara; Kodepos : 59463<br>
-                        Telp : 082229366506; Website : https://mts.darul-hikmah.sch.id; Email : mts@darul-hikmah.sch.id
+                        Sekretariat: {{$school->school_address}}, Kedung, Jepara; Kodepos : 59463<br>
+                        Telp : {{$school->school_phone}}; Website : {{$school->school_website}}; Email : {{$school->school_email}}
                     </span>
                 </td>
             </tr>
@@ -276,6 +275,10 @@
                 <td>: {{$student->student_swaphoto == 1 ? 'Sudah' : 'Belum'}}</td>
             </tr>
             <tr>
+                <td>Unggah KTP Orangtua</td>
+                <td>: {{$student->student_ktp_photo == 1 ? 'Sudah' : 'Belum'}}</td>
+            </tr>
+            <tr>
                 <td>Unggah Akte Kelahiran</td>
                 <td>: {{$student->student_akta_photo == 1 ? 'Sudah' : 'Belum'}}</td>
             </tr>
@@ -288,7 +291,7 @@
                 <td>: {{$student->student_ijazah_photo == 1 ? 'Sudah' : 'Belum'}}</td>
             </tr>
             <tr>
-                <td>Unggah SKHUN</td>
+                <td>Unggah SKHUN/SKL</td>
                 <td>: {{$student->student_skhun_photo == 1 ? 'Sudah' : 'Belum'}}</td>
             </tr>
             <tr>
@@ -299,10 +302,10 @@
         <table style="width: 95%">
             <tr>
                 <td style="width: 140px; text-align: center">
-                    <img src="{{public_path('storage/admission/fronted/images/student/'.$student->student_nisn.'_qrcode.png')}}" style="width: 110px; padding: 3px;">
+                    <img src="{{public_path('storage/admission/fronted/images/student/'.$student->student_nik.'_qrcode.png')}}" style="width: 110px; padding: 3px;">
                 </td>
                 <td style="text-align: right">
-                    <img src="{{public_path('storage/admission/fronted/images/student/'.$student->student_nisn.'_swaphoto.jpg')}}" style="height: 110px;">
+                    <img src="{{public_path('storage/admission/fronted/images/student/'.$student->student_nik.'_swaphoto.jpg')}}" style="height: 110px;">
                 </td>
                 <td style="text-align: right; width: auto">
                     Jepara, {{\Carbon\Carbon::now()->translatedFormat('d F Y')}}<br>
@@ -316,38 +319,67 @@
                 </td>
             </tr>
         </table><br><br>
-        <table style="margin-top: 30px; width: 95%">
+        <h3 style="text-align: center">KARTU KENDALI PENDAFTARAN</h3>
+        <table style="margin-top: 20px; width: 100%; border: 1px solid black; border-collapse: collapse">
             <tr>
-                <td colspan="2">Formulir ini dicetak dan dibawa saat daftar ulang dengan melampirkan :</td>
+                <td colspan="2" style="text-align: center; border: 1px solid black; width: 40%">Berkas Pendaftaran</td>
+                <td style="text-align: center; border: 1px solid black; width: 30%">Biaya Pendaftaran</td>
+                <td colspan="2" style="text-align: center; border: 1px solid black; width: 30%">Daftar Ulang</td>
             </tr>
             <tr>
-                <td>1. Foto Berwarna 3x4</td>
-                <td>: 4 Lembar</td>
+                <td style="border: 1px solid black; text-align: center; width: 30%">Berkas</td>
+                <td style="border: 1px solid black; width: 10%; text-align: center">Paraf</td>
+                <td rowspan="4" style="border: 1px solid black;">Tahap I</td>
+                <td style="border: 1px solid black; text-align: center; width: 20%">Uraian</td>
+                <td style="border: 1px solid black; width: 10%; text-align: center">Paraf</td>
             </tr>
             <tr>
-                <td>2. Fotokopi Akta Kelahiran</td>
-                <td>: 1 Lembar</td>
+                <td style="border: 1px solid black;">1. Foto Berwarna 3x4</td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;">Seragam OSIS</td>
+                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
-                <td>3. Fotokopi Kartu Keluarga</td>
-                <td>: 1 Lembar</td>
+                <td style="border: 1px solid black;">2. Fotokopi KTP Orangtua</td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;">Seragam Pramuka</td>
+                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
-                <td>4. Fotokopi Ijazah</td>
-                <td>: 1 Lembar</td>
+                <td style="border: 1px solid black;">3. Fotokopi Akta Kelahiran</td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;">Atribut Seragam</td>
+                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
-                <td>5. Fotokopi SKHUN</td>
-                <td>: 1 Lembar</td>
+                <td style="border: 1px solid black;">4. Fotokopi Kartu Keluarga</td>
+                <td style="border: 1px solid black;"></td>
+                <td rowspan="4" style="border: 1px solid black;">Tahap II</td>
+                <td style="border: 1px solid black;">Seragam Koko</td>
+                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
-                <td>6. Fotokopi Kartu Bantuan</td>
-                <td>: 1 Lembar (Jika Punya)</td>
+                <td style="border: 1px solid black;">5. Fotokopi Ijazah</td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;">Jas Boarding</td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;">6. Fotokopi SKHUN/SKL</td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;">LKS</td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;">7. Fotokopi Kartu Bantuan</td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
             </tr>
         </table>
         <br><br><br>
         <p style="position: fixed; bottom: -0px; left: 0; right: 0; height: 10px; text-align: left; line-height: 1; font-size: 9px; font-style: italic">
-            Sistem Informasi Akademik Terpadu (SIMADU) - {{$setting->value('app_subname')}} {{$setting->value('school_name')}} Tahun Pelajaran
+            Sistem Informasi Akademik Terpadu (SIMADU) - {{$setting->value('app_alias')}} {{$school->name(false)}} Tahun Pelajaran
             {{$setting->value('app_year')}}<br>
             Dicetak dari {{route('admission.register')}} | Tanggal Pendaftaran : {{\Carbon\Carbon::parse($student->created_at)->translatedFormat('d F Y H:i:s')}}
         </p>

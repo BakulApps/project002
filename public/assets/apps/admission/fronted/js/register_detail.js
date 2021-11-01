@@ -279,6 +279,20 @@ var registerdetail = function() {
             },
             minimumResultsForSearch: Infinity
         });
+        $('#student_guard_study').select2({
+            ajax: {
+                headers: csrf_token,
+                url: siteurl + '/api/master',
+                dataType: 'json',
+                type: 'post',
+                data: {_type: 'select', _data: 'study'},
+                processResults: function (data) {
+                    return {results: data}
+                },
+                cache: true
+            },
+            minimumResultsForSearch: Infinity
+        });
         $('#student_father_job').select2({
             ajax: {
                 headers: csrf_token,
@@ -307,6 +321,20 @@ var registerdetail = function() {
             },
             minimumResultsForSearch: Infinity
         });
+        $('#student_guard_job').select2({
+            ajax: {
+                headers: csrf_token,
+                url: siteurl + '/api/master',
+                dataType: 'json',
+                type: 'post',
+                data: {_type: 'select', _data: 'job'},
+                processResults: function (data) {
+                    return {results: data}
+                },
+                cache: true
+            },
+            minimumResultsForSearch: Infinity
+        });
         $('#student_father_earning').select2({
             ajax: {
                 headers: csrf_token,
@@ -322,6 +350,20 @@ var registerdetail = function() {
             minimumResultsForSearch: Infinity
         });
         $('#student_mother_earning').select2({
+            ajax: {
+                headers: csrf_token,
+                url: siteurl + '/api/master',
+                dataType: 'json',
+                type: 'post',
+                data: {_type: 'select', _data: 'earning'},
+                processResults: function (data) {
+                    return {results: data}
+                },
+                cache: true
+            },
+            minimumResultsForSearch: Infinity
+        });
+        $('#student_guard_earning').select2({
             ajax: {
                 headers: csrf_token,
                 url: siteurl + '/api/master',
@@ -464,9 +506,109 @@ var registerdetail = function() {
         });
     }
 
+    var _componentData = function () {
+        $('#student_program').on('change', function (){
+            var program_id = $(this).val();
+            if (program_id === '1' || program_id === '2'){
+                $('#student_boarding').val(1).change().prop('disabled', true);
+            }
+            else if (program_id === '4'){
+                $('#student_boarding').val(2).change().prop('disabled', true);
+            }
+            else {
+                $('#student_boarding').val(1).change().prop('disabled', false);
+            }
+        });
+
+        $('#student_father_status').on('change', function (){
+            var status = $(this).val();
+            if (status === '1'){
+                $('#student_father_birthplace').prop('disabled', false)
+                $('#student_father_birthday').prop('disabled', false)
+                $('#student_father_nik').prop('disabled', false)
+                $('#student_father_study').prop('disabled', false)
+                $('#student_father_job').prop('disabled', false)
+                $('#student_father_earning').prop('disabled', false)
+                $('#student_father_phone').prop('disabled', false)
+            }
+            else {
+                $('#student_father_birthplace').prop('disabled', true)
+                $('#student_father_birthday').prop('disabled', true)
+                $('#student_father_nik').prop('disabled', true)
+                $('#student_father_study').prop('disabled', true)
+                $('#student_father_job').prop('disabled', true)
+                $('#student_father_earning').prop('disabled', true)
+                $('#student_father_phone').prop('disabled', true)
+            }
+        });
+
+        $('#student_mother_status').on('change', function (){
+            var status = $(this).val();
+            if (status === '1'){
+                $('#student_mother_birthplace').prop('disabled', false)
+                $('#student_mother_birthday').prop('disabled', false)
+                $('#student_mother_nik').prop('disabled', false)
+                $('#student_mother_study').prop('disabled', false)
+                $('#student_mother_job').prop('disabled', false)
+                $('#student_mother_earning').prop('disabled', false)
+                $('#student_mother_phone').prop('disabled', false)
+            }
+            else {
+                $('#student_mother_birthplace').prop('disabled', true)
+                $('#student_mother_birthday').prop('disabled', true)
+                $('#student_mother_nik').prop('disabled', true)
+                $('#student_mother_study').prop('disabled', true)
+                $('#student_mother_job').prop('disabled', true)
+                $('#student_mother_earning').prop('disabled', true)
+                $('#student_mother_phone').prop('disabled', true)
+            }
+        });
+
+        $('#student_guard_status').on('change', function (){
+            var status = $(this).val();
+            if (status === '1'){
+                var father_study = $('#student_father_study option:selected');
+                var father_job = $('#student_father_job option:selected');
+                var father_earning = $('#student_father_earning option:selected');
+                $('#student_guard_name').val($('#student_father_name').val()).prop('disabled', true);
+                $('#student_guard_birthplace').val($('#student_father_birthplace').val()).prop('disabled', true);
+                $('#student_guard_birthday').val($('#student_father_birthday').val()).prop('disabled', true);
+                $('#student_guard_nik').val($('#student_father_nik').val()).prop('disabled', true);
+                $('#student_guard_study').append('<option value="'+ father_study.val() +'" selected>'+ father_study.text() +'</option>').prop('disabled', true);
+                $('#student_guard_job').append('<option value="'+ father_job.val() +'" selected>'+ father_job.text() +'</option>').prop('disabled', true);
+                $('#student_guard_earning').append('<option value="'+ father_earning.val() +'" selected>'+ father_earning.text() +'</option>').prop('disabled', true);
+                $('#student_guard_phone').val($('#student_father_phone').val()).prop('disabled', true);
+            }
+            else if (status === '2'){
+                var mother_study = $('#student_mother_study option:selected');
+                var mother_job = $('#student_mother_job option:selected');
+                var mother_earning = $('#student_mother_earning option:selected');
+                $('#student_guard_name').val($('#student_mother_name').val()).prop('disabled', true);
+                $('#student_guard_birthplace').val($('#student_mother_birthplace').val()).prop('disabled', true);
+                $('#student_guard_birthday').val($('#student_mother_birthday').val()).prop('disabled', true);
+                $('#student_guard_nik').val($('#student_mother_nik').val()).prop('disabled', true);
+                $('#student_guard_study').append('<option value="'+ mother_study.val() +'" selected>'+ mother_study.text() +'</option>').prop('disabled', true);
+                $('#student_guard_job').append('<option value="'+ mother_job.val() +'" selected>'+ mother_job.text() +'</option>').prop('disabled', true);
+                $('#student_guard_earning').append('<option value="'+ mother_earning.val() +'" selected>'+ mother_earning.text() +'</option>').prop('disabled', true);
+                $('#student_guard_phone').val($('#student_mother_phone').val()).prop('disabled', true);
+            }
+            else {
+                $('#student_guard_name').val('').prop('disabled', false);
+                $('#student_guard_birthplace').val('').prop('disabled', false);
+                $('#student_guard_birthday').val('').prop('disabled', false);
+                $('#student_guard_nik').val('').prop('disabled', false);
+                $('#student_guard_study').val('').prop('disabled', false);
+                $('#student_guard_job').val('').prop('disabled', false);
+                $('#student_guard_earning').val('').prop('disabled', false);
+                $('#student_guard_phone').val('').prop('disabled', false);
+            }
+        })
+    }
+
     var _componentSubmit = function (){
         $('#update').click(function (){
             var swaphoto = $('#student_swaphoto')[0].files[0];
+            var ktp_photo = $('#student_ktp_photo')[0].files[0];
             var akta_photo = $('#student_akta_photo')[0].files[0];
             var kk_photo = $('#student_kk_photo')[0].files[0];
             var ijazah_photo = $('#student_ijazah_photo')[0].files[0];
@@ -487,11 +629,14 @@ var registerdetail = function() {
             fd.append('student_civic', $('#student_civic').val());
             fd.append('student_hobby', $('#student_hobby').val());
             fd.append('student_purpose', $('#student_purpose').val());
+            fd.append('student_email', $('#student_email').val());
+            fd.append('student_phone', $('#student_phone').val());
             if ($('#student_im_hepatitis').is(':checked')){fd.append('student_im_hepatitis', 1)}
             if ($('#student_im_polio').is(':checked')){fd.append('student_im_polio', 1)}
             if ($('#student_im_bcg').is(':checked')){fd.append('student_im_bcg', 1)}
             if ($('#student_im_campak').is(':checked')){fd.append('student_im_campak', 1)}
             if ($('#student_im_dpt').is(':checked')){fd.append('student_im_dpt', 1)}
+            if ($('#student_im_covid').is(':checked')){fd.append('student_im_covid', 1)}
             fd.append('student_residence', $('#student_residence').val());
             fd.append('student_address', $('#student_address').val());
             fd.append('student_province', $('#student_province').val());
@@ -507,20 +652,30 @@ var registerdetail = function() {
             fd.append('student_head_family', $('#student_head_family').val())
             fd.append('student_father_name', $('#student_father_name').val())
             fd.append('student_mother_name', $('#student_mother_name').val())
+            fd.append('student_guard_name', $('#student_guard_name').val())
+            fd.append('student_father_birthplace', $('#student_father_birthplace').val())
+            fd.append('student_mother_birthplace', $('#student_mother_birthplace').val())
+            fd.append('student_guard_birthplace', $('#student_guard_birthplace').val())
             fd.append('student_father_birthday', $('#student_father_birthday').val())
             fd.append('student_mother_birthday', $('#student_mother_birthday').val())
+            fd.append('student_guard_birthday', $('#student_guard_birthday').val())
             fd.append('student_father_status', $('#student_father_status').val())
             fd.append('student_mother_status', $('#student_mother_status').val())
             fd.append('student_father_nik', $('#student_father_nik').val())
             fd.append('student_mother_nik', $('#student_mother_nik').val())
+            fd.append('student_guard_nik', $('#student_guard_nik').val())
             fd.append('student_father_study', $('#student_father_study').val())
             fd.append('student_mother_study', $('#student_mother_study').val())
+            fd.append('student_guard_study', $('#student_guard_study').val())
             fd.append('student_father_job', $('#student_father_job').val())
             fd.append('student_mother_job', $('#student_mother_job').val())
+            fd.append('student_guard_job', $('#student_guard_job').val())
             fd.append('student_father_earning', $('#student_father_earning').val())
             fd.append('student_mother_earning', $('#student_mother_earning').val())
+            fd.append('student_guard_earning', $('#student_guard_earning').val())
             fd.append('student_father_phone', $('#student_father_phone').val())
             fd.append('student_mother_phone', $('#student_mother_phone').val())
+            fd.append('student_guard_phone', $('#student_guard_phone').val())
             fd.append('student_home_owner', $('#student_home_owner').val())
             fd.append('student_home_address', $('#student_home_address').val())
             fd.append('student_home_postal', $('#student_home_postal').val())
@@ -534,6 +689,7 @@ var registerdetail = function() {
             fd.append('student_school_address', $('#student_school_address').val())
 
             if (swaphoto !== undefined){fd.append('student_swaphoto', swaphoto)}
+            if (ktp_photo !== undefined){fd.append('student_ktp_photo', ktp_photo)}
             if (akta_photo !== undefined){fd.append('student_akta_photo', akta_photo)}
             if (kk_photo !== undefined){fd.append('student_kk_photo', kk_photo)}
             if (ijazah_photo !== undefined){fd.append('student_ijazah_photo', ijazah_photo)}
@@ -604,6 +760,7 @@ var registerdetail = function() {
             _componentCalender();
             _componentCheck();
             _componentSelect();
+            _componentData();
             _componentSubmit()
         }
     }

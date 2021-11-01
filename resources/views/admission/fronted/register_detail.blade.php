@@ -130,6 +130,22 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
+                            <div class="col-md-6">
+                                <label>Email : </label>
+                                <div class="form-group">
+                                    <input type="text" id="student_email" class="form-control" value="{{$student->student_email}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nomor HP :</label>
+                                    <input type="text" id="student_phone" class="form-control" value="{{$student->student_phone}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mb-3 mb-md-2">
                                     <label>Imunisasi :</label>
@@ -170,6 +186,14 @@
                                                 <label class="form-check-label">
                                                     <input type="checkbox" class="form-check-input-styled" id="student_im_dpt"
                                                         {{$student->student_im_dpt == 1 ? 'checked' : null}}>DPT
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-check">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input-styled" id="student_im_dpt"
+                                                        {{$student->student_im_covid == 1 ? 'checked' : null}}>Covid-19
                                                 </label>
                                             </div>
                                         </div>
@@ -293,11 +317,24 @@
                 </div>
                 <div class="card-body collapse" id="programcard">
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Program Pilihan :</label>
-                            <select id="student_program" data-placeholder="Pilih Program" class="form-control select2">
-                                <option value="{{$student->student_program}}">{{\App\Models\Student\Program::name($student->student_program)}}</option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Program Pilihan :</label>
+                                    <select id="student_program" data-placeholder="Pilih Program" class="form-control select2">
+                                        <option value="{{$student->student_program}}">{{\App\Models\Student\Program::name($student->student_program)}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Boarding/Non Boarding :</label>
+                                    <select id="student_boarding" data-placeholder="Pilih Boarding" class="form-control select2" {{in_array($student->student_program, [1,2,4]) ? 'disabled': null}}>
+                                        <option value="1" {{$student->student_boarding == 1 ? 'selected' : null}}>Ya</option>
+                                        <option value="2" {{$student->student_boarding == 2 ? 'selected' : null}}>Tidak</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -344,20 +381,6 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Tanggal Lahir Ayah :</label>
-                                    <input type="text" id="student_father_birthday" class="form-control daterange" value="{{$student->fatherbirthday()}}">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Tanggal Lahir Ibu :</label>
-                                    <input type="text" id="student_mother_birthday" class="form-control daterange" value="{{$student->motherbirthday()}}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
                                     <label>Status Ayah :</label>
                                     <select id="student_father_status" data-placeholder="Pilih Status" class="form-control select2">
                                         <option value="{{$student->student_father_status}}" selected>{{\App\Models\Student\ParentStatus::name($student->student_father_status)}}</option>
@@ -370,6 +393,40 @@
                                     <select id="student_mother_status" data-placeholder="Pilih Status" class="form-control select2">
                                         <option value="{{$student->student_mother_status}}" selected>{{\App\Models\Student\ParentStatus::name($student->student_mother_status)}}</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tempat Lahir Ayah:</label>
+                                            <input id="student_father_birthplace" class="form-control" value="{{$student->student_father_birthplace}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal Lahir Ayah :</label>
+                                            <input type="text" id="student_father_birthday" class="form-control daterange" value="{{$student->fatherbirthday()}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tempat Lahir Ibu:</label>
+                                            <input id="student_mother_birthplace" class="form-control" value="{{$student->student_mother_birthplace}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tanggal Lahir Ibu :</label>
+                                            <input type="text" id="student_mother_birthday" class="form-control daterange" value="{{$student->motherbirthday()}}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -452,6 +509,79 @@
                                 <div class="form-group">
                                     <label>Nomor HP Ibu :</label>
                                     <input id="student_mother_phone" class="form-control" value="{{$student->student_mother_phone}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Wali Siswa :</label>
+                                    <select id="student_guard_status" data-placeholder="Pilih Wali Siswa" class="form-control select2">
+                                        <option></option>
+                                        <option value="1">Sama dengan ayah kandung</option>
+                                        <option value="2">Sama dengan ibu kandung</option>
+                                        <option value="3">Lainnya</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nama Wali :</label>
+                                    <input id="student_guard_name" class="form-control" value="{{$student->student_guard_name}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>NIK Wali :</label>
+                                    <input id="student_guard_nik" class="form-control" value="{{$student->student_guard_nik}}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tempat Lahir Wali :</label>
+                                    <input id="student_guard_birthplace" class="form-control" value="{{$student->student_guard_birthplace}}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Tanggal Lahir Wali :</label>
+                                    <input type="text" id="student_guard_birthday" class="form-control daterange" value="{{$student->guardbirthday()}}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Pendidikan Wali :</label>
+                                    <select id="student_guard_study" data-placeholder="Pilih Pendidikan" class="form-control select2">
+                                        <option value="{{$student->student_guard_study}}" selected>{{\App\Models\Master\Study::name($student->student_guard_study)}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Pekerjaan Wali :</label>
+                                    <select id="student_guard_job" data-placeholder="Pilih Pekerjaan" class="form-control select2">
+                                        <option value="{{$student->student_guard_job}}" selected>{{\App\Models\Master\Job::name($student->student_guard_job)}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Penghasilan Wali :</label>
+                                    <select id="student_guard_earning" data-placeholder="Pilih Penghasilan" class="form-control select2">
+                                        <option value="{{$student->student_guard_earning}}" selected>{{\App\Models\Master\Earning::name($student->student_guard_earning)}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nomor HP Wali :</label>
+                                    <input id="student_guard_phone" class="form-control" value="{{$student->student_guard_phone}}">
                                 </div>
                             </div>
                         </div>
@@ -594,16 +724,25 @@
                         <label>Foto Diri : </label>
                         <input type="file" id="student_swaphoto" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
-                        @if($student->student_swaphoto == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nisn .'_swaphoto.jpg')}}">Disini</a>
+                        @if($student->student_swaphoto == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_swaphoto.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Foto KTP Orangtua : </label>
+                        <input type="file" id="student_ktp_photo" class="form-control-uniform-custom">
+                        <div class="font-italic mt-1">
+                            @if($student->student_ktp_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_ktp.jpg')}}">Disini</a>
+                            @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Foto Akta Kelahiran : </label>
                         <input type="file" id="student_akta_photo" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
-                        @if($student->student_akta_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nisn .'_akta.jpg')}}">Disini</a>
+                        @if($student->student_akta_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_akta.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
                         </div>
@@ -612,7 +751,7 @@
                         <label>Foto Kartu Keluarga : </label>
                         <input type="file" id="student_kk_photo" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
-                        @if($student->student_kk_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nisn .'_kk.jpg')}}">Disini</a>
+                        @if($student->student_kk_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_kk.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
                         </div>
@@ -621,16 +760,16 @@
                         <label>Foto Ijazah : </label>
                         <input type="file" id="student_ijazah_photo" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
-                        @if($student->student_ijazah_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nisn .'_ijazah.jpg')}}">Disini</a>
+                        @if($student->student_ijazah_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_ijazah.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Foto SKHUN : </label>
+                        <label>Foto SKHUN/SKL : </label>
                         <input type="file" id="student_skhun_photo" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
-                        @if($student->student_skhun_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nisn .'_skhun.jpg')}}">Disini</a>
+                        @if($student->student_skhun_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_skhun.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
                         </div>
@@ -639,7 +778,7 @@
                         <label>Foto Kartu bantuan : </label>
                         <input type="file" id="student_sholarship_photo" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
-                        @if($student->student_sholarship_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nisn .'_scholarship.jpg')}}">Disini</a>
+                        @if($student->student_sholarship_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_scholarship.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
                         </div>
