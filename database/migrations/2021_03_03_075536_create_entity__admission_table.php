@@ -88,6 +88,12 @@ class CreateEntityAdmissionTable extends Migration
             $table->integer('student_home_distric')->nullable();
             $table->integer('student_home_subdistric')->nullable();
             $table->integer('student_home_village')->nullable();
+            $table->string('student_kip_no')->nullable();
+            $table->boolean('student_kip_file')->default(0);
+            $table->string('student_pkh_no')->nullable();
+            $table->boolean('student_pkh_file')->default(0);
+            $table->string('student_kks_no')->nullable();
+            $table->boolean('student_kks_file')->default(0);
             $table->integer('student_school_from')->nullable();
             $table->string('student_school_name', 100)->nullable();
             $table->string('student_school_npsn', 8)->nullable();
@@ -113,6 +119,30 @@ class CreateEntityAdmissionTable extends Migration
             $table->integer('form_count');
         });
 
+        Schema::create('admission_entity__costs', function (Blueprint $table){
+            $table->id('cost_id');
+            $table->integer('cost_program');
+            $table->integer('cost_boarding');
+            $table->string('cost_price');
+        });
+
+        Schema::create('admission_entity__payments', function (Blueprint $table){
+            $table->id('payment_id');
+            $table->integer('payment_student');
+            $table->integer('payment_cost');
+            $table->integer('payment_status');
+            $table->string('payment_account_type')->nullable();
+            $table->string('payment_account_number')->nullable();
+            $table->string('payment_account_name')->nullable();
+            $table->dateTime('payment_transaction_date')->nullable();
+            $table->string('payment_transaction_file')->nullable();
+        });
+
+        Schema::create('admission_entity__registers', function (Blueprint $table){
+            $table->id('register_id');
+            $table->string('register_name');
+            $table->string('register_desc')->nullable();
+        });
         Schema::create('admission_entity__roles', function (Blueprint $table){
             $table->id('role_id');
             $table->string('role_name');
@@ -141,6 +171,9 @@ class CreateEntityAdmissionTable extends Migration
         Schema::dropIfExists('admission_entity__settings');
         Schema::dropIfExists('admission_entity__students');
         Schema::dropIfExists('admission_entity__forms');
+        Schema::dropIfExists('admission_entity__costs');
+        Schema::dropIfExists('admission_entity__payments');
+        Schema::dropIfExists('admission_entity__registers');
         Schema::dropIfExists('admission_entity__roles');
         Schema::dropIfExists('admission_entity__users');
     }

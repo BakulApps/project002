@@ -607,13 +607,15 @@ var registerdetail = function() {
 
     var _componentSubmit = function (){
         $('#update').click(function (){
+            var kip_file = $('#student_kip_file')[0].files[0];
+            var pkh_file = $('#student_pkh_file')[0].files[0];
+            var kks_file = $('#student_kks_file')[0].files[0];
             var swaphoto = $('#student_swaphoto')[0].files[0];
             var ktp_photo = $('#student_ktp_photo')[0].files[0];
             var akta_photo = $('#student_akta_photo')[0].files[0];
             var kk_photo = $('#student_kk_photo')[0].files[0];
             var ijazah_photo = $('#student_ijazah_photo')[0].files[0];
             var skhun_photo = $('#student_skhun_photo')[0].files[0];
-            var sholarship_photo = $('#student_sholarship_photo')[0].files[0];
             var fd = new FormData();
             fd.append('_type', 'update');
             fd.append('student_id', $('#student_id').val())
@@ -648,6 +650,7 @@ var registerdetail = function() {
             fd.append('student_transport', $('#student_transport').val());
             fd.append('student_travel', $('#student_travel').val());
             fd.append('student_program', $('#student_program').val());
+            fd.append('student_boarding', $('#student_boarding').val());
             fd.append('student_no_kk', $('#student_no_kk').val())
             fd.append('student_head_family', $('#student_head_family').val())
             fd.append('student_father_name', $('#student_father_name').val())
@@ -687,14 +690,19 @@ var registerdetail = function() {
             fd.append('student_school_name', $('#student_school_name').val())
             fd.append('student_school_npsn', $('#student_school_npsn').val())
             fd.append('student_school_address', $('#student_school_address').val())
+            fd.append('student_kip_no', $('#student_kip_no').val())
+            fd.append('student_pkh_no', $('#student_pkh_no').val())
+            fd.append('student_kks_no', $('#student_kks_no').val())
 
+            if (kip_file !== undefined){fd.append('student_kip_file', kip_file)}
+            if (pkh_file !== undefined){fd.append('student_pkh_file', pkh_file)}
+            if (kks_file !== undefined){fd.append('student_kks_file', kks_file)}
             if (swaphoto !== undefined){fd.append('student_swaphoto', swaphoto)}
             if (ktp_photo !== undefined){fd.append('student_ktp_photo', ktp_photo)}
             if (akta_photo !== undefined){fd.append('student_akta_photo', akta_photo)}
             if (kk_photo !== undefined){fd.append('student_kk_photo', kk_photo)}
             if (ijazah_photo !== undefined){fd.append('student_ijazah_photo', ijazah_photo)}
             if (skhun_photo !== undefined){fd.append('student_skhun_photo', skhun_photo)}
-            if (sholarship_photo !== undefined){fd.append('student_sholarship_photo', sholarship_photo)}
 
             $.ajax({
                 headers: csrf_token,

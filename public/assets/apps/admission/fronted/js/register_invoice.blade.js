@@ -1,7 +1,7 @@
 var religionjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
-        $('.datatable-religion').DataTable({
+        $('.datatable-invoice').DataTable({
             autoWidth: false,
             bLengthChange: true,
             bSort: false,
@@ -23,10 +23,13 @@ var religionjs = function () {
                 {className: 'text-center', targets: 1},
                 {className: 'text-center', targets: 2},
                 {className: 'text-center', targets: 3},
+                {className: 'text-center', targets: 4},
+                {className: 'text-center', targets: 5},
+                {className: 'text-center', targets: 6},
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/master/agama',
+                url: baseurl + '/tagihan',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -36,36 +39,37 @@ var religionjs = function () {
             })
         }).on('click', '.btn-edit', function (e) {
             e.preventDefault();
-            var religion_id = $(this).data('num');
+            var cost_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/agama',
+                url : baseurl + '/master/biaya',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': 'data',
-                    '_data': 'religion',
-                    'religion_id': religion_id,
+                    '_data': 'cost',
+                    'cost_id': cost_id,
                 },
                 success : function (resp) {
                     $('.title-add').html('UBAH DATA');
                     $('#submit').val('update');
-                    $('#religion_id').val(resp.religion_id);
-                    $('#religion_name').val(resp.religion_name).change();
-                    $('#class_major').val(resp.class_major).change();
+                    $('#cost_id').val(resp.cost_id);
+                    $('#cost_program').append($('<option value="'+ resp.program.program_id +'" selected>'+ resp.program.program_name +'</option>'))
+                    $('#cost_boarding').val(resp.cost_boarding).change()
+                    $('#cost_price').val(resp.cost_price)
                 }
             });
         }).on('click', '.btn-delete', function (e) {
             e.preventDefault();
-            var religion_id = $(this).data('num');
+            var cost_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/agama',
+                url : baseurl + '/master/biaya',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': 'delete',
-                    'religion_id': religion_id,
+                    'cost_id': cost_id,
                 },
                 success : function (resp) {
                     new PNotify({
@@ -73,24 +77,45 @@ var religionjs = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    $('.datatable-religion').DataTable().ajax.reload();
+                    $('.datatable-cost').DataTable().ajax.reload();
                 }
             });
         })
     }
 
+    var _componentSelect = function (){
+        $('.select2').select2({
+            minimumResultsForSearch: Infinity
+        });
+        $('#cost_program').select2({
+            ajax: {
+                headers: csrf_token,
+                url: siteurl + '/api/student',
+                dataType: 'json',
+                type: 'post',
+                data: {_type: 'select', _data: 'program'},
+                processResults: function (data) {
+                    return {results: data}
+                },
+                cache: true
+            },
+            minimumResultsForSearch: Infinity
+        });
+    }
 
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/agama',
+                url : baseurl + '/master/biaya',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': $('#submit').val(),
-                    'religion_id': $('#religion_id').val(),
-                    'religion_name': $('#religion_name').val(),
+                    'cost_id': $('#cost_id').val(),
+                    'cost_program': $('#cost_program').val(),
+                    'cost_boarding': $('#cost_boarding').val(),
+                    'cost_price': $('#cost_price').val(),
                 },
                 success : function (resp) {
                     new PNotify({
@@ -100,9 +125,11 @@ var religionjs = function () {
                     });
                     $('.title-add').html('TAMBAH DATA');
                     $('#submit').val('store');
-                    $('#religion_id').val('')
-                    $('#religion_name').val('')
-                    $('.datatable-religion').DataTable().ajax.reload();
+                    $('#cost_id').val('')
+                    $('#cost_program').val('').trigger('change')
+                    $('#cost_boarding').val('').trigger('change')
+                    $('#cost_price').val('')
+                    $('.datatable-cost').DataTable().ajax.reload();
                 }
             })
         })
@@ -111,6 +138,7 @@ var religionjs = function () {
     return {
         init: function() {
             _componetnDataTable();
+            _componentSelect();
             _componentSubmit();
         }
     }

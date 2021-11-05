@@ -1,12 +1,12 @@
 @extends('admission.fronted.layouts.master', ['title' => 'Pendaftaran'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
     <script src="{{asset("assets/js/plugins/selects/select2.min.js")}}"></script>
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
+@section('jsscript')
     <script src="{{asset("assets/apps/admission/fronted/js/register.js")}}"></script>
 @endsection
 @section('breadcrumb')

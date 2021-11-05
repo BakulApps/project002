@@ -60,11 +60,6 @@ class CreateEntityStudentTable extends Migration
             $table->string('scholarship_name', 20);
         });
 
-        Schema::create('student_entity__scholarships_source', function (Blueprint $table) {
-            $table->id('source_id');
-            $table->string('source_name', 20);
-        });
-
         Schema::create('student_entity__residences', function (Blueprint $table) {
             $table->id('residence_id');
             $table->string('residence_name', 50);

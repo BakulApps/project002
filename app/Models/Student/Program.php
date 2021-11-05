@@ -13,12 +13,7 @@ class Program extends Model
     protected $fillable     = ['program_id', 'program_name'];
     protected $primaryKey   = 'program_id';
 
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-
-        $this->timestamps = false;
-    }
+    public $timestamps      = false;
 
     static function name($id)
     {

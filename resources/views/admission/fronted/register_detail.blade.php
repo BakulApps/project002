@@ -1,12 +1,12 @@
  @extends('admission.fronted.layouts.master', ['title' => 'Pendaftaran'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
     <script src="{{asset("assets/js/plugins/selects/select2.min.js")}}"></script>
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
+@section('jsscript')
     <script src="{{asset("assets/apps/admission/fronted/js/register_detail.js")}}"></script>
 @endsection
 @section('breadcrumb')
@@ -192,7 +192,7 @@
                                         <div class="col-md-2">
                                             <div class="form-check">
                                                 <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input-styled" id="student_im_dpt"
+                                                    <input type="checkbox" class="form-check-input-styled" id="student_im_covid"
                                                         {{$student->student_im_covid == 1 ? 'checked' : null}}>Covid-19
                                                 </label>
                                             </div>
@@ -664,7 +664,78 @@
             </div>
             <div class="card">
                 <div class="card-header bg-white header-elements-inline">
-                    <h6 class="card-title font-weight-semibold">F. INFORMASI SEKOLAH ASAL</h6>
+                    <h6 class="card-title font-weight-semibold">F. INFORMASI BANTUAN</h6>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse" href="#scholarshipcard" role="button"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body collapse" id="scholarshipcard">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nomor KIP :</label>
+                                    <input type="text" id="student_kip_no" class="form-control" value="{{$student->student_kip_no}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Berkas KIP : </label>
+                                    <input type="file" id="student_kip_file" class="form-control-uniform-custom">
+                                    <div class="font-italic mt-1">
+                                        @if($student->student_kip_file == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_kip.jpg')}}">Disini</a>
+                                        @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nomor PKH :</label>
+                                    <input type="text" id="student_pkh_no" class="form-control" value="{{$student->student_pkh_no}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Berkas KIP : </label>
+                                    <input type="file" id="student_pkh_file" class="form-control-uniform-custom">
+                                    <div class="font-italic mt-1">
+                                        @if($student->student_pkh_file == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_pkh.jpg')}}">Disini</a>
+                                        @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nomor KKS :</label>
+                                    <input type="text" id="student_kks_no" class="form-control" value="{{$student->student_kks_no}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Berkas KIP : </label>
+                                    <input type="file" id="student_kks_file" class="form-control-uniform-custom">
+                                    <div class="font-italic mt-1">
+                                        @if($student->student_kks_file == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_kks.jpg')}}">Disini</a>
+                                        @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-white header-elements-inline">
+                    <h6 class="card-title font-weight-semibold">G. INFORMASI SEKOLAH ASAL</h6>
                     <div class="header-elements">
                         <div class="list-icons">
                             <a class="list-icons-item" data-action="collapse" href="#schoolcard" role="button"></a>
@@ -711,7 +782,7 @@
             </div>
             <div class="card">
                 <div class="card-header bg-white header-elements-inline">
-                    <h6 class="card-title font-weight-semibold">G. INFORMASI PERSYARATAN</h6>
+                    <h6 class="card-title font-weight-semibold">H. INFORMASI PERSYARATAN</h6>
                     <div class="header-elements">
                         <div class="list-icons">
                             <a class="list-icons-item" data-action="collapse" href="#uploadcard" role="button"></a>
@@ -770,15 +841,6 @@
                         <input type="file" id="student_skhun_photo" class="form-control-uniform-custom">
                         <div class="font-italic mt-1">
                         @if($student->student_skhun_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_skhun.jpg')}}">Disini</a>
-                        @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
-                        @endif
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Foto Kartu bantuan : </label>
-                        <input type="file" id="student_sholarship_photo" class="form-control-uniform-custom">
-                        <div class="font-italic mt-1">
-                        @if($student->student_sholarship_photo == 1) Melihat Hasil Unggahan Klik <a href="{{asset('storage/admission/fronted/images/student/'. $student->student_nik .'_scholarship.jpg')}}">Disini</a>
                         @else <p class="text-danger font-italic mt-1">Berkas belum diunggah</p>
                         @endif
                         </div>

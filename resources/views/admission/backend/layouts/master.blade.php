@@ -4,7 +4,7 @@
     <body>
     <script type="text/javascript">
         var baseurl = "{{route('admission.home')}}" + "/admin";
-        var siteurl = "{{route('admission.home')}}";
+        var siteurl = "{{route('portal.home')}}";
     </script>
         @include('admission.backend.layouts.navbar')
         <div class="page-content">

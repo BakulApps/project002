@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admission;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admission\Cost;
 use App\Models\Admission\Form;
+use App\Models\Admission\Payment;
+use App\Models\Admission\Register;
 use App\Models\Admission\Setting;
 use App\Models\Admission\Student;
 use App\Models\Master\School;
@@ -58,22 +61,47 @@ class FrontedController extends Controller
             if (Session::has('auth')){
                 $student = Session::get('auth');
                 $student = Student::find($student->student_id);
-                $checker = $student->toArray();
-                $key = array_keys($checker);
-                $compelete = [];
-                for ($i=0;$i<count($checker);$i++){
-                    if ($checker[$key[$i]] == null){
-                        $compelete[] = [$key[$i] => $checker[$key[$i]]];
-                    }
-                }
-
                 $this->data['student'] = $student;
-                $this->data['compelete'] = count($compelete) >= 8 ? false : true;
+                $this->data['compelete'] = $this->checkdata($student);
                 return view('admission.fronted.register_detail', $this->data);
             }
             else {
                 return view('admission.fronted.register', $this->data);
             }
+        }
+    }
+
+    public function invoice(Request $request)
+    {
+        if (Session::has('auth')){
+            $student = Session::get('auth');
+            if ($request->isMethod('post')){
+                if ($request->_type == 'data' && $request->_data == 'all'){
+                    foreach (Payment::where('payment_student', $student->student_id)->get() as $payment){
+                        $data[] = [
+                            "#". $num_padded = sprintf("%04d", $payment->payment_id),
+                            "Biaya Pendaftaran MTs. Darul Hikmah Menganti - ". $payment->student->student_name,
+                            $payment->status(),
+                            $payment->created_at(),
+                            $this->data['setting']->value('due_date'),
+                            number_format($payment->cost->cost_price),
+                            '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$payment->payment_id.'"><i class="icon-credit-card"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-print" data-num="'.$payment->payment_id.'"><i class="icon-printer"></i></button>
+                         </div>
+                         '
+                        ];
+                    };
+                    $msg = ['data' => empty($data) ? [] : $data];
+                }
+                return response()->json($msg);
+            }
+            else {
+                return view('admission.fronted.register_invoice', $this->data);
+            }
+        }
+        else {
+            return view('admission.fronted.register', $this->data);
         }
     }
 
@@ -200,7 +228,7 @@ class FrontedController extends Controller
                             $now                = Carbon::now();
                             $form               = new Form();
                             $form->form_uuid    = Str::uuid();
-                            $form->form_letter  = $form->form_letter = sprintf("%04s", $form->form_letter) . '/PPDB.'.$this->data['school']->school_nickname.'/PP.006/'.$month[$now->format('m')].'/'.$now->format('Y');
+                            $form->form_letter  = sprintf("%04s", $number_form) . '/PPDB.'.$this->data['school']->school_nickname.'/PP.006/'.$month[$now->format('m')].'/'.$now->format('Y');
                             $form->form_student = $student->student_id;
                             $form->form_date    = Carbon::now()->format('Y-m-d');
                             $form->form_count   = 0;
@@ -209,6 +237,11 @@ class FrontedController extends Controller
                             QrCode::size(110)
                                 ->format('png')->generate(route('admission.authenticate', $form->form_uuid), $path);
                             $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pendaftaran berhasil, silahkan masuk menggunakan NIS/NIK & Tanggal Lahir untuk melengkapi pendfataran.'];
+                            $cost = Cost::where('cost_program', $student->student_program)->where('cost_boarding', $student->student_boarding)->first();
+                            $payment = new Payment();
+                            $payment->payment_student = $student->student_id;
+                            $payment->payment_cost      = $cost->cost_id;
+                            $payment->save();
                         }
                     }
                 }
@@ -268,13 +301,15 @@ class FrontedController extends Controller
             'student_school_name' => 'required',
             'student_school_npsn' => 'required',
             'student_school_address' => 'required',
+            'student_kip_file' => 'mimes:jpg,jpeg|max:600',
+            'student_pkh_file' => 'mimes:jpg,jpeg|max:600',
+            'student_kks_file' => 'mimes:jpg,jpeg|max:600',
             'student_swaphoto' => 'mimes:jpg,jpeg|max:600',
             'student_ktp_photo' => 'mimes:jpg,jpeg|max:600',
             'student_akta_photo' => 'mimes:jpg,jpeg|max:600',
             'student_kk_photo' => 'mimes:jpg,jpeg|max:600',
             'student_ijazah_photo' => 'mimes:jpg,jpeg|max:600',
             'student_skhun_photo' => 'mimes:jpg,jpeg|max:600',
-            'student_sholarship_photo' => 'mimes:jpg,jpeg|max:600',
         ];
         if (in_array($request->student_father_status, [2, 3])){
             $father = [
@@ -406,6 +441,12 @@ class FrontedController extends Controller
             'student_school_from.required' => 'Kolom jenis sekolah asal tidak boleh kosong.',
             'student_school_name.required' => 'Kolom nama sekolah asal tidak boleh kosong',
             'student_school_address.required' => 'Kolom alamat sekolah asal tidak boleh kosong.',
+            'student_kip_file.mimes' => ' Gambar swafoto harus berformat jpg/jpeg.',
+            'student_kip_file.max' => 'Ukuran gambar swafoto maksimal 512Kb',
+            'student_pkh.mimes' => ' Gambar swafoto harus berformat jpg/jpeg.',
+            'student_pkh.max' => 'Ukuran gambar swafoto maksimal 512Kb',
+            'student_kks.mimes' => ' Gambar swafoto harus berformat jpg/jpeg.',
+            'student_kks.max' => 'Ukuran gambar swafoto maksimal 512Kb',
             'student_swaphoto.mimes' => ' Gambar swafoto harus berformat jpg/jpeg.',
             'student_swaphoto.max' => 'Ukuran gambar swafoto maksimal 512Kb',
             'student_ktp_photo.mimes' => ' Gambar KTP harus berformat jpg/jpeg.',
@@ -495,11 +536,26 @@ class FrontedController extends Controller
                 $student->student_home_distric = $request->student_home_distric;
                 $student->student_home_subdistric = $request->student_home_subdistric;
                 $student->student_home_village = $request->student_home_village;
+                $student->student_kip_no = $request->student_kip_no;
+                $student->student_pkh_no = $request->student_pkh_no;
+                $student->student_kks_no = $request->student_kks_no;
                 $student->student_school_from = $request->student_school_from;
                 $student->student_school_name = $request->student_school_name;
                 $student->student_school_npsn = $request->student_school_npsn;
                 $student->student_school_address = $request->student_school_address;
                 $path = storage_path('app/public/admission/fronted/images/student/');
+                if ($request->hasFile('student_kip_file')){
+                    $request->file('student_kip_file')->move($path , $student->student_nik .'_kip_file.jpg');
+                    $student->student_kip_file = 1;
+                }
+                if ($request->hasFile('student_pkh_file')){
+                    $request->file('student_pkh_file')->move($path , $student->student_nik .'_pkh_file.jpg');
+                    $student->student_pkh_file = 1;
+                }
+                if ($request->hasFile('student_kks_file')){
+                    $request->file('student_kks_file')->move($path , $student->student_nik .'_kks_file.jpg');
+                    $student->student_kks_file = 1;
+                }
                 if ($request->hasFile('student_swaphoto')){
                     $request->file('student_swaphoto')->move($path , $student->student_nik .'_swaphoto.jpg');
                     $student->student_swaphoto = 1;
@@ -524,12 +580,12 @@ class FrontedController extends Controller
                     $request->file('student_skhun_photo')->move($path , $student->student_nik .'_skhun.jpg');
                     $student->student_skhun_photo = 1;
                 }
-                if ($request->hasFile('student_sholarship_photo')){
-                    $request->file('student_sholarship_photo')->move($path , $student->student_nik .'_scholarship.jpg');
-                    $student->student_sholarship_photo = 1;
-                }
 
                 if ($student->save()){
+                    $cost = Cost::where('cost_program', $student->student_program)->where('cost_boarding', $student->student_boarding)->first();
+                    $payment = Payment::where('payment_student', $student->student_id)->first();
+                    $payment->payment_cost = $cost->cost_id;
+                    $payment->save();
                     $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pembaruhan data berhasil, silahkan melakukan cetak bukti pendaftaran dan pembayaran tagihan.'];
                 }
             }
@@ -586,9 +642,9 @@ class FrontedController extends Controller
         );
 
         $student = Student::find($request->_data);
-        $form = Form::where('form_student', $request->_data)->first();
         $this->data['student'] = $student;
-        $this->data['form']     = $form;
+        $this->data['form']     = Form::where('form_student', $request->_data)->first();;
+        $this->data['register'] = Register::get();
         $view = View::make('admission.fronted.register_print', $this->data)->render();
         TCPDF::setSignature($cert, $key, 'myu2nnmd', '', 2, $info);
         TCPDF::SetFont('times', '', 12);
@@ -681,4 +737,81 @@ class FrontedController extends Controller
             return view('admission.fronted.registrant', $this->data);
         }
     }
+
+    protected function checkdata($student)
+    {
+        if ($student->student_name == null || $student->student_nik == null || $student->student_birthplace == null
+            || $student->student_birthday == null || $student->student_gender == null || $student->student_religion == null
+            || $student->student_siblingplace == null || $student->student_sibling == null || $student->student_civic == null
+            || $student->student_hobby == null || $student->student_purpose == null || $student->student_email == null
+            || $student->student_phone == null || $student->student_residence == null || $student->student_address == null
+            || $student->student_province == null || $student->student_distric == null || $student->student_subdistric == null
+            || $student->student_village == null || $student->student_postal == null || $student->student_distance == null
+            || $student->student_transport == null || $student->student_travel == null || $student->student_program == null
+            || $student->student_boarding == null || $student->student_no_kk == null || $student->student_head_family == null
+            || $student->student_father_name == null || $student->student_mother_name == null || $student->student_guard_name == null
+            || $student->student_father_birthday == null || $student->student_mother_birthday == null || $student->student_guard_birthday == null
+            || $student->student_father_status == null || $student->student_mother_status == null || $student->student_father_nik == null
+            || $student->student_mother_nik == null || $student->student_guard_nik == null || $student->student_father_study == null
+            || $student->student_mother_study == null || $student->student_guard_study == null || $student->student_father_job == null
+            || $student->student_mother_job == null || $student->student_guard_job == null || $student->student_father_earning == null
+            || $student->student_mother_earning == null || $student->student_guard_earning == null || $student->student_father_phone == null
+            || $student->student_mother_phone == null || $student->student_guard_phone == null || $student->student_home_owner == null
+            || $student->student_home_address == null || $student->student_home_postal == null || $student->student_home_province == null
+            || $student->student_home_distric == null || $student->student_home_subdistric == null || $student->student_home_village == null
+            || $student->student_swaphoto == 0 || $student->student_ktp_photo == 0 || $student->student_akta_photo == 0
+            || $student->student_kk_photo == 0 || $student->student_skhun_photo == 0 || $student->student_school_from == null
+            || $student->student_school_name == null || $student->student_school_npsn == null || $student->student_school_address == null
+            )
+        {return false;}
+        else {return true;}
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

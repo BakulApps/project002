@@ -2,9 +2,11 @@
     <ul class="nav nav-sidebar" data-nav-type="accordion">
         <li class="nav-item"><a href="{{route('admission.admin.home')}}" class="nav-link {{$title == 'Dashboard' ? 'active' : null}}"><i class="icon-display"></i><span>Dashboard</span></a></li>
         <li class="nav-item nav-item-submenu">
-            <a href="#" class="nav-link {{in_array($title, ['Data Agama']) ? 'active' : null}}"><i class="icon-file-zip"></i> <span> Master Data</span></a>
+            <a href="#" class="nav-link {{in_array($title, ['Data Program', 'Data Biaya']) ? 'active' : null}}"><i class="icon-file-zip"></i> <span> Master Data</span></a>
             <ul class="nav nav-group-sub" data-submenu-title="Master Data">
-                <li class="nav-item"><a href="{{route('admission.admin.master.religion')}}" class="nav-link">Agama</a></li>
+                <li class="nav-item"><a href="{{route('admission.admin.master.program')}}" class="nav-link">Data Program</a></li>
+                <li class="nav-item"><a href="{{route('admission.admin.master.cost')}}" class="nav-link">Data Biaya Pendaftaran</a></li>
+                <li class="nav-item"><a href="{{route('admission.admin.master.register')}}" class="nav-link">Daftar Ulang</a></li>
             </ul>
         </li>
         <li class="nav-item"><a href="{{route('admission.admin.student')}}" class="nav-link {{in_array($title, ['Data Siswa', 'Tambah Siswa', 'Ubah Siswa']) ? 'active' : null}}"><i class="icon-users"></i><span>Data Siswa</span></a></li>

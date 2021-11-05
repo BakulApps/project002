@@ -28,11 +28,11 @@
         <table style="font-size: 12px; width: 100%">
                 <tr>
                     <td style="width:20%">Nama Lengkap</td>
-                    <td>: {{$student->student_name}}</td>
+                    <td colspan="3">: {{$student->student_name}}</td>
                 </tr>
                 <tr>
                     <td>NISN</td>
-                    <td>: {{$student->student_nisn}}</td>
+                    <td style="width: 35%">: {{$student->student_nisn}}</td>
                 </tr>
                 <tr>
                     <td>NIK</td>
@@ -57,10 +57,14 @@
                 <tr>
                     <td>Anak Ke</td>
                     <td>: {{$student->student_siblingplace}}</td>
-                </tr>
-                <tr>
                     <td>Jumlah Saudara</td>
                     <td>: {{$student->student_sibling}}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>: {{$student->student_email}}</td>
+                    <td>Nomor HP</td>
+                    <td>: {{$student->student_phone}}</td>
                 </tr>
                 <tr>
                     <td>Kewarganegaraan </td>
@@ -76,12 +80,13 @@
                 </tr>
                 <tr>
                     <td>Imunisasi</td>
-                    <td>:
+                    <td colspan="3">:
                         {{$student->student_im_hepatitis == 1 ? 'Hepatitis |' : null}}
                         {{$student->student_im_polio == 1 ? ' Polio |' : null}}
                         {{$student->student_im_bcg == 1 ? ' BCG |' : null}}
                         {{$student->student_im_campak == 1 ? ' Campak |' : null}}
-                        {{$student->student_im_dpt == 1 ? ' DPT' : null}}
+                        {{$student->student_im_dpt == 1 ? ' DPT |' : null}}
+                        {{$student->student_im_covid == 1 ? ' Covid-19' : null}}
                     </td>
                 </tr>
             </table><br><br>
@@ -133,8 +138,10 @@
         <span style="margin-bottom: 5px; font-weight: bold; text-align: left">C. INFORMASI PROGRAM PILIHAN</span><br>
         <table style="font-size: 12px; width: 100%;">
             <tr>
-                <td style="width: 40%;">Program Pilihan</td>
-                <td>: {{\App\Models\Student\Program::name($student->student_program)}}</td>
+                <td>Program Pilihan</td>
+                <td style="width: 40%">: {{\App\Models\Student\Program::name($student->student_program)}}</td>
+                <td>Boarding</td>
+                <td>: {{$student->student_boarding == 1 ? "Ya" : "Tidak"}}</td>
             </tr>
         </table><br><br>
         <span style="margin-bottom: 5px; font-weight: bold; text-align: left">D. INFORMASI ORANGTUA</span><br>
@@ -247,7 +254,32 @@
             </tr>
         </table>
         <br pagebreak="true"/>
-        <span style="margin-bottom: 5px; margin-top: 50px; font-weight: bold; text-align: left">F. INFORMASI SEKOLAH ASAL</span><br>
+        <span style="margin-bottom: 5px; margin-top: 50px; font-weight: bold; text-align: left">F. INFORMASI BANTUAN</span><br>
+        <table style="font-size: 12px; width: 100%;">
+            <tr>
+                <td style="width: 15%">Nomor KIP</td>
+                <td style="width: 2%">:</td>
+                <td>{{$student->student_kip_no == null ? "Tidak Punya" : $student->student_kip_no}}</td>
+                <td style="width: 15%">Nomor PKH</td>
+                <td style="width: 2%">:</td>
+                <td>{{$student->student_pkh_no == null ? "Tidak Punya" : $student->student_pkh_no}}</td>
+                <td style="width: 15%">Nomor KKS</td>
+                <td style="width: 2%">:</td>
+                <td>{{$student->student_kks_no == null ? "Tidak Punya" : $student->student_kks_no}}</td>
+            </tr>
+            <tr>
+                <td>Berkas KIP</td>
+                <td>:</td>
+                <td>{{$student->student_kip_file == 1 ? 'Sudah' : 'Belum'}}</td>
+                <td>Berkas PKH</td>
+                <td>:</td>
+                <td>{{$student->student_pkh_file == 1 ? 'Sudah' : 'Belum'}}</td>
+                <td>Berkas KKS</td>
+                <td>:</td>
+                <td>{{$student->student_kkks_file == 1 ? 'Sudah' : 'Belum'}}</td>
+            </tr>
+        </table><br><br>
+        <span style="margin-bottom: 5px; font-weight: bold; text-align: left">G. INFORMASI SEKOLAH ASAL</span><br>
         <table style="font-size: 12px; width: 100%;">
             <tr>
                 <td style="width: 22%">Jenis Sekolah Asal</td>
@@ -268,7 +300,7 @@
                 <td style="width: 76%" colspan="3">{{$student->student_school_address}}</td>
             </tr>
         </table><br><br>
-        <span style="margin-bottom: 5px; font-weight: bold; text-align: left">G. INFORMASI PERSYARATAN</span><br>
+        <span style="margin-bottom: 5px; font-weight: bold; text-align: left">H. INFORMASI PERSYARATAN</span><br>
         <table style="font-size: 12px; width: 100%;">
             <tr>
                 <td style="width: 30%">Unggah Swafoto</td>
@@ -294,10 +326,6 @@
                 <td>Unggah SKHUN/SKL</td>
                 <td>: {{$student->student_skhun_photo == 1 ? 'Sudah' : 'Belum'}}</td>
             </tr>
-            <tr>
-                <td>Unggah Kartu Bantuan</td>
-                <td>: {{$student->student_sholarship_photo == 1 ? 'Sudah' : 'Belum'}}</td>
-            </tr>
         </table><br><br><br>
         <table style="width: 95%">
             <tr>
@@ -320,62 +348,58 @@
             </tr>
         </table><br><br>
         <h3 style="text-align: center">KARTU KENDALI PENDAFTARAN</h3>
-        <table style="margin-top: 20px; width: 100%; border: 1px solid black; border-collapse: collapse">
+        <table style="margin-top: 20px; width: 80%; border: 1px solid black; border-collapse: collapse">
             <tr>
-                <td colspan="2" style="text-align: center; border: 1px solid black; width: 40%">Berkas Pendaftaran</td>
-                <td style="text-align: center; border: 1px solid black; width: 30%">Biaya Pendaftaran</td>
-                <td colspan="2" style="text-align: center; border: 1px solid black; width: 30%">Daftar Ulang</td>
+                <td colspan="2" style="text-align: center; border: 1px solid black; width: 50%">Berkas Pendaftaran</td>
+                <td style="text-align: center; border: 1px solid black; width: 50%">Biaya Pendaftaran</td>
             </tr>
             <tr>
-                <td style="border: 1px solid black; text-align: center; width: 30%">Berkas</td>
+                <td style="border: 1px solid black; text-align: center; width: 40%">Berkas</td>
                 <td style="border: 1px solid black; width: 10%; text-align: center">Paraf</td>
-                <td rowspan="4" style="border: 1px solid black;">Tahap I</td>
-                <td style="border: 1px solid black; text-align: center; width: 20%">Uraian</td>
-                <td style="border: 1px solid black; width: 10%; text-align: center">Paraf</td>
+                <td rowspan="4" style="border: 1px solid black; font-style: italic">Pembayaran Minimal : {{number_format($student->payment->cost->cost_price/2)}} </td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">1. Foto Berwarna 3x4</td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;">Seragam OSIS</td>
                 <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">2. Fotokopi KTP Orangtua</td>
                 <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;">Seragam Pramuka</td>
-                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">3. Fotokopi Akta Kelahiran</td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;">Atribut Seragam</td>
                 <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">4. Fotokopi Kartu Keluarga</td>
                 <td style="border: 1px solid black;"></td>
                 <td rowspan="4" style="border: 1px solid black;">Tahap II</td>
-                <td style="border: 1px solid black;">Seragam Koko</td>
-                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">5. Fotokopi Ijazah</td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;">Jas Boarding</td>
                 <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">6. Fotokopi SKHUN/SKL</td>
                 <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;">LKS</td>
-                <td style="border: 1px solid black;"></td>
             </tr>
             <tr>
                 <td style="border: 1px solid black;">7. Fotokopi Kartu Bantuan</td>
                 <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"></td>
             </tr>
+        </table><br/>
+        <h3 style="text-align: left">KARTU KENDALI PENERIMAAN</h3>
+        <table style="margin-top: 50px; width: 50%; border: 1px solid black; border-collapse: collapse">
+            <tr>
+                <td style="text-align: center; border: 1px solid black; width: 50%">Uraian</td>
+                <td style="text-align: center; border: 1px solid black; width: 50%">Paraf</td>
+            </tr>
+            @foreach($register as $item)
+                <tr>
+                    <td style="border: 1px solid black;">{{$item->register_name}}</td>
+                    <td style="border: 1px solid black;"></td>
+                </tr>
+            @endforeach
         </table>
         <br><br><br>
         <p style="position: fixed; bottom: -0px; left: 0; right: 0; height: 10px; text-align: left; line-height: 1; font-size: 9px; font-style: italic">

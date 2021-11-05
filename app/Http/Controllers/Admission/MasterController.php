@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admission;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admission\Cost;
+use App\Models\Admission\Register;
 use App\Models\Admission\Setting;
 use App\Models\Master\Religion;
 use App\Models\Master\School;
+use App\Models\Student\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -20,19 +23,19 @@ class MasterController extends Controller
         $this->data['setting'] = new Setting();
     }
 
-    public function religion(Request $request)
+    public function program(Request $request)
     {
         if ($request->isMethod('post')){
             if ($request->_type == 'data' && $request->_data == 'all'){
                 $no = 1;
-                foreach (Religion::get() as $religion){
+                foreach (Program::get() as $program){
                     $data[] = [
                         $no++,
-                        $religion->religion_id,
-                        $religion->religion_name,
+                        $program->program_id,
+                        $program->program_name,
                         '<div class="btn-group">
-                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$religion->religion_id.'"><i class="icon-pencil"></i></button>
-                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$religion->religion_id.'"><i class="icon-trash"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$program->program_id.'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$program->program_id.'"><i class="icon-trash"></i></button>
                          </div>
                          '
                     ];
@@ -42,42 +45,42 @@ class MasterController extends Controller
             elseif ($request->_type == 'store'){
                 try {
                     $validator = Validator::make($request->all(),[
-                        'religion_name' => 'required',
+                        'program_name' => 'required',
                     ], [
-                        'religion_name.required' => 'Kolom nama agama tidak boleh kosong',
+                        'program_name.required' => 'Kolom nama program tidak boleh kosong',
                     ]);
                     if ($validator->fails()){
                         throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
                     else {
-                        $religion = new Religion();
-                        $religion->religion_name = $request->religion_name;
-                        if ($religion->save()){
-                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Agama berhasil di simpan.'];
+                        $program = new Program();
+                        $program->program_name = $request->program_name;
+                        if ($program->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data program berhasil di simpan.'];
                         }
                     }
                 } catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
                 }
             }
-            elseif ($request->_type == 'data' && $request->_data == 'religion'){
-                $msg = Religion::where('religion_id', $request->religion_id)->first();
+            elseif ($request->_type == 'data' && $request->_data == 'program'){
+                $msg = Program::where('program_id', $request->program_id)->first();
             }
             elseif ($request->_type == 'update'){
                 try {
                     $validator = Validator::make($request->all(),[
-                        'religion_name' => 'required',
+                        'program_name' => 'required',
                     ], [
-                        'religion_name.required' => 'Kolom nama agama tidak boleh kosong',
+                        'program_name.required' => 'Kolom nama program tidak boleh kosong',
                     ]);
                     if ($validator->fails()){
                         throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
                     else{
-                        $religion = Religion::find($request->religion_id);
-                        $religion->religion_name = $request->religion_name;
-                        if ($religion->save()){
-                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Agama berhasil diperbarui.'];
+                        $program = Program::find($request->program_id);
+                        $program->program_name = $request->program_name;
+                        if ($program->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil diperbarui.'];
                         }
                     }
                 } catch (\Exception $e){
@@ -86,9 +89,9 @@ class MasterController extends Controller
             }
             elseif ($request->_type == 'delete'){
                 try {
-                    $religion = Religion::find($request->religion_id);
-                    if ($religion->delete()){
-                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Agama berhasil dihapus.'];
+                    $program = Program::find($request->program_id);
+                    if ($program->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Program berhasil dihapus.'];
                     }
                 } catch (\Exception $e){
                     $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
@@ -97,7 +100,182 @@ class MasterController extends Controller
             return response()->json($msg);
         }
         else {
-            return view('admission.backend.master_religion', $this->data);
+            return view('admission.backend.master_program', $this->data);
+        }
+    }
+
+    public function cost(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                $no = 1;
+                foreach (Cost::get() as $cost){
+                    $data[] = [
+                        $no++,
+                        $cost->program->program_name,
+                        $cost->cost_boarding == 1 ? "Ya" : "Tidak",
+                        $cost->cost_price,
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$cost->cost_id.'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$cost->cost_id.'"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'store'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'cost_program' => 'required',
+                        'cost_boarding' => 'required',
+                        'cost_price' => 'required',
+                    ], [
+                        'cost_program.required' => 'Kolom nama program tidak boleh kosong, silahkan pilih.',
+                        'cost_boarding.required' => 'Kolom Boarding tidak boleh kosong, silahkan pilih.',
+                        'cost_price.required' => 'Kolom Biaya pendaftaran tidak boleh kosong.',
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $cost = new Cost();
+                        $cost->cost_program = $request->cost_program;
+                        $cost->cost_boarding = $request->cost_boarding;
+                        $cost->cost_price = $request->cost_price;
+                        if ($cost->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data biaya pendaftaran berhasil di simpan.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'cost'){
+                $msg = Cost::with('program')->where('cost_id', $request->cost_id)->first();
+            }
+            elseif ($request->_type == 'update'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'cost_program' => 'required',
+                        'cost_boarding' => 'required',
+                        'cost_price' => 'required',
+                    ], [
+                        'cost_program.required' => 'Kolom nama program tidak boleh kosong, silahkan pilih.',
+                        'cost_boarding.required' => 'Kolom boarding tidak boleh kosong, silahkan pilih.',
+                        'cost_price.required' => 'Kolom biaya pendaftaran tidak boleh kosong',
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else{
+                        $cost = Cost::find($request->cost_id);
+                        $cost->cost_program = $request->cost_program;
+                        $cost->cost_boarding = $request->cost_boarding;
+                        $cost->cost_price = $request->cost_price;
+                        if ($cost->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data biaya pendaftaran berhasil diperbarui.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $cost = Cost::find($request->cost_id);
+                    if ($cost->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data biaya pendaftaran berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('admission.backend.master_cost', $this->data);
+        }
+    }
+
+    public function register(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                $no = 1;
+                foreach (Register::get() as $register){
+                    $data[] = [
+                        $no++,
+                        $register->register_id,
+                        $register->register_name,
+                        '<div class="btn-group">
+                            <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$register->register_id.'"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$register->register_id.'"><i class="icon-trash"></i></button>
+                         </div>
+                         '
+                    ];
+                };
+                $msg = ['data' => empty($data) ? [] : $data];
+            }
+            elseif ($request->_type == 'store'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'register_name' => 'required',
+                    ], [
+                        'register_name.required' => 'Kolom nama komponen tidak boleh kosong',
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else {
+                        $register = new Register();
+                        $register->register_name = $request->register_name;
+                        if ($register->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data komponen berhasil di simpan.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'register'){
+                $msg = Register::where('register_id', $request->register_id)->first();
+            }
+            elseif ($request->_type == 'update'){
+                try {
+                    $validator = Validator::make($request->all(),[
+                        'register_name' => 'required',
+                    ], [
+                        'register_name.required' => 'Kolom nama komponen tidak boleh kosong',
+                    ]);
+                    if ($validator->fails()){
+                        throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                    }
+                    else{
+                        $register = Register::find($request->register_id);
+                        $register->register_name = $request->register_name;
+                        if ($register->save()){
+                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data komponen berhasil diperbarui.'];
+                        }
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $register = Register::find($request->register_id);
+                    if ($register->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data komponen berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
+            return response()->json($msg);
+        }
+        else {
+            return view('admission.backend.master_register', $this->data);
         }
     }
 }
