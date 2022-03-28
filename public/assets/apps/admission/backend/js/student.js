@@ -1,11 +1,11 @@
-var religionjs = function () {
+var studentjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
-        $('.datatable-invoice').DataTable({
+        $('.datatable-student').DataTable({
             autoWidth: false,
             bLengthChange: true,
             bSort: false,
-            scrollX: true,
+            scrollX: false,
             dom: '<"datatable-header"fBl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
             language: {
                 emptyTable: 'Tak ada data yang tersedia pada tabel ini',
@@ -26,10 +26,12 @@ var religionjs = function () {
                 {className: 'text-center', targets: 4},
                 {className: 'text-center', targets: 5},
                 {className: 'text-center', targets: 6},
+                {className: 'text-center', targets: 7},
+                {className: 'text-center', targets: 8},
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/tagihan',
+                url: baseurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -56,7 +58,8 @@ var religionjs = function () {
                     $('#cost_id').val(resp.cost_id);
                     $('#cost_program').append($('<option value="'+ resp.program.program_id +'" selected>'+ resp.program.program_name +'</option>'))
                     $('#cost_boarding').val(resp.cost_boarding).change()
-                    $('#cost_price').val(resp.cost_price)
+                    $('#cost_gender').append($('<option value="'+ resp.gender.gender_id +'" selected>'+ resp.gender.gender_name +'</option>'))
+                    $('#cost_amount').val(resp.cost_amount)
                 }
             });
         }).on('click', '.btn-delete', function (e) {
@@ -84,22 +87,10 @@ var religionjs = function () {
     }
 
     var _componentSelect = function (){
-        $('.select2').select2({
-            minimumResultsForSearch: Infinity
-        });
-        $('#cost_program').select2({
-            ajax: {
-                headers: csrf_token,
-                url: siteurl + '/api/student',
-                dataType: 'json',
-                type: 'post',
-                data: {_type: 'select', _data: 'program'},
-                processResults: function (data) {
-                    return {results: data}
-                },
-                cache: true
-            },
-            minimumResultsForSearch: Infinity
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            dropdownAutoWidth: true,
+            width: 'auto'
         });
     }
 
@@ -107,15 +98,16 @@ var religionjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/biaya',
+                url : baseurl + '/master/bank',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': $('#submit').val(),
-                    'cost_id': $('#cost_id').val(),
-                    'cost_program': $('#cost_program').val(),
-                    'cost_boarding': $('#cost_boarding').val(),
-                    'cost_price': $('#cost_price').val(),
+                    'bank_id': $('#bank_id').val(),
+                    'bank_type': $('#bank_type').val(),
+                    'bank_number': $('#bank_number').val(),
+                    'bank_name': $('#bank_name').val(),
+                    'bank_status': $('#bank_status').val(),
                 },
                 success : function (resp) {
                     new PNotify({
@@ -125,11 +117,12 @@ var religionjs = function () {
                     });
                     $('.title-add').html('TAMBAH DATA');
                     $('#submit').val('store');
-                    $('#cost_id').val('')
-                    $('#cost_program').val('').trigger('change')
-                    $('#cost_boarding').val('').trigger('change')
-                    $('#cost_price').val('')
-                    $('.datatable-cost').DataTable().ajax.reload();
+                    $('#bank_id').val('')
+                    $('#bank_type').val('').trigger('change')
+                    $('#bank_number').val('').trigger('change')
+                    $('#bank_name').val('').trigger('change')
+                    $('#bank_status').val('')
+                    $('.datatable-bank').DataTable().ajax.reload();
                 }
             })
         })
@@ -145,5 +138,5 @@ var religionjs = function () {
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    religionjs.init();
+    studentjs.init();
 });

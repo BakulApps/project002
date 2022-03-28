@@ -1,7 +1,7 @@
-var religionjs = function () {
+var bankjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
-        $('.datatable-cost').DataTable({
+        $('.datatable-bank').DataTable({
             autoWidth: false,
             bLengthChange: true,
             bSort: false,
@@ -28,7 +28,7 @@ var religionjs = function () {
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/master/biaya',
+                url: baseurl + '/master/bank',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -87,50 +87,22 @@ var religionjs = function () {
         $('.select2').select2({
             minimumResultsForSearch: Infinity
         });
-        $('#cost_program').select2({
-            ajax: {
-                headers: csrf_token,
-                url: siteurl + '/api/student',
-                dataType: 'json',
-                type: 'post',
-                data: {_type: 'select', _data: 'program'},
-                processResults: function (data) {
-                    return {results: data}
-                },
-                cache: true
-            },
-            minimumResultsForSearch: Infinity
-        });
-        $('#cost_gender').select2({
-            ajax: {
-                headers: csrf_token,
-                url: siteurl + '/api/master',
-                dataType: 'json',
-                type: 'post',
-                data: {_type: 'select', _data: 'gender'},
-                processResults: function (data) {
-                    return {results: data}
-                },
-                cache: true
-            },
-            minimumResultsForSearch: Infinity
-        });
     }
 
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/biaya',
+                url : baseurl + '/master/bank',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': $('#submit').val(),
-                    'cost_id': $('#cost_id').val(),
-                    'cost_program': $('#cost_program').val(),
-                    'cost_boarding': $('#cost_boarding').val(),
-                    'cost_gender': $('#cost_gender').val(),
-                    'cost_amount': $('#cost_amount').val(),
+                    'bank_id': $('#bank_id').val(),
+                    'bank_type': $('#bank_type').val(),
+                    'bank_number': $('#bank_number').val(),
+                    'bank_name': $('#bank_name').val(),
+                    'bank_status': $('#bank_status').val(),
                 },
                 success : function (resp) {
                     new PNotify({
@@ -140,12 +112,12 @@ var religionjs = function () {
                     });
                     $('.title-add').html('TAMBAH DATA');
                     $('#submit').val('store');
-                    $('#cost_id').val('')
-                    $('#cost_program').val('').trigger('change')
-                    $('#cost_boarding').val('').trigger('change')
-                    $('#cost_gender').val('').trigger('change')
-                    $('#cost_amount').val('')
-                    $('.datatable-cost').DataTable().ajax.reload();
+                    $('#bank_id').val('')
+                    $('#bank_type').val('').trigger('change')
+                    $('#bank_number').val('').trigger('change')
+                    $('#bank_name').val('').trigger('change')
+                    $('#bank_status').val('')
+                    $('.datatable-bank').DataTable().ajax.reload();
                 }
             })
         })
@@ -161,5 +133,5 @@ var religionjs = function () {
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    religionjs.init();
+    bankjs.init();
 });

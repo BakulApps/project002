@@ -2,6 +2,8 @@
 
 namespace App\Models\Admission;
 
+use App\Models\Master\Territory;
+use App\Models\Student\Program;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -76,5 +78,59 @@ class Student extends Model
             'payment_student',
             'student_id'
         );
+    }
+
+    public function invoice()
+    {
+        return $this->hasOne(
+            Invoice::class,
+            'invoice_student',
+            'student_id'
+        );
+    }
+
+    public function program()
+    {
+        return $this->hasOne(
+            Program::class,
+            'program_id',
+            'student_program'
+        );
+    }
+
+    public function address()
+    {
+        return $this->student_address .', '.
+            Territory::village($this->student_subdistric, $this->student_village, false) .', '.
+            Territory::subdistric($this->student_subdistric, false);
+    }
+
+    public function checkdata()
+    {
+        if ($this->student_name == null || $this->student_nik == null || $this->student_birthplace == null
+            || $this->student_birthday == null || $this->student_gender == null || $this->student_religion == null
+            || $this->student_siblingplace == null || $this->student_sibling == null || $this->student_civic == null
+            || $this->student_hobby == null || $this->student_purpose == null || $this->student_email == null
+            || $this->student_phone == null || $this->student_residence == null || $this->student_address == null
+            || $this->student_province == null || $this->student_distric == null || $this->student_subdistric == null
+            || $this->student_village == null || $this->student_postal == null || $this->student_distance == null
+            || $this->student_transport == null || $this->student_travel == null || $this->student_program == null
+            || $this->student_boarding == null || $this->student_no_kk == null || $this->student_head_family == null
+            || $this->student_father_name == null || $this->student_mother_name == null || $this->student_guard_name == null
+            || $this->student_father_birthday == null || $this->student_mother_birthday == null || $this->student_guard_birthday == null
+            || $this->student_father_status == null || $this->student_mother_status == null || $this->student_father_nik == null
+            || $this->student_mother_nik == null || $this->student_guard_nik == null || $this->student_father_study == null
+            || $this->student_mother_study == null || $this->student_guard_study == null || $this->student_father_job == null
+            || $this->student_mother_job == null || $this->student_guard_job == null || $this->student_father_earning == null
+            || $this->student_mother_earning == null || $this->student_guard_earning == null || $this->student_father_phone == null
+            || $this->student_mother_phone == null || $this->student_guard_phone == null || $this->student_home_owner == null
+            || $this->student_home_address == null || $this->student_home_postal == null || $this->student_home_province == null
+            || $this->student_home_distric == null || $this->student_home_subdistric == null || $this->student_home_village == null
+            || $this->student_swaphoto == 0 || $this->student_ktp_photo == 0 || $this->student_akta_photo == 0
+            || $this->student_kk_photo == 0 || $this->student_school_from == null || $this->student_school_name == null
+            || $this->student_school_npsn == null || $this->student_school_address == null
+        )
+        {return false;}
+        else {return true;}
     }
 }

@@ -5,27 +5,27 @@
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
 @section('jsscript')
-    <script src="{{asset('assets/apps/admission/backend/js/master_cost.js')}}"></script>
+    <script src="{{asset('assets/apps/admission/backend/js/master_bank.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Master Data</span>
-    <span class="breadcrumb-item active">Data Biaya</span>
+    <span class="breadcrumb-item active">Data Bank</span>
 @endsection
 @section('content')
     <div class="row">
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header bg-white header-elements-sm-inline">
-                    <h5 class="card-title">DATA BIAYA</h5>
+                    <h5 class="card-title">DATA BANK</h5>
                 </div>
-                <table class="table datatable-cost table-bordered">
+                <table class="table datatable-bank table-bordered">
                     <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Program</th>
-                        <th>Boarding</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Biaya Pendaftaran</th>
+                        <th>Tipe Bank</th>
+                        <th>Nomer Rekening</th>
+                        <th>Nama Rekening</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                     </thead>
@@ -40,30 +40,26 @@
                             <h5 class="card-title title-add">TAMBAH DATA</h5>
                         </div>
                         <div class="card-body">
-                            <input type="hidden" id="cost_id">
+                            <input type="hidden" id="bank_id">
                             <div class="form-group">
-                                <label>Nama Program :</label>
-                                <select id="cost_program" data-placeholder="Pilih Program" class="form-control select2">
-                                    <option></option>
-                                </select>
+                                <label>Tipe Bank :</label>
+                                <input type="text" id="bank_type" class="form-control" placeholder="Ex. BNI, BCA, BNI">
                             </div>
                             <div class="form-group">
-                                <label>Boarding/Non Boarding :</label>
-                                <select id="cost_boarding" data-placeholder="Pilih Boarding" class="form-control select2">
-                                    <option></option>
-                                    <option value="1">Ya</option>
-                                    <option value="2">Tidak</option>
-                                </select>
+                                <label>Nomor Rekening :</label>
+                                <input type="text" id="bank_number" class="form-control" placeholder="Ex. 123456789123456">
                             </div>
                             <div class="form-group">
-                                <label>Jenis Kelamin :</label>
-                                <select id="cost_gender" data-placeholder="Pilih Jenis Kelamin" class="form-control select2">
-                                    <option></option>
-                                </select>
+                                <label>Nama Rekening :</label>
+                                <input type="text" id="bank_name" class="form-control" placeholder="Ex. Muhammad Arif Muntaha">
                             </div>
                             <div class="form-group">
-                                <label>Biaya Pendaftaran :</label>
-                                <input type="text" id="cost_amount" class="form-control" placeholder="240000">
+                                <label>Status :</label>
+                                <select id="bank_status" data-placeholder="Pilih Status" class="form-control select2">
+                                    <option></option>
+                                    <option value="0">Tidak Aktif</option>
+                                    <option value="1">Aktif</option>
+                                </select>
                             </div>
                             <div class="text-right">
                                 <button type="submit" class="btn bg-info btn-labeled btn-labeled-left btn-sm" id="submit" value="store"><b><i class="icon-floppy-disk"></i></b> Simpan</button>

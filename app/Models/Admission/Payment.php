@@ -11,7 +11,7 @@ class Payment extends Model
     use HasFactory;
 
     protected $table        = 'admission_entity__payments';
-    protected $fillable     = ['payment_id', 'payment_student', 'payment_cost', 'payment_status', 'payment_account_type', 'payment_account_number',
+    protected $fillable     = ['payment_id', 'payment_student', 'payment_invoice', 'payment_amount', 'payment_remaining', 'payment_status', 'payment_account_type', 'payment_account_number',
         'payment_account_name', 'payment_transaction_date', 'payment_transaction_file'];
     protected $primaryKey   = 'payment_id';
 
@@ -26,12 +26,12 @@ class Payment extends Model
         );
     }
 
-    public function cost()
+    public function invoice()
     {
         return $this->hasOne(
-            Cost::class,
-            'cost_id',
-            'payment_cost'
+            Invoice::class,
+            'invoice_id',
+            'payment_invoice'
         );
     }
 
@@ -53,7 +53,7 @@ class Payment extends Model
             return '<span class="badge badge-success">Pembayaran Berhasil</span>';
         }
         elseif ($this->payment_status == 4){
-            return '<span class="badge badge-success">Pembayaran Berhasil</span>';
+            return '<span class="badge badge-success">Pembayaran Berhasil (Tunai)</span>';
         }
         else {
             return '<span class="badge badge-danger">Pembayaran Ditolak</span>';

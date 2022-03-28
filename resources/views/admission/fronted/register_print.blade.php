@@ -351,12 +351,21 @@
         <table style="margin-top: 20px; width: 80%; border: 1px solid black; border-collapse: collapse">
             <tr>
                 <td colspan="2" style="text-align: center; border: 1px solid black; width: 50%">Berkas Pendaftaran</td>
-                <td style="text-align: center; border: 1px solid black; width: 50%">Biaya Pendaftaran</td>
+                <td style="text-align: center; border: 1px solid black; width: 50%">Biaya Daftar Ulang</td>
             </tr>
             <tr>
                 <td style="border: 1px solid black; text-align: center; width: 40%">Berkas</td>
                 <td style="border: 1px solid black; width: 10%; text-align: center">Paraf</td>
-                <td rowspan="4" style="border: 1px solid black; font-style: italic">Pembayaran Minimal : {{number_format($student->payment->cost->cost_price/2)}} </td>
+                @if($student->invoice->remaining() == 0)
+                    <td rowspan="4" style="border: 1px solid black; font-style: italic">LUNAS TERBAYAR secara Online</td>
+                @elseif(isset($student->payment->payment_status))
+                    @if(in_array($student->payment->payment_status, [3, 4]))
+                    <td rowspan="4" style="border: 1px solid black; font-style: italic">Terbayar Sebesar : Rp. {{number_format($student->payment->payment_amount)}} pada tanggal
+                        {{\Carbon\Carbon::create($student->payment->payment_transaction_date)->format('d/m/Y H:i:s')}}</td>
+                    @endif
+                @else
+                <td rowspan="4" style="border: 1px solid black; font-style: italic">Pembayaran Minimal : {{number_format($student->invoice->invoice_amount/2)}} </td>
+                @endif
             </tr>
             <tr>
                 <td style="border: 1px solid black;">1. Foto Berwarna 3x4</td>

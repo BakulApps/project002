@@ -98,13 +98,13 @@ class CreateEntityAdmissionTable extends Migration
             $table->string('student_school_name', 100)->nullable();
             $table->string('student_school_npsn', 8)->nullable();
             $table->string('student_school_address')->nullable();
-            $table->boolean('student_swaphoto')->default(0);
-            $table->boolean('student_ktp_photo')->default(0);
-            $table->boolean('student_akta_photo')->default(0);
-            $table->boolean('student_kk_photo')->default(0);
-            $table->boolean('student_ijazah_photo')->default(0);
-            $table->boolean('student_skhun_photo')->default(0);
-            $table->boolean('student_sholarship_photo')->default(0);
+            $table->string('student_swaphoto')->default(0);
+            $table->string('student_ktp_photo')->default(0);
+            $table->string('student_akta_photo')->default(0);
+            $table->string('student_kk_photo')->default(0);
+            $table->string('student_ijazah_photo')->default(0);
+            $table->string('student_skhun_photo')->default(0);
+            $table->string('student_sholarship_photo')->default(0);
             $table->string('student_creater')->nullable();
             $table->string('student_updater')->nullable();
             $table->timestamps();
@@ -123,14 +123,31 @@ class CreateEntityAdmissionTable extends Migration
             $table->id('cost_id');
             $table->integer('cost_program');
             $table->integer('cost_boarding');
-            $table->string('cost_price');
+            $table->integer('cost_gender');
+            $table->string('cost_amount');
+        });
+
+        Schema::create('admission_entity__banks', function (Blueprint $table){
+            $table->id();
+            $table->string('bank_type');
+            $table->string('bank_number');
+            $table->string('bank_name');
+            $table->boolean('bank_status');
+        });
+
+        Schema::create('admission_entity__invoices', function (Blueprint $table){
+            $table->id('invoice_id');
+            $table->integer('invoice_student');
+            $table->string('invoice_amount')->nullable();
+            $table->string('invoice_status', 2)->default('1');
         });
 
         Schema::create('admission_entity__payments', function (Blueprint $table){
             $table->id('payment_id');
             $table->integer('payment_student');
-            $table->integer('payment_cost');
-            $table->integer('payment_status');
+            $table->integer('payment_invoice');
+            $table->integer('payment_status')->default(1);
+            $table->string('payment_amount')->nullable();
             $table->string('payment_account_type')->nullable();
             $table->string('payment_account_number')->nullable();
             $table->string('payment_account_name')->nullable();
@@ -143,6 +160,7 @@ class CreateEntityAdmissionTable extends Migration
             $table->string('register_name');
             $table->string('register_desc')->nullable();
         });
+
         Schema::create('admission_entity__roles', function (Blueprint $table){
             $table->id('role_id');
             $table->string('role_name');
@@ -172,6 +190,8 @@ class CreateEntityAdmissionTable extends Migration
         Schema::dropIfExists('admission_entity__students');
         Schema::dropIfExists('admission_entity__forms');
         Schema::dropIfExists('admission_entity__costs');
+        Schema::dropIfExists('admission_entity__banks');
+        Schema::dropIfExists('admission_entity__invoices');
         Schema::dropIfExists('admission_entity__payments');
         Schema::dropIfExists('admission_entity__registers');
         Schema::dropIfExists('admission_entity__roles');

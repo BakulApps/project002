@@ -32,23 +32,24 @@ class Territory extends Model
         $this->timestamps = false;
     }
 
-    static function province($id)
+    static function province($id, $code = true)
     {
-        return $id .' - '. self::where('code_province', $id)->value('name_province');
+
+        return $code == true ? $id .' - '. self::where('code_province', $id)->value('name_province') : self::where('code_province', $id)->value('name_province');
     }
 
-    static function distric($id)
+    static function distric($id, $code = true)
     {
-        return $id .' - '. self::where('code_distric', $id)->value('name_distric');
+        return $code == true ? $id .' - '. self::where('code_distric', $id)->value('name_distric') : self::where('code_distric', $id)->value('name_distric');
     }
 
-    static function subdistric($id)
+    static function subdistric($id, $code = true)
     {
-        return $id .' - '. self::where('code_subdistric', $id)->value('name_subdistric');
+        return $code == true ? $id .' - '. self::where('code_subdistric', $id)->value('name_subdistric') : self::where('code_subdistric', $id)->value('name_subdistric');
     }
 
-    static function village($subdistric, $id)
+    static function village($subdistric, $id, $code = true)
     {
-        return $id .' - '. self::where('code_subdistric', $subdistric)->where('code_village', $id)->value('name_village');
+        return $code == true ? $id .' - '. self::where('code_subdistric', $subdistric)->where('code_village', $id)->value('name_village') : self::where('code_subdistric', $subdistric)->where('code_village', $id)->value('name_village');
     }
 }

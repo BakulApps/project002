@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admission;
 use App\Http\Controllers\Controller;
 use App\Models\Admission\Cost;
 use App\Models\Admission\Form;
+use App\Models\Admission\Invoice;
 use App\Models\Admission\Payment;
 use App\Models\Admission\Register;
 use App\Models\Admission\Setting;
@@ -15,6 +16,7 @@ use Elibyy\TCPDF\Facades\TCPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
@@ -62,7 +64,7 @@ class FrontedController extends Controller
                 $student = Session::get('auth');
                 $student = Student::find($student->student_id);
                 $this->data['student'] = $student;
-                $this->data['compelete'] = $this->checkdata($student);
+                $this->data['compelete'] = $student->checkdata();
                 return view('admission.fronted.register_detail', $this->data);
             }
             else {
@@ -71,33 +73,152 @@ class FrontedController extends Controller
         }
     }
 
-    public function invoice(Request $request)
+    public function payment(Request $request)
     {
         if (Session::has('auth')){
             $student = Session::get('auth');
+            $this->data['student'] = $student;
             if ($request->isMethod('post')){
                 if ($request->_type == 'data' && $request->_data == 'all'){
                     foreach (Payment::where('payment_student', $student->student_id)->get() as $payment){
                         $data[] = [
-                            "#". $num_padded = sprintf("%04d", $payment->payment_id),
-                            "Biaya Pendaftaran MTs. Darul Hikmah Menganti - ". $payment->student->student_name,
-                            $payment->status(),
-                            $payment->created_at(),
-                            $this->data['setting']->value('due_date'),
-                            number_format($payment->cost->cost_price),
+                            "#INV". sprintf("%04d", $payment->payment_id),
+                            "Biaya Daftar Ulang PPDB MTs. Darul Hikmah - ". $payment->student->student_name,
+                            $payment->created_at('d F Y'),
+                            in_array($payment->payment_status, [3,4]) ? $payment->status() : Carbon::createFromFormat('d/m/Y', $this->data['setting']->value('due_date'))->translatedFormat('d F Y') .'<br/>'. $payment->status(),
+                            number_format($payment->invoice->invoice_amount),
+                            number_format($payment->payment_amount),
                             '<div class="btn-group">
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$payment->payment_id.'"><i class="icon-credit-card"></i></button>
-                            <button class="btn btn-outline-primary bt-sm btn-print" data-num="'.$payment->payment_id.'"><i class="icon-printer"></i></button>
+                            <button class="btn btn-outline-primary bt-sm btn-delete" data-num="'.$payment->payment_id.'"><i class="icon-trash"></i></button>
                          </div>
                          '
                         ];
                     };
                     $msg = ['data' => empty($data) ? [] : $data];
                 }
+                elseif ($request->_type == 'data' && $request->_data == 'edit'){
+                    $payment = Payment::where('payment_id', $request->payment_id)->first();
+                    $msg    = [
+                        'payment_id'    => $payment->payment_id,
+                        'payment_status'    => $payment->payment_status,
+                        'payment_invoice' => number_format($payment->invoice->remaining()),
+                        'payment_amount' => number_format($payment->payment_amount),
+                        'payment_account_type' => $payment->payment_account_type,
+                        'payment_account_number' => $payment->payment_account_number,
+                        'payment_account_name' => $payment->payment_account_name,
+                        'payment_transaction_date' => Carbon::create($payment->payment_transaction_date)->format('d/m/Y H:i:s'),
+                        'payment_transaction_file' => $payment->payment_transaction_file,
+                    ];
+                }
+                elseif ($request->_type == 'store'){
+                    try {
+                        $validator = Validator::make($request->all(),[
+                            'payment_amount' => 'required',
+                        ], [
+                            'payment_amount.required' => 'Kolom jumlah pembayaran tidak boleh kosong.',
+                        ]);
+                        if ($validator->fails()){
+                            throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                        }
+                        else {
+                            try {
+                                $invoice = Invoice::where('invoice_student', $student->student_id)->first();
+                                $payment = Payment::where('payment_student', $student->student_id);
+                                if ($payment->count() >= 1){
+                                    if ($invoice->remaining() != $request->payment_amount){
+                                        throw new \Exception('Silahkan melunasi tagihan sebesar Rp. '. number_format($invoice->remaining()));
+                                    }
+                                    else{
+                                        $payment = new Payment();
+                                        $payment->payment_student = $student->student_id;
+                                        $payment->payment_invoice = $invoice->invoice_id;
+                                        $payment->payment_amount = $request->payment_amount;
+                                        if ($payment->save()){
+                                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data pembayaran berhasil di simpan. silahkan menunggu konfirmasi pembayaran maksimal 1x24 jam'];
+                                        }
+                                    }
+                                }
+                                else {
+                                    if ($invoice->invoice_amount/2 > $request->payment_amount){
+                                        throw new \Exception('Mohon maaf pembayaran pertama minimal adalah : Rp. '. number_format($invoice->invoice_amount/2));
+                                    }
+                                    else {
+                                        $payment = new Payment();
+                                        $payment->payment_student = $student->student_id;
+                                        $payment->payment_invoice = $invoice->invoice_id;
+                                        $payment->payment_amount = $request->payment_amount;
+                                        if ($payment->save()){
+                                            $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data pembayaran berhasil di simpan. silahkan menunggu konfirmasi pembayaran maksimal 1x24 jam'];
+                                        }
+                                    }
+                                }
+                            }
+                            catch (\Exception $e){
+                                $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                            }
+                        }
+                    }
+                    catch (\Exception $e){
+                        $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                    }
+                }
+                elseif ($request->_type == 'update'){
+                    try {
+                        $validator = Validator::make($request->all(),[
+                            'payment_transaction_date' => 'required',
+                            'payment_transaction_file' => 'required|mimes:jpg,jpeg,png|max:512',
+                        ], [
+                            'payment_transaction_date.required' => 'Kolom Tanggal & Jam Pembayaran tidak boleh kosong.',
+                            'payment_transaction_file.required' => 'Silahkan unggah bukti pembayaran.',
+                            'payment_transaction_file.mimes' => 'Gambar harus berformat jpg/jpeg/png.',
+                            'payment_transaction_file.max' => 'Ukuran gambar maksimal 512Kb.',
+                        ]);
+                        if ($validator->fails()){
+                            throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
+                        }
+                        else {
+                            $payment = Payment::where('payment_id', $request->payment_id)->first();
+                            $payment->payment_status = 2;
+                            $payment->payment_account_type = $request->payment_account_type;
+                            $payment->payment_account_number = $request->payment_account_number;
+                            $payment->payment_account_name = $request->payment_account_name;
+                            $payment->payment_transaction_date = Carbon::createFromFormat('d/m/Y H:i:s', $request->payment_transaction_date)->format('Y-m-d H:i:s');
+                            $request->hasFile('payment_transaction_file');
+                            $file = $request->file('payment_transaction_file');
+                            Storage::delete('public/admission/fronted/images/transaction/'. $payment->payment_transaction_file);
+                            $file->store('public/admission/fronted/images/transaction');
+                            $payment->payment_transaction_file = $file->hashName();
+                            if ($payment->save()){
+                                $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data pembayaran berhasil di simpan. silahkan menunggu konfirmasi pembayaran maksimal 1x24 jam'];
+                            }
+                        }
+                    } catch (\Exception $e){
+                        $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                    }
+                }
+                elseif ($request->_type == 'delete'){
+                    $payment = Payment::find($request->payment_id);
+                    try {
+                        if (in_array($payment->payment_status, [3, 4])){
+                            throw new \Exception('Pembayaran telah diverifikasi, data pembayaran tidak bisa dihapus.');
+                        }
+                        else {
+                            if ($payment->delete()){
+                                $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data pembayaran berhasil dihapus.'];
+                            }
+
+                        }
+                    }
+                    catch (\Exception $e){
+                        $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                    }
+                }
+
                 return response()->json($msg);
             }
             else {
-                return view('admission.fronted.register_invoice', $this->data);
+                return view('admission.fronted.register_payment', $this->data);
             }
         }
         else {
@@ -113,7 +234,7 @@ class FrontedController extends Controller
 
     public function term()
     {
-        return view('admission.fronted.term');
+        return view('admission.fronted.term', $this->data);
     }
 
     public function store(Request $request)
@@ -236,12 +357,13 @@ class FrontedController extends Controller
                             $path = storage_path('app/public/admission/fronted/images/student/' . $student->student_nik . '_qrcode.png');
                             QrCode::size(110)
                                 ->format('png')->generate(route('admission.authenticate', $form->form_uuid), $path);
+                            $cost = Cost::where('cost_program', $student->student_program)->where('cost_boarding', $student->student_boarding)->where('cost_gender', $request->student_gender)->first();
+                            $invoice = new Invoice();
+                            $invoice->invoice_student = $student->student_id;
+                            $invoice->invoice_amount = $cost->cost_amount;
+                            $invoice->invoice_status = 1;
+                            $invoice->save();
                             $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pendaftaran berhasil, silahkan masuk menggunakan NIS/NIK & Tanggal Lahir untuk melengkapi pendfataran.'];
-                            $cost = Cost::where('cost_program', $student->student_program)->where('cost_boarding', $student->student_boarding)->first();
-                            $payment = new Payment();
-                            $payment->payment_student = $student->student_id;
-                            $payment->payment_cost      = $cost->cost_id;
-                            $payment->save();
                         }
                     }
                 }
@@ -583,9 +705,9 @@ class FrontedController extends Controller
 
                 if ($student->save()){
                     $cost = Cost::where('cost_program', $student->student_program)->where('cost_boarding', $student->student_boarding)->first();
-                    $payment = Payment::where('payment_student', $student->student_id)->first();
-                    $payment->payment_cost = $cost->cost_id;
-                    $payment->save();
+                    Invoice::where('invoice_student', $student->student_id)->update([
+                        'invoice_amount' => $cost->cost_amount
+                    ]);
                     $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Pembaruhan data berhasil, silahkan melakukan cetak bukti pendaftaran dan pembayaran tagihan.'];
                 }
             }
@@ -657,124 +779,7 @@ class FrontedController extends Controller
         TCPDF::reset();
     }
 
-    public function result(Request $request)
-    {
-        if ($request->isMethod('post')) {
-            if($request->_type == 'data' && $request->_data == 'all'){
-                $student = 0;
-                for ($i=1;$i<13;$i++){
-                    $all[] = $student = Student::whereMonth('created_at', $i)->count() > 0 ? Student::whereMonth('created_at', $i)->count() + $student: 0;
-                }
-                $data[] = array_merge(['Jumlah Pendaftar'], $all);
-            }
-            elseif ($request->_type == 'data' && $request->_data == 'gender'){
-                $student = 0;
-                for ($i=1;$i<3;$i++) {
-                    for ($j = 1; $j < 13; $j++) {
-                        $count[] = $student = Student::whereMonth('created_at', $j)
-                            ->where('student_gender', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
-                                ->where('student_gender', $i)->count() + $student : 0;
-                    }
-                    $gender = $i == 1 ? array_merge(['Jumlah Laki-laki'], $count) : array_merge(['Jumlah Perempuan'], $count) ;
-                    $count = [];
-                    $student = 0;
-                    $data[] = $gender;
-                }
-            }
-            elseif ($request->_type == 'data' && $request->_data == 'program'){
-                $student = 0;
-                for ($i=1;$i<5;$i++) {
-                    for ($j = 1; $j < 13; $j++) {
-                        $count[] = $student = Student::whereMonth('created_at', $j)
-                            ->where('student_program', $i)->count() > 0 ? Student::whereMonth('created_at', $j)
-                                ->where('student_program', $i)->count() + $student : 0;
-                    }
-                    if ($i == 1){
-                        $program = array_merge(['Tahfidz'], $count);
-                    }
-                    elseif ($i == 2){
-                        $program = array_merge(['Sains & Bahasa'], $count);
-                    }
-                    elseif ($i == 3){
-                        $program = array_merge(['Kitab Kuning'], $count);
-                    }
-                    elseif ($i == 4){
-                        $program = array_merge(['Kelas Reguler'], $count);
-                    }
-                    $count = [];
-                    $student = 0;
-                    $data[] = $program;
-                }
-            }
-            return response()->json($data);
-        }
-        else {
-            return view('admission.fronted.result', $this->data);
-        }
-    }
-
-    public function registrant(Request $request)
-    {
-        if ($request->isMethod('post')){
-            if ($request->_type == 'data' && $request->_data == 'all') {
-                $no = 1;
-                foreach (Student::orderBy('created_at', 'ASC')->get() as $student) {
-                    $data[] = [
-                        $no++,
-                        $student->student_name,
-                        $student->student_nik,
-                        $student->student_nisn,
-                        $student->student_address,
-                        $student->student_father_name,
-                        $student->student_mother_name,
-                    ];
-                };
-                $msg = ['data' => empty($data) ? [] : $data];
-            }
-            return response()->json($msg);
-        }
-        else {
-            return view('admission.fronted.registrant', $this->data);
-        }
-    }
-
-    protected function checkdata($student)
-    {
-        if ($student->student_name == null || $student->student_nik == null || $student->student_birthplace == null
-            || $student->student_birthday == null || $student->student_gender == null || $student->student_religion == null
-            || $student->student_siblingplace == null || $student->student_sibling == null || $student->student_civic == null
-            || $student->student_hobby == null || $student->student_purpose == null || $student->student_email == null
-            || $student->student_phone == null || $student->student_residence == null || $student->student_address == null
-            || $student->student_province == null || $student->student_distric == null || $student->student_subdistric == null
-            || $student->student_village == null || $student->student_postal == null || $student->student_distance == null
-            || $student->student_transport == null || $student->student_travel == null || $student->student_program == null
-            || $student->student_boarding == null || $student->student_no_kk == null || $student->student_head_family == null
-            || $student->student_father_name == null || $student->student_mother_name == null || $student->student_guard_name == null
-            || $student->student_father_birthday == null || $student->student_mother_birthday == null || $student->student_guard_birthday == null
-            || $student->student_father_status == null || $student->student_mother_status == null || $student->student_father_nik == null
-            || $student->student_mother_nik == null || $student->student_guard_nik == null || $student->student_father_study == null
-            || $student->student_mother_study == null || $student->student_guard_study == null || $student->student_father_job == null
-            || $student->student_mother_job == null || $student->student_guard_job == null || $student->student_father_earning == null
-            || $student->student_mother_earning == null || $student->student_guard_earning == null || $student->student_father_phone == null
-            || $student->student_mother_phone == null || $student->student_guard_phone == null || $student->student_home_owner == null
-            || $student->student_home_address == null || $student->student_home_postal == null || $student->student_home_province == null
-            || $student->student_home_distric == null || $student->student_home_subdistric == null || $student->student_home_village == null
-            || $student->student_swaphoto == 0 || $student->student_ktp_photo == 0 || $student->student_akta_photo == 0
-            || $student->student_kk_photo == 0 || $student->student_skhun_photo == 0 || $student->student_school_from == null
-            || $student->student_school_name == null || $student->student_school_npsn == null || $student->student_school_address == null
-            )
-        {return false;}
-        else {return true;}
-    }
-
 }
-
-
-
-
-
-
-
 
 
 
