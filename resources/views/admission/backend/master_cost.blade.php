@@ -43,13 +43,13 @@
                             <input type="hidden" id="cost_id">
                             <div class="form-group">
                                 <label>Nama Program :</label>
-                                <select id="cost_program" data-placeholder="Pilih Program" class="form-control select2">
+                                <select id="cost_program" data-placeholder="Pilih Program" class="form-control select">
                                     <option></option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Boarding/Non Boarding :</label>
-                                <select id="cost_boarding" data-placeholder="Pilih Boarding" class="form-control select2">
+                                <select id="cost_boarding" data-placeholder="Pilih Boarding" class="form-control select">
                                     <option></option>
                                     <option value="1">Ya</option>
                                     <option value="2">Tidak</option>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Jenis Kelamin :</label>
-                                <select id="cost_gender" data-placeholder="Pilih Jenis Kelamin" class="form-control select2">
+                                <select id="cost_gender" data-placeholder="Pilih Jenis Kelamin" class="form-control select">
                                     <option></option>
                                 </select>
                             </div>

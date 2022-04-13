@@ -55,7 +55,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Status :</label>
-                                <select id="bank_status" data-placeholder="Pilih Status" class="form-control select2">
+                                <select id="bank_status" data-placeholder="Pilih Status" class="form-control select">
                                     <option></option>
                                     <option value="0">Tidak Aktif</option>
                                     <option value="1">Aktif</option>

@@ -1,4 +1,4 @@
-var religionjs = function () {
+var programjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
         $('.datatable-program').DataTable({
@@ -78,6 +78,14 @@ var religionjs = function () {
         })
     }
 
+    var _componentSelect = function (){
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            dropdownAutoWidth: true,
+            width: 'auto'
+        });
+    }
+
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
@@ -109,11 +117,12 @@ var religionjs = function () {
     return {
         init: function() {
             _componetnDataTable();
+            _componentSelect();
             _componentSubmit();
         }
     }
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    religionjs.init();
+    programjs.init();
 });

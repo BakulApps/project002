@@ -78,6 +78,14 @@ var religionjs = function () {
         })
     }
 
+    var _componentSelect = function (){
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            dropdownAutoWidth: true,
+            width: 'auto'
+        });
+    }
+
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
@@ -109,6 +117,7 @@ var religionjs = function () {
     return {
         init: function() {
             _componetnDataTable();
+            _componentSelect();
             _componentSubmit();
         }
     }

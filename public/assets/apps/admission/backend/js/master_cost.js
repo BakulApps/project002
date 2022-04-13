@@ -84,7 +84,13 @@ var religionjs = function () {
     }
 
     var _componentSelect = function (){
-        $('.select2').select2({
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            dropdownAutoWidth: true,
+            width: 'auto'
+        });
+
+        $('.select').select2({
             minimumResultsForSearch: Infinity
         });
         $('#cost_program').select2({
