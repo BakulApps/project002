@@ -54,8 +54,24 @@ class BackendController extends Controller
     {
         if ($request->isMethod('post')){
             if ($request->_type == 'data' && $request->_data == 'all') {
+                if ($request->program_id != null && $request->boarding_id != null) {
+                    $students =  Student::where('student_boarding', $request->boarding_id)
+                        ->where('student_program', $request->program_id)
+                        ->orderBy('student_id', 'DESC')->get();
+                }
+                elseif ($request->program_id != null) {
+                    $students =  Student::where('student_program', $request->program_id)
+                        ->orderBy('student_id', 'DESC')->get();
+                }
+                elseif ($request->boarding_id != null) {
+                    $students =  Student::where('student_boarding', $request->boarding_id)
+                        ->orderBy('student_id', 'DESC')->get();
+                }
+                else {
+                    $students = Student::orderBy('student_id', 'DESC')->get();
+                }
                 $no = 1;
-                foreach (Student::orderBy('student_id', 'DESC')->get() as $student) {
+                foreach ($students as $student) {
                     $data[] = [
                         $no++,
                         $student->student_name,
@@ -66,6 +82,12 @@ class BackendController extends Controller
                         $student->student_guard_name,
                         Carbon::create($student->created_at)->format('d/m/Y'),
                         '<div class="btn-group">
+                            <form method="post" action="'.route('admission.register').'">
+                                <input type="hidden" name="_type" value="print">
+                                <input type="hidden" name="_data" value="'.$student->student_id.'">
+                                <input type="hidden" name="_token" value="'.csrf_token().'">
+                                <button type="submit" class="btn btn-outline-primary bt-sm" data-num="'. $student->student_id .'"><i class="icon-printer"></i></button>
+                            </form>
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'. $student->student_id .'"><i class="icon-pencil"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-delete" data-num="' . $student->student_id . '"><i class="icon-trash"></i></button>
                          </div>
@@ -472,6 +494,16 @@ class BackendController extends Controller
 
                 $msg = $student;
             }
+            elseif ($request->_type == 'delete'){
+                try {
+                    $student = Student::find($request->student_id);
+                    if ($student->delete()){
+                        $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data siswa berhasil dihapus.'];
+                    }
+                } catch (\Exception $e){
+                    $msg = ['title' => 'Gagal !', 'class' => 'danger', 'text' => $e->getMessage()];
+                }
+            }
             return response()->json($msg);
         }
         else {
@@ -484,6 +516,15 @@ class BackendController extends Controller
         $this->data['compelete'] = false;
         $this->data['type'] = 'store';
         return view('admission.backend.student_add', $this->data);
+    }
+
+    public function studentedit($id)
+    {
+        $student = Student::find($id);
+        $this->data['type'] = 'edit';
+        $this->data['student'] = $student;
+        $this->data['compelete'] = $student->checkdata();
+        return view('admission.backend.student_edit', $this->data);
     }
 
     public function payment(Request $request)

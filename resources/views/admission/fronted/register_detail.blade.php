@@ -862,7 +862,11 @@
                     <p class="text-center">Data sudah lengkap, formulir siap di cetak.</p>
                     @endif
                     <div class="mt-3">
-                        <button type="submit" class="btn bg-success btn-labeled btn-labeled-left col-md-12" id="print" @if($compelete == false) disabled @endif><b><i class="icon-printer"></i></b> CETAK FORMULIR</button>
+                        <form method="post">
+                            <input type="hidden" name="_data" value="{{$student->student_id}}">
+                            @csrf
+                            <button type="submit" class="btn bg-success btn-labeled btn-labeled-left col-md-12" name="_type" value="print" @if($compelete == false) disabled @endif><b><i class="icon-printer"></i></b> CETAK FORMULIR</button>
+                        </form>
                     </div>
                 </div>
                 <div class="card-footer bg-white d-flex justify-content-between align-items-center">

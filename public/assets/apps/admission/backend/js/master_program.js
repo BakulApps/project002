@@ -26,7 +26,7 @@ var programjs = function () {
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/master/program',
+                url: adminurl + '/master/program',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -39,7 +39,7 @@ var programjs = function () {
             var program_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/program',
+                url : adminurl + '/master/program',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -59,7 +59,7 @@ var programjs = function () {
             var program_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/program',
+                url : adminurl + '/master/program',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -90,7 +90,7 @@ var programjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/program',
+                url : adminurl + '/master/program',
                 type: 'post',
                 dataType: 'json',
                 data: {

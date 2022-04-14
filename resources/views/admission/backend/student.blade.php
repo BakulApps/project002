@@ -15,9 +15,21 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-white header-elements-sm-inline">
-                    <h5 class="card-title font-weight-semibold">DATA SISWA</h5>
+                    <h5 class="card-title font-weight-semibold">DATA PENDAFTAR</h5>
                     <div class="header-elements">
-                        <a href="{{route('admission.admin.studentadd')}}" class="btn bg-blue"><i class="icon-user mr-2"></i> Tambah</a>
+                        <span class="mr-2"> Sortir Berdasarkan : </span>
+                        <div class="wmin-sm-200 mr-2">
+                            <select id="program_id" class="form-control" data-placeholder="Program Pilihan" data-fouc>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="wmin-sm-200">
+                            <select id="boarding_id" class="form-control" data-placeholder="Boarding" data-fouc>
+                                <option></option>
+                                <option value="1">Ya</option>
+                                <option value="2">Tidak</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <table class="table datatable-student table-bordered">

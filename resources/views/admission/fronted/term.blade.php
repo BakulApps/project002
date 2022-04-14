@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="mt-3 text-muted font-italic">Jika merasa kusulitan dalam mendaftar silahkan Hubungi via Whatsapp 08229366506 </p>
+                <p class="mt-3 text-muted font-italic">Jika merasa kusulitan dalam mendaftar silahkan Hubungi via Whatsapp 082229366506 </p>
             </div>
         </div>
         <div class="col-md-6">

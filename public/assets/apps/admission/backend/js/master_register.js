@@ -26,7 +26,7 @@ var religionjs = function () {
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/master/daftarulang',
+                url: adminurl + '/master/daftarulang',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -39,7 +39,7 @@ var religionjs = function () {
             var register_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/daftarulang',
+                url : adminurl + '/master/daftarulang',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -59,7 +59,7 @@ var religionjs = function () {
             var register_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/daftarulang',
+                url : adminurl + '/master/daftarulang',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -90,7 +90,7 @@ var religionjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/daftarulang',
+                url : adminurl + '/master/daftarulang',
                 type: 'post',
                 dataType: 'json',
                 data: {

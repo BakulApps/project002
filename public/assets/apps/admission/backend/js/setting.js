@@ -24,7 +24,7 @@ var settingjs = function () {
             fd.append('app_desc', $('#app_desc').val());
             $.ajax({
                 headers: csrf_token,
-                url: baseurl + '/pengaturan',
+                url: adminurl + '/pengaturan',
                 type: 'post',
                 dataType: 'json',
                 data: fd,

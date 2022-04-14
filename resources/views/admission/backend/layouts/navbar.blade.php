@@ -1,6 +1,6 @@
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
-        <a href="{{route('admission.home')}}" class="d-inline-block">
+        <a href="{{route('admission.admin.home')}}" class="d-inline-block">
             <img src="{{asset($setting->value('app_logo') == null ? 'assets/images/logo_light.png' : 'storage/admission/backend/images/'. $setting->value('app_logo'))}}" alt="">
         </a>
     </div>

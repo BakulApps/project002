@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/', 'FrontedController@home')->name('admission.home');
 Route::get('/autentikasi/{uuid}', 'FrontedController@authenticate')->name('admission.authenticate');
 Route::get('/informasi', 'FrontedController@term')->name('admission.term');
@@ -20,6 +19,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.admission'], function (
     Route::match(['get', 'post'],'/master/daftarulang', 'MasterController@register')->name('admission.admin.master.register');
     Route::match(['get', 'post'],'/siswa', 'BackendController@student')->name('admission.admin.student');
     Route::match(['get', 'post'],'/siswa/tambah', 'BackendController@studentadd')->name('admission.admin.studentadd');
+    Route::match(['get', 'post'],'/siswa/{id}/ubah', 'BackendController@studentedit')->name('admission.admin.studentedit');
     Route::match(['get', 'post'], '/pembayaran', 'BackendController@payment')->name('admission.admin.payment');
     Route::match(['get', 'post'], '/pengguna', 'BackendController@user')->name('admission.admin.user');
     Route::match(['get', 'post'], '/pengaturan', 'BackendController@setting')->name('admission.admin.setting');

@@ -31,48 +31,31 @@ var studentjs = function () {
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/siswa',
+                url: adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
-                data: {
-                    '_type' : 'data',
-                    '_data' : 'all'
+                data: function (d){
+                    d._type = 'data';
+                    d._data = 'all';
+                    d.program_id = $('#program_id').val() === '' ? null : $('#program_id').val();
+                    d.boarding_id = $('#boarding_id').val() === '' ? null : $('#boarding_id').val();
                 }
             })
         }).on('click', '.btn-edit', function (e) {
             e.preventDefault();
-            var cost_id = $(this).data('num');
-            $.ajax({
-                headers: csrf_token,
-                url : baseurl + '/master/biaya',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    '_type': 'data',
-                    '_data': 'cost',
-                    'cost_id': cost_id,
-                },
-                success : function (resp) {
-                    $('.title-add').html('UBAH DATA');
-                    $('#submit').val('update');
-                    $('#cost_id').val(resp.cost_id);
-                    $('#cost_program').append($('<option value="'+ resp.program.program_id +'" selected>'+ resp.program.program_name +'</option>'))
-                    $('#cost_boarding').val(resp.cost_boarding).change()
-                    $('#cost_gender').append($('<option value="'+ resp.gender.gender_id +'" selected>'+ resp.gender.gender_name +'</option>'))
-                    $('#cost_amount').val(resp.cost_amount)
-                }
-            });
+            var student_id = $(this).data('num');
+            window.location.href = adminurl + "/siswa/" + student_id + '/ubah';
         }).on('click', '.btn-delete', function (e) {
             e.preventDefault();
-            var cost_id = $(this).data('num');
+            var student_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/biaya',
+                url : adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
                 data: {
                     '_type': 'delete',
-                    'cost_id': cost_id,
+                    'student_id': student_id,
                 },
                 success : function (resp) {
                     new PNotify({
@@ -80,7 +63,7 @@ var studentjs = function () {
                         text: resp['text'],
                         addclass: 'alert bg-'+resp['class']+' border-'+resp['class']+' alert-styled-left'
                     });
-                    $('.datatable-cost').DataTable().ajax.reload();
+                    $('.datatable-student').DataTable().ajax.reload();
                 }
             });
         })
@@ -92,13 +75,36 @@ var studentjs = function () {
             dropdownAutoWidth: true,
             width: 'auto'
         });
+
+        $('#program_id').select2({
+            ajax: {
+                headers: csrf_token,
+                url: siteurl + '/api/student',
+                dataType: 'json',
+                type: 'post',
+                data: {_type: 'select', _data: 'program'},
+                processResults: function (data) {
+                    return {results: data}
+                },
+                cache: true
+            },
+            minimumResultsForSearch: Infinity
+        }).change(function (){
+            $('.datatable-student').DataTable().ajax.reload();
+        });
+
+        $('#boarding_id').select2({
+            minimumResultsForSearch: Infinity
+        }).change(function (){
+            $('.datatable-student').DataTable().ajax.reload();
+        });
     }
 
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/bank',
+                url : adminurl + '/master/bank',
                 type: 'post',
                 dataType: 'json',
                 data: {

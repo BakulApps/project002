@@ -3,8 +3,9 @@
     @include('admission.backend.layouts.head')
     <body>
     <script type="text/javascript">
-        var baseurl = "{{route('admission.home')}}" + "/admin";
-        var siteurl = "{{route('portal.home')}}";
+        var baseurl     = "{{route('admission.home')}}";
+        var adminurl    = "{{route('admission.home')}}" + "/admin";
+        var siteurl     = "{{route('portal.home')}}";
     </script>
         @include('admission.backend.layouts.navbar')
         <div class="page-content">

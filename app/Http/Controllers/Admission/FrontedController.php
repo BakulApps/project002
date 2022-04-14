@@ -357,7 +357,9 @@ class FrontedController extends Controller
                             $path = storage_path('app/public/admission/fronted/images/student/' . $student->student_nik . '_qrcode.png');
                             QrCode::size(110)
                                 ->format('png')->generate(route('admission.authenticate', $form->form_uuid), $path);
-                            $cost = Cost::where('cost_program', $student->student_program)->where('cost_boarding', $student->student_boarding)->where('cost_gender', $request->student_gender)->first();
+                            $cost = Cost::where('cost_program', $student->student_program)
+                                ->where('cost_boarding', $student->student_boarding)
+                                ->where('cost_gender', $request->student_gender)->first();
                             $invoice = new Invoice();
                             $invoice->invoice_student = $student->student_id;
                             $invoice->invoice_amount = $cost->cost_amount;
@@ -775,7 +777,7 @@ class FrontedController extends Controller
         TCPDF::AddPage();
         TCPDF::writeHTML($view, true, 0, true, 0, '');
         TCPDF::setSignatureAppearance(1, 8.3, 5.1, 4.1);
-        TCPDF::Output('formulir-'. $student->student_nik .'.pdf');
+        TCPDF::Output('formulir-'. $student->student_nik .'.pdf', 'I');
         TCPDF::reset();
     }
 

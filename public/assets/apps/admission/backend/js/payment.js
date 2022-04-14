@@ -1,9 +1,6 @@
 var paymentjs = function () {
     var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
-        $('#payment_status').change(function (){
-            $('.datatable-payment').DataTable().ajax.reload();
-        })
         $('.datatable-payment').DataTable({
             autoWidth: false,
             bLengthChange: true,
@@ -34,7 +31,7 @@ var paymentjs = function () {
             bserverSide: true,
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/pembayaran',
+                url: adminurl + '/pembayaran',
                 type: 'post',
                 dataType: 'json',
                 data: function (d){
@@ -48,7 +45,7 @@ var paymentjs = function () {
             var student_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/siswa',
+                url : adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -126,7 +123,7 @@ var paymentjs = function () {
             var payment_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pembayaran',
+                url : adminurl + '/pembayaran',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -151,7 +148,7 @@ var paymentjs = function () {
             var payment_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pembayaran',
+                url : adminurl + '/pembayaran',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -171,16 +168,24 @@ var paymentjs = function () {
     }
 
     var _componentSelect = function (){
-        $('.select2').select2({
+        $('.dataTables_length select').select2({
+            minimumResultsForSearch: Infinity,
+            dropdownAutoWidth: true,
+            width: 'auto'
+        });
+        $('.select').select2({
             minimumResultsForSearch: Infinity
         });
+        $('#payment_status').change(function (){
+            $('.datatable-payment').DataTable().ajax.reload();
+        })
     }
 
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pembayaran',
+                url : adminurl + '/pembayaran',
                 type: 'post',
                 dataType: 'json',
                 data: {

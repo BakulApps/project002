@@ -18,7 +18,7 @@
                     <h5 class="card-title font-weight-semibold">DATA PEMBAYARAN</h5>
                     <div class="header-elements">
                         <div class="wmin-sm-200">
-                            <select id="payment_status" class="form-control select2" data-fouc>
+                            <select id="payment_status" class="form-control select" data-fouc>
                                 <option value="0">Semua</option>
                                 <option value="1">Menunggu Pembayaran</option>
                                 <option value="2">Menunggu Verifikasi</option>

@@ -31,7 +31,7 @@ var userjs = function () {
             ],
             ajax: ({
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: baseurl + '/pengguna',
+                url: adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -44,7 +44,7 @@ var userjs = function () {
             var user_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pengguna',
+                url : adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -70,7 +70,7 @@ var userjs = function () {
             var user_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pengguna',
+                url : adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -93,7 +93,7 @@ var userjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/pengguna',
+                url : adminurl + '/pengguna',
                 type: 'post',
                 dataType: 'json',
                 data: {

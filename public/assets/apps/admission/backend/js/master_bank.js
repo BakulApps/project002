@@ -28,7 +28,7 @@ var bankjs = function () {
             ],
             ajax: ({
                 headers: csrf_token,
-                url: baseurl + '/master/bank',
+                url: adminurl + '/master/bank',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -41,7 +41,7 @@ var bankjs = function () {
             var cost_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/biaya',
+                url : adminurl + '/master/biaya',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -64,7 +64,7 @@ var bankjs = function () {
             var cost_id = $(this).data('num');
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/biaya',
+                url : adminurl + '/master/biaya',
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -98,7 +98,7 @@ var bankjs = function () {
         $("#submit").click(function () {
             $.ajax({
                 headers: csrf_token,
-                url : baseurl + '/master/bank',
+                url : adminurl + '/master/bank',
                 type: 'post',
                 dataType: 'json',
                 data: {
