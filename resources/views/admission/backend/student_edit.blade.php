@@ -676,8 +676,8 @@
                                             <label>Berkas KIP</label>
                                             <select id="student_kip_file" data-placeholder="Pilih Status Berkas.." class="form-control select2">
                                                 <option></option>
-                                                <option value="1" @if($student->student_kip_file != null) selected @endif>1. Berkas Ada</option>
-                                                <option value="2" @if($student->student_kip_file == null && $student->student_kip_no != null) selected @endif>1. Berkas Tidak Ada</option>
+                                                <option value="1" @if($student->student_kip_file == 1) selected @endif>1. Berkas Ada</option>
+                                                <option value="0" @if($student->student_kip_file == 0 && $student->student_kip_no != null) selected @endif>1. Berkas Tidak Ada</option>
                                             </select>
                                         </div>
                                     </div>
@@ -694,8 +694,8 @@
                                             <label>Berkas PKH : </label>
                                             <select id="student_pkh_file" data-placeholder="Pilih Status Berkas.." class="form-control select2">
                                                 <option></option>
-                                                <option value="1" @if($student->student_pkh_file != null) selected @endif>1. Berkas Ada</option>
-                                                <option value="2" @if($student->student_pkh_file == null && $student->student_pkh_no != null) selected @endif>1. Berkas Tidak Ada</option>
+                                                <option value="1" @if($student->student_pkh_file == 1) selected @endif>1. Berkas Ada</option>
+                                                <option value="0" @if($student->student_pkh_file == 0 && $student->student_pkh_no != null) selected @endif>1. Berkas Tidak Ada</option>
                                             </select>
                                         </div>
                                     </div>
@@ -712,8 +712,8 @@
                                             <label>Berkas KKS : </label>
                                             <select id="student_kks_file" data-placeholder="Pilih Status Berkas.." class="form-control select2">
                                                 <option></option>
-                                                <option value="1" @if($student->student_kks_file != null) selected @endif>1. Berkas Ada</option>
-                                                <option value="2" @if($student->student_kks_file == null && $student->student_kks_no != null) selected @endif>1. Berkas Tidak Ada</option>
+                                                <option value="1" @if($student->student_kks_file == 1) selected @endif>1. Berkas Ada</option>
+                                                <option value="0" @if($student->student_kks_file == 0 && $student->student_kks_no != null) selected @endif>1. Berkas Tidak Ada</option>
                                             </select>
                                         </div>
                                     </div>

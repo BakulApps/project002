@@ -679,11 +679,20 @@ var studenteditjs = function () {
             fd.append('student_school_npsn', $('#student_school_npsn').val())
             fd.append('student_school_address', $('#student_school_address').val())
             fd.append('student_kip_no', $('#student_kip_no').val())
+            fd.append('student_kip_file', $('#student_kip_file').val())
             fd.append('student_pkh_no', $('#student_pkh_no').val())
+            fd.append('student_pkh_file', $('#student_pkh_file').val())
             fd.append('student_kks_no', $('#student_kks_no').val())
+            fd.append('student_kks_file', $('#student_kks_file').val())
+            fd.append('student_swaphoto', $('#student_swaphoto').val())
+            fd.append('student_ktp_photo', $('#student_ktp_photo').val())
+            fd.append('student_akta_photo', $('#student_akta_photo').val())
+            fd.append('student_kk_photo', $('#student_kk_photo').val())
+            fd.append('student_ijazah_photo', $('#student_ijazah_photo').val())
+            fd.append('student_skhun_photo', $('#student_skhun_photo').val())
             $.ajax({
                 headers: csrf_token,
-                url: baseurl + '/pendaftaran',
+                url: adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
                 contentType: false,

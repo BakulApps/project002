@@ -23,13 +23,15 @@
                                 <option></option>
                             </select>
                         </div>
-                        <div class="wmin-sm-200">
+                        <div class="wmin-sm-200 ml-2">
                             <select id="boarding_id" class="form-control" data-placeholder="Boarding" data-fouc>
                                 <option></option>
                                 <option value="1">Ya</option>
                                 <option value="2">Tidak</option>
                             </select>
                         </div>
+                        <span class="mr-2"></span>
+                        <a href="{{route('admission.admin.studentadd')}}" class="btn btn-info btn-labeled btn-labeled-left"><b><i class="icon-user-plus"></i></b>Tambah</a>
                     </div>
                 </div>
                 <table class="table datatable-student table-bordered">

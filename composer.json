@@ -9,23 +9,23 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
-        "elibyy/tcpdf-laravel": "^8.1",
-        "fideloper/proxy": "^4.4",
+        "elibyy/tcpdf-laravel": "^9.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.12",
+        "laravel/framework": "^9.0",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "midtrans/midtrans-php": "^2.4",
         "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
+        "barryvdh/laravel-debugbar": "^3.6",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "nunomaduro/collision": "^6.1",
+        "phpunit/phpunit": "^9.3.3",
+        "spatie/laravel-ignition": "^1.0"
     },
     "config": {
         "optimize-autoloader": true,
