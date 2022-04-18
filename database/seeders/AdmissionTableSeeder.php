@@ -22,6 +22,7 @@ class AdmissionTableSeeder extends Seeder
             ['app_logo', ''],
             ['app_desc', ''],
             ['app_brochure', ''],
+            ['app_youtube', ''],
             ['due_date', '12/07/2021']
 
         ];

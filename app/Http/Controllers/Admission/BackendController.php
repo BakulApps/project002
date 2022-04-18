@@ -950,28 +950,37 @@ class BackendController extends Controller
                         'app_alias' => 'required',
                         'app_year' => 'required',
                         'app_logo' => 'mimes:jpg,peg,png|max:512',
+                        'app_brochure' => 'mimes:pdf',
                     ], [
                         'app_name.required' => 'Kolom nama aplikasi tidak boleh kosong.',
                         'app_alias.required' => 'Kolom nama alias tidak boleh kosong.',
                         'app_year.required' => 'Kolom tahun pelajaran tidak boleh kosong.',
                         'app_logo.mimes' => 'Logo aplikasi harus berformat jpg/jpeg/png.',
                         'app_logo.max' => 'Logo aplikasi maksimal berukuran 512Kb.',
+                        'app_brochure.mimes' => 'Brosur harus berformat pdf'
                     ]);
                     if ($validator->fails()){
                         throw new \Exception(Arr::first(Arr::flatten($validator->getMessageBag()->get('*'))));
                     }
                     else {
                         $setting = $this->data['setting'];
-                        $file = $request->file('app_logo');
-                        if ($file != null){
+                        $app_logo = $request->file('app_logo');
+                        $app_brochure = $request->file('app_brochure');
+                        if ($app_logo != null){
                             Storage::delete('/public/admission/backend/images/'. $setting->value('app_logo'));
-                            $file->store('public/admission/backend/images');
-                            $setting->where('setting_name', 'app_logo')->update(['setting_value' => $file->hashName()]);
+                            $app_logo->store('public/admission/backend/images');
+                            $setting->where('setting_name', 'app_logo')->update(['setting_value' => $app_logo->hashName()]);
+                        }
+                        if ($app_brochure != null){
+                            Storage::delete('/public/admission/backend/images/'. $setting->value('app_brochure'));
+                            $app_brochure->store('public/admission/backend/images');
+                            $setting->where('setting_name', 'app_brochure')->update(['setting_value' => $app_brochure->hashName()]);
                         }
                         $setting->where('setting_name', 'app_name')->update(['setting_value' => $request->app_name]);
                         $setting->where('setting_name', 'app_alias')->update(['setting_value' => $request->app_alias]);
                         $setting->where('setting_name', 'app_year')->update(['setting_value' => $request->app_year]);
                         $setting->where('setting_name', 'app_desc')->update(['setting_value' => $request->app_desc]);
+                        $setting->where('setting_name', 'app_youtube')->update(['setting_value' => $request->app_youtube]);
                         $msg = ['status' => 'success', 'title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil disimpan.'];
                     }
                 }

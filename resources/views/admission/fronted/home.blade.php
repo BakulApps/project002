@@ -7,7 +7,9 @@
         <div class="card-body">
             <h3 class="font-weight-bold">Selamat Datang di Aplikasi {{$setting->value('app_alias')}} TP. {{$setting->value('app_year')}} {{$setting->value('school_name')}}</h3>
             <h4>Sebelum melakukan pendaftaran siapkan terlebih dahulu semua persyaratan guna memudahkan dalam pengisian
-                formulir pendaftaran. Untuk persyaratan pendaftaran silahkan lihat dimenu Informasi. Silahkan unduh brosur PPDB Tahun PElajaran 2022/2023 disini.</h4>
+                formulir pendaftaran. Untuk persyaratan pendaftaran silahkan lihat dimenu Informasi.</h4>
+            <h4>=> Unduh brosur PPDB Tahun Pelajaran 2022/2023 <a href="{{asset('storage/admission/backend/images/' . $setting->value('app_brochure'))}}">disini.</a></h4>
+            <h4>=> Tutorial Pendaftaran <a href="{{$setting->value('app_youtube')}}">disini.</a></h4>
         </div>
     </div>
     <div class="card">

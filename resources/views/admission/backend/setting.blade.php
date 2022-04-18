@@ -73,10 +73,28 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-3 col-form-label">Brosur :</div>
+                            <div class="col-md-9">
+                                <input type="file" id="app_brochure" class="form-control-uniform-custom" required>
+                                @if($setting->value('app_brochure') != null)
+                                    <div class="mt-1">
+                                        <span class="font-italic text-danger">Brosur telah di unggah, untuk melihat <a href="{{asset('storage/admission/backend/images/' . $setting->value('app_brochure'))}}">klik disini</a></span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3 col-form-label">Link Tutorial Youtube :</div>
+                            <div class="col-md-9">
+                                <input type="text" id="app_youtube" class="form-control" value="{{$setting->value('app_youtube')}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-sm-12 text-right">
                                 <button type="submit" class="btn bg-info btn-labeled btn-labeled-left" id="app"><b><i class="icon-floppy-disk"></i></b> SIMPAN</button>
                             </div>
                         </div>
+
                     </div>
                     <div class="tab-pane fade" id="card-database">
 
