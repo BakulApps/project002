@@ -1,5 +1,5 @@
 @extends('graduate.layouts.master', ['title' => 'Kelulusan'])
-@section('jspage')
+@section('jsscript')
     <script src="{{asset('assets/apps/graduate/frontend/js/countdown.js')}}"></script>
 @endsection
 @section('content')
@@ -11,7 +11,7 @@
             <div class="card-body">
                 <div class="text-center">
                     <div class="card-img-actions d-inline-block mb-3">
-                        <img src="{{asset('storage/graduate/images/'.$setting->value('school_logo'))}}" width="160" height="150" alt="">
+                        <img src="{{asset('storage/master/images/'.$school->value('school_logo'))}}" width="160" height="150" alt="">
                     </div>
                 </div>
                 <div class="text-center mb-5">

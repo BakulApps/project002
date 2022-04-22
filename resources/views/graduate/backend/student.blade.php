@@ -1,5 +1,5 @@
 @extends('graduate.layouts.master', ['title' => 'Peserta Didik'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
@@ -7,7 +7,7 @@
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
+@section('jsscript')
     <script src="{{asset('assets/apps/graduate/backend/js/student.js')}}"></script>
 @endsection
 @section('breadcrumb')
@@ -30,6 +30,7 @@
                         <th>Nama</th>
                         <th>NISN</th>
                         <th>NISM</th>
+                        <th>No Ujian</th>
                         <th>Kelas</th>
                         <th>TTL</th>
                         <th>JK</th>
@@ -68,6 +69,12 @@
                         <label class="col-form-label col-sm-3">NISM</label>
                         <div class="col-sm-9">
                             <input type="text" id="student_nism" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-3">No Ujian</label>
+                        <div class="col-sm-9">
+                            <input type="text" id="student_number_exam" class="form-control">
                         </div>
                     </div>
                     <div class="form-group row">

@@ -1,11 +1,11 @@
 @extends('graduate.layouts.master', ['title' => 'Pengaturan'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/pickers/daterangepicker.js')}}"></script>
 @endsection
-@section('jspage')
+@section('jsscript')
     <script src="{{asset('assets/apps/graduate/backend/js/setting.js')}}"></script>
 @endsection
 @section('breadcrumb')
@@ -46,6 +46,20 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <div class="col-sm-4 col-form-label">Logo Aplikasi :</div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <a href="#">
+                                        <img class="card-img-top img-fluid image-app-view col-md-6"
+                                             src="{{asset($setting->value('app_logo') == null ? 'assets/apps/graduate/images/placeholder.jpg' : 'storage/graduate/images/'.$setting->value('app_logo'))}}"
+                                             alt="">
+                                    </a>
+                                </div>
+                                <hr>
+                                <input type="file" id="app_logo" class="form-control-uniform-custom" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <div class="col-md-4"></div>
                             <div class="col-md-8">
                                 <button type="submit" class="btn bg-info btn-labeled btn-labeled-left" id="app"><b><i class="icon-floppy-disk"></i></b>SIMPAN</button>
@@ -66,15 +80,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-4 col-form-label">Bobot Penilaian Harian % :</label>
-                            <div class="col-md-4">
-                                <input type="text" id="value_semester" class="form-control" value="{{$setting->value('value_semester')}}">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-4 col-form-label">Bobot Penilaian Ujian % :</label>
-                            <div class="col-md-4">
-                                <input type="text" id="value_exam" class="form-control" value="{{$setting->value('value_exam')}}">
+                            <label class="col-md-4 col-form-label">Cetak SKL :</label>
+                            <div class="col-md-8">
+                                <select id="announcement_skl" class="form-control select">
+                                    <option value="0" @if($setting->value('announcement_skl') == 0) selected @endif>Tidak</option>
+                                    <option value="1" @if($setting->value('announcement_skl') == 1) selected @endif>Ya</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -92,8 +103,7 @@
                                     <option value="1">Tahun Pelajaran</option>
                                     <option value="2">Data Pelajaran</option>
                                     <option value="3">Peserta Didik</option>
-                                    <option value="4">Nilai Semester</option>
-                                    <option value="5">Nilai Ujian</option>
+                                    <option value="4">Nilai Ijazah</option>
                                     <option value="6">Data Pengumuman</option>
                                 </select>
                                 <p class="text-danger font-italic mt-2">Perhatian! data yang terpilih akan terhapus semua.</p>
@@ -117,7 +127,7 @@
                 </div>
                 <div class="card-body">
                     <a href="#">
-                        <img class="card-img-top img-fluid" src="{{asset('storage/graduate/images/' . $setting->value('school_logo'))}}" alt="">
+                        <img class="card-img-top img-fluid" src="{{asset('storage/master/images/' . $school->value('school_logo'))}}" alt="">
                     </a>
                     <hr>
                     <div class="form-group row">

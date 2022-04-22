@@ -3,6 +3,7 @@
     @include('graduate.layouts.head')
     <body>
     <script type="text/javascript">
+        var siteurl = "{{route('portal.home')}}"
         var baseurl = "{{route('graduate.home')}}";
         var adminurl = "{{route('graduate.admin.home')}}";
     </script>
@@ -20,7 +21,7 @@
                         <div class="card-body">
                             <div class="media">
                                 <div class="mr-2">
-                                    <a href="#"><img src="{{asset('storage/graduate/images/'.$setting->value('school_logo'))}}" width="50" height="50"></a>
+                                    <a href="#"><img src="{{asset('storage/master/images/'.$school->value('school_logo'))}}" width="50" height="50"></a>
                                 </div>
                                 <div class="media-body">
                                     <div class="media-title font-weight-semibold">{{$school->name(false)}}</div>

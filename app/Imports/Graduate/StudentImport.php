@@ -19,6 +19,7 @@ class StudentImport implements ToModel, WithHeadingRow
             'student_name' => $row['nama_lengkap'],
             'student_nisn' => $row['nisn'],
             'student_nism' => $row['nism'],
+            'student_number_exam' => $row['no_ujian'],
             'student_class' => $row['kelas'],
             'student_place_birth' => $row['tempat_lahir'],
             'student_birthday' => Carbon::createFromFormat('d/m/Y', $row['tanggal_lahir'])->format('Y-m-d'),

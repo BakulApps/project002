@@ -19,8 +19,8 @@
     <script src="{{asset('assets/js/cores/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('assets/js/cores/blockui.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
-    @yield('js')
+    @yield('jsplugin')
 
     <script src="{{asset('assets/js/cores/app.js')}}"></script>
-    @yield('jspage')
+    @yield('jsscript')
 </head>

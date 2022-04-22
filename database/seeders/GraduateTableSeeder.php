@@ -22,9 +22,8 @@ class GraduateTableSeeder extends Seeder
             ['app_alias', 'G-APP'],
             ['announcement_letter', ''],
             ['announcement_date', ''],
-            ['value_semester', ''],
-            ['value_exam', ''],
-            ['school_logo', ''],
+            ['announcement_skl', 0],
+            ['app_logo', ''],
 
         ];
         for ($i=0;$i<count($setting);$i++){

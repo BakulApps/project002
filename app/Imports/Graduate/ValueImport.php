@@ -2,12 +2,12 @@
 
 namespace App\Imports\Graduate;
 
-use App\Models\Graduate\ValueExam;
+use App\Models\Graduate\Value;
 use App\Models\Master\Subject;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-class ValueExamImport implements ToCollection
+class ValueImport implements ToCollection
 {
     /**
     * @param Collection $collection
@@ -21,9 +21,9 @@ class ValueExamImport implements ToCollection
             foreach ($body as $row){
                 for ($i=0;$i<count($heading);$i++){
                     if ($subject->subject_code == $heading[$i]){
-                        $value = new ValueExam();
-                        $value->value_exam_point = $row[$i];
-                        $value->value_exam_subject = $subject->subject_id;
+                        $value = new Value();
+                        $value->value_point = $row[$i];
+                        $value->value_subject = $subject->subject_id;
                         $value->save();
                         $value->student()->attach($row[0]);
                     }

@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
         <a href="{{route('graduate.admin.home')}}" class="d-inline-block">
-            <img src="{{asset('assets/apps/graduate/images/logo_light.png')}}" alt="">
+            <img src="{{asset($setting->value('app_logo') == null ? 'assets/apps/graduate/images/logo_light.png' : 'storage/graduate/images/'. $setting->value('app_logo'))}}" alt="">
         </a>
     </div>
     <div class="d-md-none">
@@ -20,7 +20,7 @@
                 </a>
             </li>
         </ul>
-        <a target="_blank" href="{{route('potral.home')}}" class="badge bg-success ml-md-3 mr-md-auto">Kunjungi Situs</a>
+        <a target="_blank" href="{{route('portal.home')}}" class="badge bg-success ml-md-3 mr-md-auto">Kunjungi Situs</a>
         <ul class="navbar-nav navbar-right">
             @if(session()->has('exam.auth'))
             <li class="nav-item dropdown dropdown-user">
@@ -36,7 +36,7 @@
                 @if(auth('graduate')->check())
                     <li class="nav-item dropdown dropdown-user">
                         <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('storage/graduate/images/'.$setting->value('school_logo'))}}" class="rounded-circle mr-2" height="34" alt="">
+                            <img src="{{asset('storage/master/images/'.$school->value('school_logo'))}}" class="rounded-circle mr-2" height="34" alt="">
                             <span>{{auth('graduate')->user()->user_fullname}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">

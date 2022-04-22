@@ -1,4 +1,5 @@
 var subjectjs = function () {
+    var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
         $('.datatable-subject').DataTable({
             autoWidth: false,
@@ -25,7 +26,7 @@ var subjectjs = function () {
                 {className: 'text-center', targets: 4},
             ],
             ajax: ({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/master/pelajaran',
                 type: 'post',
                 dataType: 'json',
@@ -38,7 +39,7 @@ var subjectjs = function () {
             e.preventDefault();
             var subject_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : adminurl + '/master/pelajaran',
                 type: 'post',
                 dataType: 'json',
@@ -62,7 +63,7 @@ var subjectjs = function () {
             e.preventDefault();
             var subject_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : adminurl + '/master/pelajaran',
                 type: 'post',
                 dataType: 'json',
@@ -105,7 +106,7 @@ var subjectjs = function () {
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : adminurl + '/master/pelajaran',
                 type: 'post',
                 dataType: 'json',
@@ -131,6 +132,7 @@ var subjectjs = function () {
                     $('#subject_code').val('')
                     $('#subject_name').val('');
                     $('#subject_desc').val('');
+                    $('#subject_exam').val('').trigger('change');
                     $('.datatable-subject').DataTable().ajax.reload();
                 }
             })

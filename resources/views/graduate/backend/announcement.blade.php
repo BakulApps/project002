@@ -1,10 +1,10 @@
 @extends('graduate.layouts.master', ['title' => 'Pengumuman'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
+@section('jsscript')
     <script src="{{asset('assets/apps/graduate/backend/js/announcement.js')}}"></script>
 @endsection
 @section('breadcrumb')
@@ -26,8 +26,7 @@
                         <th>UUID</th>
                         <th>Nomor Surat</th>
                         <th>Nama Siswa</th>
-                        <th>Total Nilai KD3</th>
-                        <th>Total Nilai KD4</th>
+                        <th>Total Nilai</th>
                         <th>Status</th>
                         <th>Dilihat</th>
                         <th>Dicetak</th>

@@ -777,7 +777,7 @@ class FrontedController extends Controller
         TCPDF::AddPage();
         TCPDF::writeHTML($view, true, 0, true, 0, '');
         TCPDF::setSignatureAppearance(1, 8.3, 5.1, 4.1);
-        TCPDF::Output('formulir-'. $student->student_nik .'.pdf', 'I');
+        TCPDF::Output('formulir-'. $student->student_nik .'.pdf', 'D');
         TCPDF::reset();
     }
 

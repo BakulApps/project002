@@ -14,12 +14,10 @@ Route::group(['prefix' => 'admin'], function (){
         Route::match(['get', 'post'], '', 'BackendController@home')->name('graduate.admin.home');
         Route::match(['get', 'post'], '/master/tahun', 'MasterController@year')->name('graduate.admin.master.year');
         Route::match(['get', 'post'], '/master/pelajaran', 'MasterController@subject')->name('graduate.admin.master.subject');
+        Route::match(['get', 'post'], '/master/sekolah', 'MasterController@school')->name('graduate.admin.master.school');
         Route::match(['get', 'post'], '/siswa', 'BackendController@student')->name('graduate.admin.student');
-        Route::match(['get', 'post'], '/penilaian/semester', 'ValueController@semester')->name('graduate.admin.value.semester');
-        Route::match(['get', 'post'], '/penilaian/ujian', 'ValueController@exam')->name('graduate.admin.value.exam');
-        Route::match(['get', 'post'], '/penilaian/ijasah', 'ValueController@certificate')->name('graduate.admin.value.certificate');
+        Route::match(['get', 'post'], '/nilai', 'BackendController@value')->name('graduate.admin.value');
         Route::match(['get', 'post'], '/pengumuman', 'BackendController@announcement')->name('graduate.admin.announcement');
         Route::match(['get', 'post'], '/pengaturan', 'BackendController@setting')->name('graduate.admin.setting');
-        Route::get('/test', 'BackendController@test');
     });
 });

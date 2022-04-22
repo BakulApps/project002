@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Graduate;
 
 use App\Exports\Graduate\StudentExport;
+use App\Exports\Graduate\ValueExport;
 use App\Http\Controllers\Controller;
 use App\Imports\Graduate\StudentImport;
+use App\Imports\Graduate\ValueImport;
 use App\Models\Graduate\Announcement;
 use App\Models\Graduate\Setting;
 use App\Models\Graduate\Student;
-use App\Models\Graduate\ValueExam;
-use App\Models\Graduate\ValueSemester;
+use App\Models\Graduate\Value;
 use App\Models\Master\School;
 use App\Models\Master\Subject;
 use App\Models\Master\Year;
@@ -48,6 +49,7 @@ class BackendController extends Controller
                         $student->student_name,
                         $student->student_nisn,
                         $student->student_nism,
+                        $student->student_number_exam,
                         $student->student_class,
                         $student->student_place_birth . ', ' . Carbon::createFromFormat('Y-m-d', $student->student_birthday)->translatedFormat('d M Y'),
                         $student->student_gender == 'L' ? 'Laki-laki' : 'Perempuan',
@@ -100,17 +102,19 @@ class BackendController extends Controller
             }
             elseif ($request->_type == 'update'){
                 try {
-                    $student = Student::where('student_id', $request->student_id);
+                    $student = Student::find($request->student_id);
                     if ($student->update([
                         'student_name' => $request->student_name,
                         'student_nisn' => $request->student_nisn,
                         'student_nism' => $request->student_nism,
+                        'student_number_exam' => $request->student_number_exam,
                         'student_class' => $request->student_class,
                         'student_place_birth' => $request->student_place_birth,
                         'student_birthday' => Carbon::createFromFormat('d/m/Y', $request->student_birthday)->format('Y-m-d'),
                         'student_gender' => $request->student_gender,
                         'student_address' => $request->student_address,
-                        'student_parent' => $request->student_parent])){
+                        'student_father' => $request->student_father,
+                        'student_mother' => $request->student_mother])){
                         $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Data Siswa berhasil diperbarui.'];
                     }
                 } catch (\Exception $e){
@@ -127,6 +131,53 @@ class BackendController extends Controller
         }
     }
 
+    public function value(Request $request)
+    {
+        if ($request->isMethod('post')){
+            if ($request->_type == 'data' && $request->_data == 'all'){
+                $students = Student::with('value')->get();
+                foreach ($students as $student){
+                    $values = [];
+                    foreach ($student->value as $value){
+                        $values[] = $value->value_point;
+                    }
+                    $data[] = array_merge([$student->student_name], $values);
+                }
+                $msg['data'] = empty($values) ? [] : $data;
+            }
+            elseif ($request->_type == 'data' && $request->_data == 'upload'){
+                $validator = Validator::make($request->all(), [
+                    'value' => 'mimes:xls,xlsx'
+                ]);
+                if ($validator->fails()) {
+                    $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => 'Berkas Harus Berekstensi xls/xlsx'];
+                }
+                else {
+                    try {
+                        if ($request->hasFile('value')) {
+                            $file = $request->file('value')->store('temp');
+                            $path = storage_path('app') .'/'. $file;
+                            Value::query()->truncate();
+                            if (Excel::import(new ValueImport(), $path)) {
+                                $msg = ['title' => 'Berhasil !', 'class' => 'success', 'text' => 'Data Nilai Berhasil ditambahkan'];
+                            }
+                        }
+                    } catch (\Exception $e) {
+                        $msg = ['title' => 'Kesalahan !', 'class' => 'danger', 'text' => $e->getMessage()];
+                    }
+                }
+            }
+            return response()->json($msg);
+        }
+        elseif ($request->_type == 'download' && $request->_data == 'value'){
+            return Excel::download(new ValueExport(), 'data_nilai.xlsx');
+        }
+        else {
+            $this->data['subjects'] = Subject::orderBy('subject_number')->get();
+            return view('graduate.backend.value', $this->data);
+        }
+    }
+
     public function announcement(Request $request)
     {
         if ($request->isMethod('post')){
@@ -138,14 +189,12 @@ class BackendController extends Controller
                         $announcement->announcement_uuid,
                         $announcement->announcement_number . $this->data['setting']->value('announcement_letter'),
                         $announcement->student->student_name,
-                        $announcement->announcement_value_know_total,
-                        $announcement->announcement_value_skill_total,
+                        $announcement->announcement_value_total,
                         $announcement->announcement_status == 1 ? '<span class="badge badge-success">lulus</span>' :'<span class="badge badge-danger">tidak</span>',
                         $announcement->announcement_view,
                         $announcement->announcement_print,
                         $announcement->announcement_finance == 1 ? '<span class="badge badge-success">lunas</span>' :'<span class="badge badge-danger">belum</span>',
                         '<div class="btn-group">
-                            <button class="btn btn-outline-primary bt-sm btn-view" data-num="'.$announcement->announcement_id.'"><i class="icon-eye"></i></button>
                             <button class="btn btn-outline-primary bt-sm btn-edit" data-num="'.$announcement->announcement_id.'"><i class="icon-pencil"></i></button>
                         </div>
                      '
@@ -183,26 +232,18 @@ class BackendController extends Controller
                     }
                 }
                 Announcement::query()->truncate();
-                $students = Student::with('valuesemester')->with('valueexam')->with('announcement');
+                $students = Student::with('announcement');
+                $number = 1;
                 foreach ($students->get() as $student){
-                    $value_know = [];
-                    $value_skill = [];
-                    foreach (Subject::OrderBy('subject_number')->get() as $subjects){
-                        $value_know[] = number_format((($student->valuesemester->where('value_semester_subject', $subjects->subject_id)
-                                        ->average('value_semester_point_know') * $this->data['setting']->value('value_semester')) +
-                                ($student->valueexam->where('value_exam_subject', $subjects->subject_id)
-                                        ->first()->value_exam_point * $this->data['setting']->value('value_exam')))/100, 2);
-                        $value_skill[] = number_format( $student->valuesemester->where('value_semester_subject', $subjects->subject_id)
-                            ->average('value_semester_point_skill'),2);
+                    $value_total= 0;
+                    foreach ($student->value as $value){
+                        $value_total = $value_total + $value->value_point;
                     }
                     $uuid = Factory::create('id_ID')->uuid;
                     $student->announcement()->create([
                         'announcement_uuid' => $uuid,
-                        'announcement_number' => rand(100, 999),
-                        'announcement_value_know' => json_encode($value_know),
-                        'announcement_value_know_total' => array_sum($value_know),
-                        'announcement_value_skill' => json_encode($value_skill),
-                        'announcement_value_skill_total' => array_sum($value_skill),
+                        'announcement_number' => sprintf('%03d', $number++),
+                        'announcement_value_total' => $value_total,
                         'announcement_status' => 1,
                         'announcement_view' => 0,
                         'announcement_print' => 0,
@@ -228,19 +269,19 @@ class BackendController extends Controller
         if ($request->isMethod('post')){
             if ($request->_type == 'update' && $request->_data == 'app'){
                 $setting = $this->data['setting'];
-                if ($request->hasFile('school_logo')) {
-                    $file = $request->file('school_logo');
-                    Storage::delete('/public/graduate/images/'. $setting->value('school_logo'));
+                if ($request->hasFile('app_logo')) {
+                    $file = $request->file('app_logo');
+                    Storage::delete('/public/graduate/images/'. $setting->value('app_logo'));
                     $file->store('public/graduate/images');
-                    $school_logo = $file->hashName();
+                    $app_logo = $file->hashName();
                 }
                 else {
-                    $school_logo = $setting->value('school_logo');
+                    $app_logo = $setting->value('app_logo');
                 }
                 try {
                     $setting->where('setting_name', 'app_name')->update(['setting_value' => $request->app_name]);
                     $setting->where('setting_name', 'app_alias')->update(['setting_value' => $request->app_alias]);
-                    $setting->where('setting_name', 'school_logo')->update(['setting_value' => $school_logo]);
+                    $setting->where('setting_name', 'app_logo')->update(['setting_value' => $app_logo]);
                     $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil disimpan.'];
                 }
                 catch (\Exception $e){
@@ -249,21 +290,9 @@ class BackendController extends Controller
             }
             elseif ($request->_type == 'update' && $request->_data == 'announcement'){
                 $setting = $this->data['setting'];
-                if ($request->hasFile('school_logo')) {
-                    $file = $request->file('school_logo');
-                    Storage::delete('/public/graduate/images/'. $setting->value('school_logo'));
-                    $file->store('public/graduate/images');
-                    $school_logo = $file->hashName();
-                }
-                else {
-                    $school_logo = $setting->value('school_logo');
-                }
                 try {
                     $setting->where('setting_name', 'announcement_letter')->update(['setting_value' => $request->announcement_letter]);
                     $setting->where('setting_name', 'announcement_date')->update(['setting_value' => $request->announcement_date]);
-                    $setting->where('setting_name', 'value_semester')->update(['setting_value' => $request->value_semester]);
-                    $setting->where('setting_name', 'value_exam')->update(['setting_value' => $request->value_exam]);
-                    $setting->where('setting_name', 'school_logo')->update(['setting_value' => $school_logo]);
                     $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil disimpan.'];
                 }
                 catch (\Exception $e){
@@ -283,12 +312,9 @@ class BackendController extends Controller
                             Student::truncate();
                             break;
                         case 4:
-                            ValueSemester::truncate();
+                            Value::truncate();
                             break;
                         case 5:
-                            ValueExam::truncate();
-                            break;
-                        case 6:
                             Announcement::truncate();
                             break;
                         default;
@@ -304,10 +330,5 @@ class BackendController extends Controller
         else {
             return view('graduate.backend.setting', $this->data);
         }
-    }
-
-    public function test()
-    {
-        return storage_path('app/public/graduate/images/qr/');
     }
 }

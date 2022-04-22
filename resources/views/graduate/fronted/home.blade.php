@@ -6,7 +6,7 @@
             <div class="card-body">
                 <div class="text-center">
                     <div class="card-img-actions d-inline-block mb-2">
-                        <img src="{{asset('storage/graduate/images/'. $setting->value('school_logo'))}}" width="105" height="100" alt="">
+                        <img src="{{asset('storage/master/images/'. $school->value('school_logo'))}}" width="105" height="100" alt="">
                     </div>
                 </div>
                 <div class="text-center mb-4">

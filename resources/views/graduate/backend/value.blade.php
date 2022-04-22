@@ -1,12 +1,12 @@
 @extends('graduate.layouts.master', ['title' => 'Penilaian'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
-    <script src="{{asset('assets/apps/graduate/backend/js/value_exam.js')}}"></script>
+@section('jsscript')
+    <script src="{{asset('assets/apps/graduate/backend/js/value.js')}}"></script>
 @endsection
 @section('breadcrumb')
     <span class="breadcrumb-item">Penilaian</span>
@@ -22,11 +22,11 @@
                         <button type="button" class="btn btn-primary btn-labeled btn-labeled-left ml-3" data-toggle="modal" data-target="#modal-upload"><b><i class="icon-upload4"></i></b>UNGGAH</button>
                     </div>
                 </div>
-                <table class="table table-sm table-bordered datatable-exam">
+                <table class="table table-sm table-bordered datatable-value">
                     <thead>
                     <tr class="text-center">
                         <td>NAMA SISWA</td>
-                        @foreach(\App\Models\Master\Subject::OrderBy('subject_number')->get() as $subject)
+                        @foreach($subjects as $subject)
                             <td>{{$subject->subject_code}}</td>
                         @endforeach
                     </tr>
@@ -50,11 +50,11 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-12">
-                                <input type="file" id="value_exam" class="form-control-uniform-custom">
+                                <input type="file" id="value" class="form-control-uniform-custom">
                             </div>
                         </div>
                     </div>
-                    <p>Silahkan unduh template Nilai Ujian <a href="{{route('graduate.admin.value.exam')}}/?_type=download&_data=value_exam" class="badge badge-info">disini</a></p>
+                    <p>Silahkan unduh template Nilai Ijazah <a href="{{route('graduate.admin.value')}}/?_type=download&_data=value" class="badge badge-info">disini</a></p>
                 </div>
             </div>
         </div>

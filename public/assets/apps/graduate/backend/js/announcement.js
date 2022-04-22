@@ -1,4 +1,5 @@
 var notifyjs = function () {
+    var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
         $('.datatable-notify').DataTable({
             autoWidth: false,
@@ -27,10 +28,9 @@ var notifyjs = function () {
                 {className: 'text-center', targets: 6},
                 {className: 'text-center', targets: 7},
                 {className: 'text-center', targets: 8},
-                {className: 'text-center', targets: 9}
             ],
             ajax: ({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/pengumuman',
                 type: 'post',
                 dataType: 'json',
@@ -43,7 +43,7 @@ var notifyjs = function () {
             e.preventDefault();
             var announcement_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : adminurl + '/pengumuman',
                 type: 'post',
                 dataType: 'json',
@@ -59,31 +59,6 @@ var notifyjs = function () {
                     $('#announcement_nisn').val(resp.student.student_nisn);
                     $('#submit').val('update');
                     $('#modal-edit').modal('show');
-                }
-            });
-        }).on('click', '.btn-view', function (e) {
-            e.preventDefault();
-            var announcement_id = $(this).data('num');
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url : adminurl + '/pengumuman',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    '_type': 'data',
-                    '_data': 'announcement',
-                    'announcement_id': announcement_id,
-                },
-                success : function (resp) {
-                    $('#student_name').val(resp.student.student_name)
-                    $('#student_nism').val(resp.student.student_nism)
-                    $('#student_nisn').val(resp.student.student_nisn)
-                    var values = JSON.parse(resp.announcement.announcement_value_know)
-                    values.unshift('first');
-                    $.each(values, function (id, value) {
-                        $('#value' + id).html(value);
-                    })
-                    $('#modal-show').modal('show');
                 }
             });
         })
@@ -103,7 +78,7 @@ var notifyjs = function () {
     var _componentSubmit = function () {
         $('#submit').click(function () {
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/pengumuman',
                 type: 'post',
                 dataType: 'json',
@@ -142,7 +117,7 @@ var notifyjs = function () {
                 width: "200px"
             });
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/pengumuman',
                 type: 'post',
                 dataType: 'json',

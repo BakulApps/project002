@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 //        $this->call(ExamTableSeeder::class);
 
 //        GraduateSeeder
-//        $this->call(GraduateTableSeeder::class);
+        $this->call(GraduateTableSeeder::class);
 
 //        FinanceSeeder
 //        $this->call(FinanceTableSeeder::class);

@@ -12,16 +12,16 @@ var settingjs = function () {
     var _componentSubmit = function () {
         $('#app').click(function () {
             var fd = new FormData();
-            var school_logo = $('#school_logo')[0].files[0];
+            var app_logo = $('#app_logo')[0].files[0];
             fd.append('_type', 'update');
             fd.append('_data', 'app');
             fd.append('app_name', $('#app_name').val());
             fd.append('app_alias', $('#app_alias').val());
-            if (school_logo !== undefined){
-                fd.append('school_logo', school_logo);
+            if (app_logo !== undefined){
+                fd.append('app_logo', app_logo);
             }
             else {
-                fd.append('school_logo', null);
+                fd.append('app_logo', null);
             }
             $.ajax({
                 headers: csrf_token,
@@ -47,8 +47,6 @@ var settingjs = function () {
             fd.append('_data', 'announcement');
             fd.append('announcement_letter', $('#announcement_letter').val());
             fd.append('announcement_date', $('#announcement_date').val());
-            fd.append('value_semester', $('#value_semester').val());
-            fd.append('value_exam', $('#value_exam').val());
             if (school_logo !== undefined){
                 fd.append('school_logo', school_logo);
             }

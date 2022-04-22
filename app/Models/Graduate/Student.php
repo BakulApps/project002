@@ -20,28 +20,19 @@ class Student extends Model
         'student_gender',
         'student_address',
         'student_father',
-        'student_mother'
+        'student_mother',
+        'student_number_exam'
     ];
     protected $primaryKey   = 'student_id';
     public $timestamps      = false;
 
-    public function valuesemester()
+    public function value()
     {
         return $this->belongsToMany(
-            ValueSemester::class,
-            'graduate_entity__student_value_semester',
+            Value::class,
+            'graduate_entity__student_value',
             'student_id',
-            'value_semester_id'
-        );
-    }
-
-    public function valueexam()
-    {
-        return $this->belongsToMany(
-            ValueExam::class,
-            'graduate_entity__student_value_exam',
-            'student_id',
-            'value_exam_id'
+            'value_id'
         );
     }
 

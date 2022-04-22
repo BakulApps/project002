@@ -1,17 +1,18 @@
-var certificatejs = function () {
+var valuejs = function () {
+    var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
-        $('.datatable-ijazah').DataTable({
+        $('.datatable-value').DataTable({
             bprocessing: true,
             bserverSide: true,
             ajax:({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: adminurl + '/penilaian/ijasah',
+                headers: csrf_token,
+                url: adminurl + '/nilai',
                 type: 'post',
                 dataType: 'json',
-                data: function (d) {
-                    d._type = 'data';
-                    d._data = 'all';
-                },
+                data: {
+                    _type: 'data',
+                    _data: 'all'
+                }
             }),
             autoWidth: false,
             bLengthChange: true,
@@ -56,11 +57,10 @@ var certificatejs = function () {
     }
 
     var _componentUpload = function () {
-        $('#value_ijazah').change(function () {
+        $('#value').change(function () {
             $('#modal-upload').modal('hide');
-            var percent = 0;
             var notice = new PNotify({
-                text: "Mohon tunggu",
+                text: "Mengunggah...",
                 addclass: 'bg-primary border-primary',
                 type: 'info',
                 icon: 'icon-spinner4 spinner',
@@ -73,46 +73,32 @@ var certificatejs = function () {
                 width: "200px"
             });
             var fd = new FormData();
-            var files = $('#value_ijazah')[0].files[0];
+            var files = $('#value')[0].files[0];
             fd.append('_type', 'data');
             fd.append('_data', 'upload');
-            fd.append('value_ijazah', files);
+            fd.append('value', files);
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: adminurl + '/penilaian/ujian',
+                headers: csrf_token,
+                url: adminurl + '/nilai',
                 type: 'post',
                 data: fd,
                 contentType: false,
                 processData: false,
                 success: function(resp){
-                    setTimeout(function() {
-                        notice.update({
-                            title: false
-                        });
-                        var interval = setInterval(function() {
-                            percent += 4;
-                            var options = {
-                                text: percent + "% Mengunggah"
-                            };
-                            if (percent >= 100) {
-                                window.clearInterval(interval);
-                                options.title = resp.title;
-                                options.addclass = "bg-"+resp.class+" border-"+resp.class;
-                                options.type = resp.class;
-                                options.hide = true;
-                                options.text = resp.text;
-                                options.buttons = {
-                                    closer: true,
-                                    sticker: true
-                                };
-                                options.icon = false;
-                                options.opacity = 1;
-                                options.width = PNotify.prototype.options.width;
-                            }
-                            $('.datatable-ijazah').DataTable().ajax.reload();
-                            notice.update(options);
-                        }, 120);
-                    }, 2000);
+                    var options = {
+                        title: resp.title,
+                        addclass: "bg-"+resp.class+" border-"+resp.class,
+                        type: resp.class,
+                        hide: true,
+                        text: resp.text,
+                        buttons: {closer: true, sticker: true},
+                        icon: false,
+                        opacity: 1,
+                        width: PNotify.prototype.options.width,
+                    };
+                    $('.datatable-value').DataTable().ajax.reload();
+                    $('#value').val();
+                    notice.update(options);
                 },
             });
         })
@@ -129,5 +115,5 @@ var certificatejs = function () {
 }();
 
 document.addEventListener('DOMContentLoaded', function() {
-    certificatejs.init();
+    valuejs.init();
 });

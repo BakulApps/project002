@@ -1,11 +1,11 @@
 @extends('graduate.layouts.master', ['title' => 'Master Data'])
-@section('js')
+@section('jsplugin')
     <script src="{{asset('assets/js/plugins/datatables/datatables.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/selects/select2.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/styling/uniform.min.js')}}"></script>
     <script src="{{asset('assets/js/plugins/notifications/pnotify.min.js')}}"></script>
 @endsection
-@section('jspage')
+@section('jsscript')
     <script src="{{asset('assets/apps/graduate/backend/js/master_subject.js')}}"></script>
 @endsection
 @section('breadcrumb')
@@ -43,26 +43,27 @@
                 <div class="card-body">
                     <input type="hidden" id="subject_id">
                     <div class="form-group">
-                        <label>Nomer Urut</label>
+                        <label for="subject_number">Nomer Urut</label>
                         <input type="text" id="subject_number" class="form-control" placeholder="Ex. 1">
                     </div>
                     <div class="form-group">
-                        <label>Kode Pelajaran</label>
+                        <label for="subject_code">Kode Pelajaran</label>
                         <input type="text" id="subject_code" class="form-control" placeholder="Ex. MTK">
                     </div>
                     <div class="form-group">
-                        <label>Nama Pelajaran</label>
+                        <label for="subject_name">Nama Pelajaran</label>
                         <input type="text" id="subject_name" class="form-control" placeholder="Ex. Matematika">
                     </div>
                     <div class="form-group">
-                        <label>Mapel UN</label>
-                        <select id="subject_exam" class="form-control select">
+                        <label for="subject_exam">Mapel UN</label>
+                        <select id="subject_exam" class="form-control select" data-placeholder="Pilih Status...">
+                            <option></option>
                             <option value="1">Ya</option>
                             <option value="0">Tidak</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Diskripsi Pelajaran</label>
+                        <label for="subject_desc">Diskripsi Pelajaran</label>
                         <textarea id="subject_desc" class="form-control" placeholder="Ex. Pelajaran Matematika"></textarea>
                     </div>
                     <div class="text-right">

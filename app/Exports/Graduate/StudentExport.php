@@ -29,6 +29,6 @@ class StudentExport extends DefaultValueBinder implements FromCollection, WithHe
 
     public function headings(): array
     {
-        return ['no', 'nama_lengkap', 'nisn', 'nism', 'kelas', 'tempat_lahir', 'tanggal_lahir', 'jk', 'alamat', 'nama_ayah', 'nama_ibu'];
+        return ['no', 'nama_lengkap', 'nisn', 'nism', 'no_ujian', 'kelas', 'tempat_lahir', 'tanggal_lahir', 'jk', 'alamat', 'nama_ayah', 'nama_ibu'];
     }
 }

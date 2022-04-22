@@ -1,4 +1,5 @@
 var studentjs = function () {
+    var csrf_token = {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
     var _componetnDataTable = function () {
         $('.datatable-student').DataTable({
             autoWidth: false,
@@ -26,9 +27,10 @@ var studentjs = function () {
                 {className: 'text-center', targets: 5},
                 {className: 'text-center', targets: 6},
                 {className: 'text-center', targets: 7},
+                {className: 'text-center', targets: 8},
             ],
             ajax: ({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
@@ -41,7 +43,7 @@ var studentjs = function () {
             e.preventDefault();
             var student_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
@@ -55,6 +57,7 @@ var studentjs = function () {
                     $('#student_name').val(resp.student_name)
                     $('#student_nisn').val(resp.student_nisn)
                     $('#student_nism').val(resp.student_nism)
+                    $('#student_number_exam').val(resp.student_number_exam)
                     $('#student_class').val(resp.student_class)
                     $('#student_place_birth').val(resp.student_place_birth)
                     $('#student_birthday').val(resp.student_birthday)
@@ -69,7 +72,7 @@ var studentjs = function () {
             e.preventDefault();
             var student_id = $(this).data('num');
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
@@ -145,7 +148,7 @@ var studentjs = function () {
             fd.append('_data', 'upload');
             fd.append('data_student', files);
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/siswa',
                 type: 'post',
                 data: fd,
@@ -174,7 +177,7 @@ var studentjs = function () {
     var _componentSubmit = function () {
         $('#submit').click(function () {
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url: adminurl + '/siswa',
                 type: 'post',
                 dataType: 'json',
@@ -184,12 +187,14 @@ var studentjs = function () {
                     'student_name' : $('#student_name').val(),
                     'student_nisn' : $('#student_nisn').val(),
                     'student_nism' : $('#student_nism').val(),
+                    'student_number_exam' : $('#student_number_exam').val(),
                     'student_class' : $('#student_class').val(),
                     'student_place_birth' : $('#student_place_birth').val(),
                     'student_birthday' : $('#student_birthday').val(),
                     'student_gender' : $('#student_gender').val(),
                     'student_address' : $('#student_address').val(),
-                    'student_parent' : $('#student_parent').val()
+                    'student_father' : $('#student_father').val(),
+                    'student_mother' : $('#student_mother').val()
                 },
                 success: function (resp) {
                     $('#modal-edit').modal('hide')

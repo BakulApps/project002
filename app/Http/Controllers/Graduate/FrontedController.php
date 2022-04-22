@@ -22,15 +22,12 @@ class FrontedController extends Controller
     }
     public function home(Request $request)
     {
-        if (Carbon::createFromFormat('d/m/Y H:i', $this->data['setting']->value('announcement_date')) >= Carbon::now()->format('d/m/Y H:i')){
+        if (Carbon::createFromFormat('d/m/Y H:i', $this->data['setting']->value('announcement_date'))->toDateTimeString() <= Carbon::now()->toDateTimeString()){
             if ($request->submit == 'search'){
                 $student = Student::with('announcement')->where('student_nisn', $request->student_nisn)->first();
                 if ($student != null){
                     if ($student->announcement->announcement_finance == 2){
                         return redirect()->back()->with('msg', ['title' => 'Kesalahan!', 'class' => 'danger', 'text' => 'Anda belum menyelesaikan administrasi, silahkan menghubungi bendahara madrasah']);
-                    }
-                    elseif ($student->announcement->announcement_status == 2){
-                        return redirect()->back()->with('msg', ['title' => 'Kesalahan!', 'class' => 'danger', 'text' => 'Nilai anda masih bermasalah, silahkan hubungi walikelas']);
                     }
                     else {
                         $student->announcement->announcement_view = $student->announcement->announcement_view + 1;
@@ -129,16 +126,6 @@ class FrontedController extends Controller
             else {
                 return view('graduate.finance');
             }
-        }
-    }
-
-    public function test()
-    {
-        if (Carbon::createFromFormat('d/m/Y H:i', $this->data['setting']->value('announcement_date')) > Carbon::now()->format('Y-m-d H:i:s')){
-            return "benar";
-        }
-        else {
-            return "salah";
         }
     }
 }

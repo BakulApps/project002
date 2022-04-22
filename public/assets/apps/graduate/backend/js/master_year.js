@@ -22,7 +22,8 @@ var yearjs = function () {
                 {className: 'text-center', targets: 0},
                 {className: 'text-center', targets: 1},
                 {className: 'text-center', targets: 2},
-                {className: 'text-center', targets: 3}
+                {className: 'text-center', targets: 3},
+                {className: 'text-center', targets: 4}
             ],
             ajax: ({
                 headers: csrf_token,
@@ -54,6 +55,7 @@ var yearjs = function () {
                     $('#year_number').val(resp.year_number)
                     $('#year_name').val(resp.year_name);
                     $('#year_desc').val(resp.year_desc);
+                    $('#year_active').val(resp.year_active).trigger('change');
                 }
             });
         }).on('click', '.btn-delete', function (e) {
@@ -86,12 +88,16 @@ var yearjs = function () {
             dropdownAutoWidth: true,
             width: 'auto'
         });
+
+        $('.select').select2({
+            minimumResultsForSearch: Infinity,
+        });
     }
 
     var _componentSubmit = function () {
         $("#submit").click(function () {
             $.ajax({
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                headers: csrf_token,
                 url : adminurl + '/master/tahun',
                 type: 'post',
                 dataType: 'json',
@@ -100,7 +106,8 @@ var yearjs = function () {
                     'year_id': $('#year_id').val(),
                     'year_number': $('#year_number').val(),
                     'year_name': $('#year_name').val(),
-                    'year_desc': $('#year_desc').val()
+                    'year_desc': $('#year_desc').val(),
+                    'year_active': $('#year_active').val()
                 },
                 success : function (resp) {
                     new PNotify({
@@ -115,6 +122,7 @@ var yearjs = function () {
                     $('#year_code').val('')
                     $('#year_name').val('');
                     $('#year_desc').val('');
+                    $('#year_active').val('').trigger('change');
                     $('.datatable-year').DataTable().ajax.reload();
                 }
             })

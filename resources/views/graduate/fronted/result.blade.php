@@ -5,7 +5,7 @@
             <div class="card-body">
                 <div class="text-center">
                     <div class="card-img-actions d-inline-block mb-2">
-                        <img src="{{asset('storage/graduate/images/'. $setting->value('school_logo'))}}" width="100" height="100" alt="">
+                        <img src="{{asset('storage/master/images/'. $school->value('school_logo'))}}" width="100" height="100" alt="">
                     </div>
                 </div>
                 <div class="text-center mb-0">
@@ -39,7 +39,7 @@
                         </tr>
                     </table>
                     <p class="font-weight-semibold">
-                        Telah mengikuti serangkaian Kegiatan Ujian Tahun Pelajaran 2020/2021
+                        Telah mengikuti serangkaian Kegiatan Ujian Tahun Pelajaran {{\App\Models\Master\Year::where('year_active', 1)->value('year_name')}}
                         dan berdasarkan Kriteria Kelulusan {{$school->name()}} dinyatakan :
                     </p>
                     @if($announcement->announcement_status == 1)
