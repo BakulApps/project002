@@ -293,6 +293,8 @@ class BackendController extends Controller
                 try {
                     $setting->where('setting_name', 'announcement_letter')->update(['setting_value' => $request->announcement_letter]);
                     $setting->where('setting_name', 'announcement_date')->update(['setting_value' => $request->announcement_date]);
+                    $setting->where('setting_name', 'announcement_skl')->update(['setting_value' => $request->announcement_skl]);
+                    $setting->where('setting_name', 'announcement_meeting')->update(['setting_value' => $request->announcement_meeting]);
                     $msg = ['title' => 'Sukses !', 'class' => 'success', 'text' => 'Pengaturan berhasil disimpan.'];
                 }
                 catch (\Exception $e){

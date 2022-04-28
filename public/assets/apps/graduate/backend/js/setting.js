@@ -47,6 +47,8 @@ var settingjs = function () {
             fd.append('_data', 'announcement');
             fd.append('announcement_letter', $('#announcement_letter').val());
             fd.append('announcement_date', $('#announcement_date').val());
+            fd.append('announcement_meeting', $('#announcement_meeting').val());
+            fd.append('announcement_skl', $('#announcement_skl').val());
             if (school_logo !== undefined){
                 fd.append('school_logo', school_logo);
             }
@@ -108,6 +110,13 @@ var settingjs = function () {
             timePicker24Hour: true,
             locale: {
                 format: 'DD/MM/YYYY H:mm'
+            }
+        });
+        $('.daterange-meeting').daterangepicker({
+            singleDatePicker: true,
+            timePicker: false,
+            locale: {
+                format: 'DD/MM/YYYY'
             }
         });
     }

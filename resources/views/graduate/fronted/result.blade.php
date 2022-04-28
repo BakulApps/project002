@@ -26,6 +26,10 @@
                             <td class="text-left">: {{$student->student_nisn}}</td>
                         </tr>
                         <tr>
+                            <td class="text-left">Nomor Ujian</td>
+                            <td class="text-left">: {{$student->student_number_exam}}</td>
+                        </tr>
+                        <tr>
                             <td class="text-left">TTL</td>
                             <td class="text-left">: {{$student->student_place_birth}}, {{\Carbon\Carbon::createFromFormat('Y-m-d', $student->student_birthday)->translatedFormat('d F Y')}}</td>
                         </tr>
@@ -45,6 +49,26 @@
                     @if($announcement->announcement_status == 1)
                         <h2 class="bg-success font-weight-bold mb-3">LULUS</h2>
                         <p>Demikian pengumuman ini dibuat dan untuk digunakan sebagaimana mestinya</p>
+                        @if($setting->value('announcement_skl') == 1)
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td>
+                                        <form method="post" action="{{route('graduate.print')}}">
+                                            @csrf
+                                            <input type="hidden" name="student_nisn" value="{{$student->student_nisn}}">
+                                            <button type="submit" class="btn bg-success btn-labeled btn-labeled-left" name="submit" value="skl"><b><i class="icon-printer"></i></b> CETAK SKL</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="{{route('graduate.print')}}">
+                                            @csrf
+                                            <input type="hidden" name="student_nisn" value="{{$student->student_nisn}}">
+                                            <button type="submit" class="btn bg-success btn-labeled btn-labeled-left" name="submit" value="photo"><b><i class="icon-download"></i></b> UNDUH FOTO</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        @endif
                     @else
                         <h2 class="bg-danger font-weight-bold mb-3">NILAI BERMASALAH</h2>
                         <p class="text-center font-italic font-weight-bold text-danger">SILAHKAN UNTUK MENGHUBUNGI WALIKELAS</p>

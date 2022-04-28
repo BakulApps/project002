@@ -80,9 +80,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-md-4 col-form-label">Tanggal Rapat :</label>
+                            <div class="col-md-8">
+                                <input type="text" id="announcement_meeting" class="form-control daterange-meeting" value="{{$setting->value('announcement_meeting')}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-md-4 col-form-label">Cetak SKL :</label>
                             <div class="col-md-8">
-                                <select id="announcement_skl" class="form-control select">
+                                <select id="announcement_skl" class="form-control select" disabled>
                                     <option value="0" @if($setting->value('announcement_skl') == 0) selected @endif>Tidak</option>
                                     <option value="1" @if($setting->value('announcement_skl') == 1) selected @endif>Ya</option>
                                 </select>
